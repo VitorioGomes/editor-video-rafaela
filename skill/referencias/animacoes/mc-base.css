@@ -1,0 +1,39 @@
+/* Base do Estilo Motion claro (colagem editorial): inclua com o comentário "#inclui mc-base.css" no estilo de cada cena.
+   Fundo creme com grade de pontos, abas de capítulo no topo, cartões de contorno preto grosso e sombra dura, etiquetas inclinadas,
+   carimbos, recibo, multidão de bonecos e alguns objetos 3D (peões, caixa, o asterisco no pedestal). Laranja forte como cor de
+   destaque; verde e vermelho só para comprou e recusou. Área: abas em y 236, conteúdo de 330 a 1340, legenda em y 1400. */
+.mc { --mc-papel: #fcfbf9; --mc-creme: #f2efe7; --mc-bege: #dcd6c8; --mc-tinta: #161616; --mc-laranja: #ee6839; --mc-laranja-t: #d9521f; --mc-verde: #2fa850; --mc-vermelho: #e2402a; --mc-cinza: #6d6a63;
+  position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: var(--f-forte), sans-serif; color: var(--mc-tinta); }
+.mc * { box-sizing: border-box; }
+.mc svg { display: block; }
+.mc-q { position: absolute; opacity: 0; }
+.mc-cartao { position: absolute; background: var(--mc-papel); border: 4px solid var(--mc-tinta); box-shadow: 12px 12px 0 var(--mc-tinta); }
+.mc-mono { font-family: var(--f-mono), monospace; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+/* etiqueta colada, inclinada, de contorno grosso */
+.mc-et { position: absolute; display: inline-block; padding: 6px 22px 8px; background: var(--mc-laranja); color: #fff; font-weight: 900; font-size: 58px; line-height: 1.05; letter-spacing: -.02em; text-transform: uppercase; border: 4px solid var(--mc-tinta); box-shadow: 8px 8px 0 var(--mc-tinta); white-space: nowrap; opacity: 0; }
+.mc-et.verde { background: var(--mc-verde); } .mc-et.vermelha { background: var(--mc-vermelho); } .mc-et.preta { background: var(--mc-tinta); box-shadow: 8px 8px 0 var(--mc-laranja); }
+.mc-et.branca { background: #fff; color: var(--mc-tinta); }
+/* carimbo */
+.mc-carimbo { position: absolute; padding: 4px 16px 6px; font-weight: 900; font-size: 40px; color: #fff; border: 3px solid var(--mc-tinta); text-transform: uppercase; opacity: 0; }
+.mc-carimbo.passa { background: var(--mc-vermelho); } .mc-carimbo.compra { background: var(--mc-verde); }
+/* pílula preta pequena ("nosso teste") */
+.mc-pil { position: absolute; padding: 8px 22px; border-radius: 999px; background: var(--mc-tinta); color: #fff; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 24px; letter-spacing: .06em; text-transform: uppercase; opacity: 0; }
+/* boneco (silhueta) e retrato */
+.mc-boneco { width: 44px; height: 54px; color: var(--mc-tinta); }
+.mc-ava { width: 86px; height: 86px; border-radius: 50%; border: 3.5px solid var(--mc-tinta); background: #fff; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; flex: none; }
+.mc-ava svg { width: 62px; height: 62px; color: var(--mc-tinta); }
+.mc-ava.laranja { background: var(--mc-laranja); } .mc-ava.laranja svg { color: var(--mc-tinta); }
+/* balão preto de fala */
+.mc-balao { position: absolute; background: var(--mc-tinta); color: #fff; border-radius: 22px; padding: 34px 40px; font-weight: 800; font-size: 50px; line-height: 1.16; letter-spacing: -.01em; box-shadow: 10px 10px 0 var(--mc-laranja); opacity: 0; }
+/* barras (e por quê) */
+.mc-barra { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.mc-barra span { height: 46px; display: flex; align-items: center; padding: 0 14px; border: 3px solid var(--mc-tinta); font-family: var(--f-mono), monospace; font-weight: 600; font-size: 22px; text-transform: uppercase; white-space: nowrap; transform-origin: left center; }
+.mc-barra b { font-weight: 900; font-size: 44px; }
+/* a legenda deste estilo: a frase inteira numa caixa branca de contorno preto, as palavras-chave em laranja */
+.leg.leg-caixa { font-size: 50px; }
+.leg.leg-caixa .leg-futura { opacity: 1; }
+.leg.leg-caixa .leg-destaque, .leg.leg-caixa.leg-destaque { color: #d9521f; }
+.leg.leg-caixa .leg-q { border-width: 4px; box-shadow: 8px 8px 0 #161616; padding: 10px 26px 12px; }
+/* cursor */
+.mc-cur { position: absolute; left: 0; top: 0; width: 46px; height: 54px; z-index: 30; opacity: 0; }
+.mc-cur svg { width: 40px; height: 48px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.25)); }

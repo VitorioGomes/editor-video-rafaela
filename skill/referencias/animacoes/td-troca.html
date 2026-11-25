@@ -1,0 +1,53 @@
+<!-- Títulos Desenhados: a troca "não isto, isto". O logo do que está errado entra, é riscado e perde a cor; uma seta
+     tracejada se desenha em arco e leva à palavra certa, em duas linhas, com o logo dela e estrelinhas.
+     Do vídeo "ainda usando o Claude no navegador": "não usa no navegador, usa o Claude Code".
+     $R0 o nome embaixo do logo riscado ("navegador"); $R1 e $R2 as duas linhas da palavra certa ("Claude", "Code").
+     M: [logo entra, X, seta, palavra certa]. Camada: x 0, y 0, largura 1080, "som": false. -->
+<style>
+<!--#inclui td-base.css-->
+</style>
+<div class="td-tela">
+  <div class="td-peca" id="$IDl" style="left:222px;top:282px;width:156px;height:156px;opacity:0"><!--#inclui td-icone-chrome.svg--></div>
+  <div class="td-cv" id="$IDlab" style="left:170px;width:260px;top:450px;font-size:58px;text-align:center;color:#E9E4DC">$R0</div>
+  <svg class="td-traco td-x" id="$IDx" style="left:196px;top:262px;width:210px;height:200px" viewBox="0 0 210 200">
+    <path id="$IDx1" d="M14 18 C 70 70, 130 130, 196 186"/><path id="$IDx2" d="M192 16 C 140 70, 80 128, 18 184"/>
+  </svg>
+  <svg class="td-traco td-seta" id="$IDseta" style="left:418px;top:262px;width:200px;height:170px" viewBox="0 0 200 170">
+    <path id="$IDarco" d="M10 120 C 60 20, 140 20, 184 104"/>
+  </svg>
+  <svg class="td-traco td-seta" id="$IDponta" style="left:582px;top:352px;width:40px;height:40px;opacity:0" viewBox="0 0 40 40">
+    <path d="M4 6 L20 24 L36 4" style="opacity:1"/>
+  </svg>
+  <div class="td-lg" id="$IDa" style="left:600px;width:330px;top:268px;font-size:150px;color:#D97757;text-align:center">$R1</div>
+  <div class="td-lg" id="$IDb" style="left:600px;width:330px;top:400px;font-size:150px;color:#D97757;text-align:center">$R2</div>
+  <div class="td-peca" id="$IDspk" style="left:898px;top:228px;width:58px;height:58px;color:#D97757;opacity:0"><!--#inclui td-icone-claude.svg--></div>
+  <div class="td-peca td-brilho" id="$IDs1" style="left:610px;top:262px;width:30px;height:30px;color:#fff;opacity:0"><!--#inclui td-estrela.svg--></div>
+  <div class="td-peca td-brilho" id="$IDs2" style="left:900px;top:470px;width:36px;height:36px;color:#FFD9A8;opacity:0"><!--#inclui td-estrela.svg--></div>
+  <div class="td-peca td-brilho" id="$IDs3" style="left:632px;top:520px;width:22px;height:22px;color:#F3A77F;opacity:0"><!--#inclui td-estrela.svg--></div>
+</div>
+<script>
+<!--#inclui td-base.js-->
+  const fim = t0 + D;
+  ["#$IDlab", "#$IDa", "#$IDb"].forEach(tdQuebra);
+  tdArco("#$IDl", t0 + M[0], -220, -160, 0.32, -260);
+  tdDigita("#$IDlab", t0 + M[0] + 0.2, 0.04);
+  tdRisca("#$IDx1", t0 + M[1], 0.16);
+  tdRisca("#$IDx2", t0 + M[1] + 0.2, 0.18);
+  tl.to("#$IDl", { x: 8, duration: 0.05, yoyo: true, repeat: 3 }, t0 + M[1] + 0.2);
+  tl.set("#$IDl .td-svg", { filter: "grayscale(0)" }, 0);
+  tl.to("#$IDl .td-svg", { filter: "grayscale(1)", duration: 0.3, ease: "power2.out" }, t0 + M[1] + 0.35);
+  tl.to(["#$IDl", "#$IDlab"], { opacity: 0.5, duration: 0.3, ease: "power2.out" }, t0 + M[1] + 0.35);
+  tdRisca("#$IDarco", t0 + M[2], 0.3);
+  tl.fromTo("#$IDponta", { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(2.5)" }, t0 + M[2] + 0.27);
+  tdTracejado("#$IDarco", t0 + M[2] + 0.31, fim, 13);
+  tdAntecipa("#$IDa", t0 + M[3]);
+  tdLetras("#$IDa", t0 + M[3] - 0.03, 0.3, 0.03);
+  tdLetras("#$IDb", t0 + M[3] + 0.09, 0.3, 0.035);
+  tdAchata("#$IDb", t0 + M[3] + 0.39, 0.6);
+  tdArco("#$IDspk", t0 + M[3] + 0.21, -120, -90, 0.3, -200);
+  tdGira("#$IDspk", t0 + M[3] + 0.55, fim, 90);
+  tdPisca("#$IDs1", t0 + M[3] + 0.27, fim, 0.3);
+  tdPisca("#$IDs2", t0 + M[3] + 0.37, fim, 0.26);
+  tdPisca("#$IDs3", t0 + M[3] + 0.47, fim, 0.34);
+  tdSai(["#$IDl", "#$IDlab", "#$IDx", "#$IDseta", "#$IDponta", "#$IDa", "#$IDb", "#$IDspk", "#$IDs1", "#$IDs2", "#$IDs3"], fim - 0.22);
+</script>

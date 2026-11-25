@@ -1,0 +1,3 @@
+/* Série Animada: o palco de tela cheia. Entra no style da cena com o inclui de sa-base.css. O desenho é todo em SVG. */
+.sa { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+.sa svg { display: block; position: absolute; left: 0; top: 0; }

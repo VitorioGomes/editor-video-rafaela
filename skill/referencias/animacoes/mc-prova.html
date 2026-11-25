@@ -1,0 +1,77 @@
+<!-- PROVA: o asterisco 3D flutuando sobre o pedestal e "a parte mais louca"; a lupa passando pela multidão, "quem pagaria"; o cartão "mais propensos a comprar: quem posta muito" e a fala real da Daniela (paga editor), "já gasta com edição"; "lembra": cliente de IA ("Claro!", bonzinho demais) contra cliente de verdade ("Hmm…").
+M: [louca, achou, pagaria, Quem#5, gasta, Só#3, cliente#2, bonzinho, cliente#3]. -->
+<style>
+.s4-ast { position: absolute; left: 395px; top: 520px; width: 290px; height: 290px; opacity: 0; }
+.s4-ped { position: absolute; left: 320px; top: 930px; width: 440px; height: 110px; opacity: 0; }
+.s4-g { left: 199px; top: 470px; width: 700px; }
+.s4-lupa { position: absolute; left: 0; top: 0; width: 300px; height: 360px; opacity: 0; }
+.s4-lupa i { position: absolute; left: 0; top: 0; width: 260px; height: 260px; border-radius: 50%; border: 12px solid #161616; background: rgba(255,255,255,.35); }
+.s4-lupa b { position: absolute; left: 215px; top: 225px; width: 34px; height: 130px; border-radius: 10px; background: #161616; transform: rotate(-45deg); transform-origin: top center; }
+.s4-pro { left: 130px; top: 390px; width: 820px; height: 340px; padding: 30px 36px; opacity: 0; }
+.s4-pro .av { display: flex; gap: 10px; margin-bottom: 18px; }
+.s4-pro small { position: absolute; right: 36px; top: 40px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 22px; letter-spacing: .08em; text-transform: uppercase; color: #4c4a45; }
+.s4-pro b { display: block; font-weight: 900; font-size: 84px; line-height: 1; letter-spacing: -.035em; }
+.s4-pro p { margin: 14px 0 0; font-size: 30px; color: #4c4a45; }
+.s4-dan { left: 170px; top: 790px; width: 700px; padding: 32px 38px; opacity: 0; }
+.s4-dan p { margin: 0; font-weight: 800; font-size: 44px; line-height: 1.18; }
+.s4-dan small { display: block; margin-top: 16px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 21px; letter-spacing: .06em; text-transform: uppercase; color: #4c4a45; }
+.s4-cl { top: 470px; width: 400px; height: 560px; display: flex; flex-direction: column; align-items: center; padding-top: 30px; opacity: 0; }
+.s4-cl h6 { margin: 0; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 24px; letter-spacing: .08em; text-transform: uppercase; }
+.s4-cl svg { width: 220px; height: 220px; margin: 40px 0 30px; }
+.s4-cl p { margin: 0; font-weight: 900; font-size: 64px; letter-spacing: -.02em; }
+</style>
+<div class="mc" id="$IDc">
+  <div class="s4-ped" id="$IDpd"><svg viewBox="0 0 440 110"><ellipse cx="220" cy="62" rx="214" ry="42" fill="#161616"/><ellipse cx="220" cy="46" rx="214" ry="42" fill="#fff" stroke="#161616" stroke-width="5"/></svg></div>
+  <div class="s4-ast" id="$IDa"></div>
+  <div class="mc-et preta" id="$IDlc" style="left:140px;top:1090px;font-size:66px">a parte mais louca</div>
+  <div class="mc-q s4-g" id="$IDg"></div>
+  <div class="s4-lupa" id="$IDlp"><i></i><b></b></div>
+  <div class="mc-et verde" id="$IDqp" style="left:130px;top:350px;font-size:66px">quem pagaria</div>
+  <div class="mc-cartao s4-pro" id="$IDpr"><div class="av"><div class="mc-ava laranja"></div><div class="mc-ava laranja"></div><div class="mc-ava laranja"></div></div>
+    <small>mais propensos a comprar</small><b>Quem posta muito</b><p>infoprodutores, criadores que já faturam e editores</p></div>
+  <div class="mc-cartao s4-dan" id="$IDdn"><p>“Pago R$ 800 de editor por mês. Se cortar metade, já valeu.”</p><small>Daniela · 31 · criadora</small></div>
+  <div class="mc-et verde" id="$IDge" style="left:290px;top:1090px;font-size:50px">já gasta com edição</div>
+  <div class="mc-et" id="$IDlb" style="left:630px;top:360px;font-size:56px">lembra</div>
+  <div class="mc-cartao s4-cl" id="$IDia" style="left:130px;background:#ee6839"><h6>cliente de IA</h6>
+    <svg viewBox="0 0 100 100"><circle cx="34" cy="38" r="7" fill="#161616"/><circle cx="66" cy="38" r="7" fill="#161616"/><path d="M24 60 Q50 86 76 60" fill="none" stroke="#161616" stroke-width="7" stroke-linecap="round"/></svg><p>“Claro!”</p></div>
+  <div class="mc-et preta" id="$IDbz" style="left:130px;top:1000px;font-size:58px;z-index:5">bonzinho demais</div>
+  <div class="mc-cartao s4-cl" id="$IDre" style="left:550px"><h6>cliente de verdade</h6>
+    <svg viewBox="0 0 100 100"><path d="M22 28 L44 36 M78 28 L56 36" stroke="#161616" stroke-width="6" stroke-linecap="round"/><circle cx="34" cy="44" r="6" fill="#161616"/><circle cx="66" cy="44" r="6" fill="#161616"/><path d="M30 72 L70 70" stroke="#161616" stroke-width="7" stroke-linecap="round"/></svg><p>“Hmm…”</p></div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui mc-base.js-->
+document.getElementById("$IDa").innerHTML = ASTER3D("$IDx");
+document.querySelectorAll("#$IDpr .mc-ava").forEach((a) => (a.innerHTML = BONECO));
+// "Mas a parte mais louca": o asterisco desce sobre o pedestal e fica flutuando
+tl.fromTo("#$IDpd", { opacity: 0, scaleX: .6 }, { opacity: 1, scaleX: 1, duration: .3, ease: "back.out(1.8)" }, t0);
+tl.fromTo("#$IDa", { opacity: 0, y: -260, rotation: -60 }, { opacity: 1, y: 0, rotation: 0, duration: .5, ease: "back.out(1.5)" }, t0 + .1);
+tl.to("#$IDa", { y: -16, duration: .5, ease: "sine.inOut", yoyo: true, repeat: Math.max(0, Math.floor((T(1) - t0 - .7) / .5) - 1) }, t0 + .6);
+tl.to("#$IDa", { rotation: 30, duration: T(1) - t0, ease: "none" }, t0 + .6);
+cola("#$IDlc", T(0) - .05, -3);
+// "achou quem pagaria": a lupa passa pela multidão e acha os que pagariam
+tl.to("#$IDpd, #$IDa, #$IDlc", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(1) - .18);
+const bon = grade("$IDg", 100, 10, 52, 18);
+bon.forEach((b) => (b.style.color = "#cfc9bb"));
+tl.set("#$IDg", { opacity: 1 }, T(1) - .02);
+tl.fromTo(bon, { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .18, ease: "back.out(2.4)", stagger: { each: .003, grid: [10, 10], from: "start" } }, T(1) - .02);
+tl.set("#$IDlp", { x: 150, y: 420, opacity: 0 }, T(1));
+tl.to("#$IDlp", { opacity: 1, duration: .15 }, T(1) + .1);
+tl.to("#$IDlp", { x: 620, duration: T(3) - T(1) - .4, ease: "power2.inOut" }, T(1) + .15);
+tl.to("#$IDlp", { y: 520, duration: T(3) - T(1) - .4, ease: "sine.inOut" }, T(1) + .15);
+const achados = [12, 14, 15, 23, 25, 26, 34, 36, 37, 45, 47];
+tl.to(achados.map((k) => bon[k]), { color: "#ee6839", duration: .12, stagger: .07 }, T(1) + .3);
+cola("#$IDqp", T(2), -3);
+// "Quem já posta muito e já gasta com edição": o grupo do teste e a fala real da Daniela
+tl.to("#$IDg, #$IDlp, #$IDqp", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(3) - .2);
+tl.fromTo("#$IDpr", { opacity: 0, y: 60, rotation: -2 }, { opacity: 1, y: 0, rotation: 0, duration: .38, ease: "back.out(1.6)" }, T(3) - .05);
+tl.fromTo("#$IDpr .mc-ava", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(2.6)", stagger: .07 }, T(3) + .15);
+tl.fromTo("#$IDdn", { opacity: 0, y: 60, rotation: 3 }, { opacity: 1, y: 0, rotation: -2, duration: .38, ease: "back.out(1.6)" }, T(4) - .1);
+cola("#$IDge", T(4) + .3, 3);
+// "Só lembra": cliente de IA contra cliente de verdade
+tl.to("#$IDpr, #$IDdn, #$IDge", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(5) - .18);
+cola("#$IDlb", T(5), 4);
+tl.fromTo("#$IDia", { opacity: 0, y: 70, rotation: -6 }, { opacity: 1, y: 0, rotation: -3, duration: .38, ease: "back.out(1.6)" }, T(6) - .05);
+cola("#$IDbz", T(7), -4);
+tl.fromTo("#$IDre", { opacity: 0, y: 70, rotation: 6 }, { opacity: 1, y: 0, rotation: 3, duration: .38, ease: "back.out(1.6)" }, T(8) - .05);
+</script>

@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estilos de edição</title>
+<style>
+@font-face { font-family: "Serif"; src: url("../sistema/fontes/InstrumentSerif-Regular.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Serif"; font-style: italic; src: url("../sistema/fontes/InstrumentSerif-Italic.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; font-weight: 400; src: url("../sistema/fontes/Inter-Regular.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("../sistema/fontes/Inter-Medium.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("../sistema/fontes/Inter-SemiBold.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("../sistema/fontes/Inter-Bold.woff2") format("woff2"); font-display: swap; }
+
+:root {
+  --fundo: #0d0d0f;
+  --cartao: #16161a;
+  --borda: #26262c;
+  --texto: #f1efe9;
+  --suave: #a3a19b;
+  --apagado: #6f6d68;
+  --acento: #ffcf5a;
+  --rosto: #8fd3ff;
+  --voz: #c6a6ff;
+  --placa: #ff9a6b;
+  --raio: 18px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--fundo); color: var(--texto);
+  font: 400 15px/1.5 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+  background:
+    radial-gradient(60vw 40vw at 85% -10%, rgba(255, 207, 90, .10), transparent 60%),
+    radial-gradient(50vw 40vw at 0% 10%, rgba(143, 160, 255, .08), transparent 60%);
+}
+.pagina { max-width: 1240px; margin: 0 auto; padding: 56px 24px 48px; }
+
+header { max-width: 720px; margin-bottom: 40px; }
+.marca { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--suave); margin: 0 0 14px; }
+h1 { font: 400 clamp(44px, 7vw, 76px)/1 "Serif", Georgia, serif; margin: 0 0 16px; letter-spacing: -.01em; }
+h1 em { color: var(--acento); }
+.chamada { font-size: 17px; color: var(--suave); margin: 0; }
+.chamada b { color: var(--texto); font-weight: 600; }
+
+.grupo { margin-top: 48px; }
+.grupo-topo { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; border-top: 1px solid var(--borda); padding-top: 22px; }
+.grupo h2 { font: 400 34px/1.1 "Serif", Georgia, serif; margin: 0; }
+.grupo-topo p { margin: 0; color: var(--suave); }
+
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+
+.cartao {
+  background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio);
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.tela {
+  position: relative; aspect-ratio: 9 / 16; width: 100%;
+  background: #000; overflow: hidden;
+}
+.tela video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.tela::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 30%;
+  background: linear-gradient(to top, rgba(22, 22, 26, .9), transparent); pointer-events: none;
+}
+
+.corpo { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+.cartao h3 { font: 400 30px/1 "Serif", Georgia, serif; margin: 0; }
+.frase { margin: 0; color: var(--suave); }
+
+.fotos { display: grid; grid-template-columns: repeat(4, minmax(0, 64px)); gap: 8px; }
+.fotos button {
+  width: 100%; aspect-ratio: 9 / 16; padding: 0; border: 1px solid var(--borda);
+  border-radius: 8px; overflow: hidden; background: #000; cursor: zoom-in;
+}
+.fotos button:hover, .fotos button:focus-visible { border-color: var(--acento); outline: none; }
+.fotos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+dl { margin: 0; display: grid; gap: 10px; }
+dl div { display: grid; gap: 2px; }
+dt { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--apagado); }
+dd { margin: 0; }
+.ponto { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+.p-rosto { background: var(--rosto); }
+.p-voz { background: var(--voz); }
+.p-placa { background: var(--placa); }
+
+/* Conversa: cartão largo, com o elenco e os cenários ao lado do vídeo */
+.largo { grid-column: 1 / -1; }
+@media (min-width: 900px) {
+  .largo { flex-direction: row; }
+  .largo .tela { flex: 0 0 auto; width: clamp(220px, 26%, 300px); align-self: flex-start; }
+  .largo .corpo { padding: 24px 28px; }
+  .largo .colunas { display: grid; grid-template-columns: minmax(220px, 1fr) 2fr; gap: 28px; align-items: start; }
+  .largo .elenco { border-top: 0; padding-top: 0; }
+  .largo .elenco .linha { grid-template-columns: repeat(7, 1fr); }
+  .largo .elenco .linha.cenarios { grid-template-columns: repeat(5, 1fr); }
+}
+.colunas { display: grid; gap: 14px; }
+.elenco { border-top: 1px solid var(--borda); padding-top: 14px; }
+.elenco h4 { margin: 0 0 10px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--apagado); }
+.elenco .linha { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+.elenco .linha.cenarios { grid-template-columns: repeat(3, 1fr); }
+.elenco figure { margin: 0; }
+.elenco figure button { display: block; width: 100%; padding: 0; border: 1px solid var(--borda); border-radius: 8px; overflow: hidden; background: #000; cursor: zoom-in; aspect-ratio: 1; }
+.elenco .cenarios figure button { aspect-ratio: 9 / 12; }
+.elenco figure button:hover, .elenco figure button:focus-visible { border-color: var(--acento); outline: none; }
+.elenco img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.elenco figcaption { font-size: 12px; color: var(--suave); margin-top: 4px; }
+.elenco .nota { margin: 0; font-size: 13px; color: var(--suave); }
+
+footer { margin-top: 56px; border-top: 1px solid var(--borda); padding-top: 28px; }
+footer p { font: 400 26px/1.25 "Serif", Georgia, serif; margin: 0; max-width: 720px; }
+footer p em { color: var(--acento); }
+
+/* caixa da imagem ampliada */
+.caixa { position: fixed; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(0, 0, 0, .88); cursor: zoom-out; }
+.caixa.aberta { display: flex; }
+.caixa img { max-width: 100%; max-height: 100%; border-radius: 12px; box-shadow: 0 20px 60px rgba(0, 0, 0, .6); }
+.caixa span { position: absolute; top: 16px; right: 20px; font-size: 13px; color: var(--suave); }
+
+@media (max-width: 720px) {
+  .pagina { padding: 36px 16px 36px; }
+  .grade { grid-template-columns: 1fr; gap: 16px; }
+  .tela { max-height: none; }
+  .grupo h2 { font-size: 30px; }
+  footer p { font-size: 22px; }
+}
+.tela { cursor: pointer; }
+.tela .ver {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px;
+  background: rgba(0, 0, 0, .62); border: 1px solid rgba(255, 255, 255, .22); color: #fff;
+  font: 600 13px/1 system-ui, sans-serif; white-space: nowrap; pointer-events: none;
+  transition: background .2s;
+}
+.tela .ver::before { content: ""; border-style: solid; border-width: 6px 0 6px 10px; border-color: transparent transparent transparent #fff; }
+.tela:hover .ver, .tela:focus-visible .ver { background: rgba(0, 0, 0, .85); }
+.tela:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.player { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(0, 0, 0, .92); }
+.player.aberta { display: flex; }
+.player video { max-height: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 14px; background: #000; box-shadow: 0 20px 60px rgba(0, 0, 0, .6); }
+.player button { position: absolute; top: 14px; right: 16px; background: rgba(255, 255, 255, .12); color: #fff; border: 0; border-radius: 999px; padding: 8px 14px; font: 600 14px/1 system-ui, sans-serif; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="pagina">
+
+<header>
+  <p class="marca">Editor de vídeo da Rafaela</p>
+  <h1>Escolha o seu <em>estilo</em></h1>
+  <p class="chamada">Olhe os exemplos e <b>diga o nome do estilo para a IA</b>. Cada um já vem com fontes, cores e efeitos prontos.</p>
+</header>
+
+<section class="grupo" aria-labelledby="g-rosto">
+  <div class="grupo-topo"><h2 id="g-rosto">Os estilos</h2><p>Você grava falando para a câmera, e a IA edita.</p></div>
+  <div class="grade">
+
+    <article class="cartao" data-estilo="yap">
+      <div class="tela" role="button" tabindex="0" aria-label="Ver o vídeo completo, com som">
+        <video src="estilos/videos/yap.webm" poster="estilos/imagens/yap-1.jpg" autoplay muted loop playsinline preload="metadata"></video><span class="ver">Ver o vídeo completo</span>
+      </div>
+      <div class="corpo">
+        <h3>Yap</h3>
+        <p class="frase">Um título serifado no alto resume cada ideia, com uma frase manuscrita de apoio. A legenda fica pequena, ao lado do rosto, e animações entram quando você mostra algo.</p>
+        <div class="fotos" data-fotos="yap-1 yap-2 yap-3 yap-4"></div>
+        <dl>
+          <div><dt>Para que tipo de vídeo</dt><dd>Dica, lista, opinião e venda de produto.</dd></div>
+          <div><dt>Você aparece?</dt><dd><span class="ponto p-rosto"></span>Sim, com o rosto e espaço livre acima da cabeça.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="cartao" data-estilo="titulos-desenhados">
+      <div class="tela" role="button" tabindex="0" aria-label="Ver o vídeo completo, com som">
+        <video src="estilos/videos/titulos-desenhados.webm" poster="estilos/imagens/titulos-desenhados-1.jpg" autoplay muted loop playsinline preload="metadata"></video><span class="ver">Ver o vídeo completo</span>
+      </div>
+      <div class="corpo">
+        <h3>Títulos Desenhados</h3>
+        <p class="frase">Um título desenhado para cada trecho, com logos e desenhos, no alto escurecido da tela. A legenda vem numa caixinha logo abaixo do rosto.</p>
+        <div class="fotos" data-fotos="titulos-desenhados-1 titulos-desenhados-2 titulos-desenhados-3 titulos-desenhados-4"></div>
+        <dl>
+          <div><dt>Para que tipo de vídeo</dt><dd>Opinião, dica de ferramenta e comparação ("não use isso, use aquilo").</dd></div>
+          <div><dt>Você aparece?</dt><dd><span class="ponto p-rosto"></span>Sim, com o rosto e parede livre acima da cabeça.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="cartao" data-estilo="metade">
+      <div class="tela" role="button" tabindex="0" aria-label="Ver o vídeo completo, com som">
+        <video src="estilos/videos/metade.webm" poster="estilos/imagens/metade-1.jpg" autoplay muted loop playsinline preload="metadata"></video><span class="ver">Ver o vídeo completo</span>
+      </div>
+      <div class="corpo">
+        <h3>Metade</h3>
+        <p class="frase">Um painel ocupa a metade de cima e mostra o que você fala, e a sua cabeça passa por cima da borda dele.</p>
+        <div class="fotos" data-fotos="metade-1 metade-2 metade-3 metade-4"></div>
+        <dl>
+          <div><dt>Para que tipo de vídeo</dt><dd>Explicar uma ferramenta, um processo ou um produto.</dd></div>
+          <div><dt>Você aparece?</dt><dd><span class="ponto p-rosto"></span>Sim, com o rosto e parede livre acima da cabeça.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<footer>
+  <p>Não achou o seu? <em>Mande um vídeo com a edição que você quer</em> e a IA faz a engenharia reversa do estilo.</p>
+</footer>
+
+</div>
+
+<div class="player" role="dialog" aria-modal="true" aria-label="Vídeo completo"><button type="button">Fechar ✕</button><video controls playsinline preload="none"></video></div>
+
+<div class="caixa" role="dialog" aria-modal="true" aria-label="Imagem ampliada"><span>Esc para fechar</span><img alt=""></div>
+
+<script>
+(function () {
+  // miniaturas de cada estilo
+  document.querySelectorAll(".fotos[data-fotos]").forEach(function (lista) {
+    lista.dataset.fotos.split(" ").forEach(function (nome) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.dataset.img = nome;
+      b.setAttribute("aria-label", "Ampliar imagem");
+      var i = document.createElement("img");
+      i.src = "estilos/imagens/" + nome + ".jpg";
+      i.alt = "";
+      i.loading = "lazy";
+      b.appendChild(i);
+      lista.appendChild(b);
+    });
+  });
+
+  // caixa da imagem ampliada
+  var caixa = document.querySelector(".caixa"), grande = caixa.querySelector("img"), antes = null;
+  function abrir(nome, botao) {
+    antes = botao;
+    grande.src = "estilos/imagens/" + nome + ".jpg";
+    caixa.classList.add("aberta");
+  }
+  function fechar() {
+    caixa.classList.remove("aberta");
+    grande.removeAttribute("src");
+    if (antes) antes.focus();
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-img]");
+    if (b) abrir(b.dataset.img, b);
+    else if (caixa.classList.contains("aberta") && caixa.contains(e.target)) fechar();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && caixa.classList.contains("aberta")) fechar();
+  });
+
+  // clicar no vídeo abre o vídeo completo, com som
+  var player = document.querySelector(".player"), cheio = player.querySelector("video"), origem = null;
+  function abrirVideo(tela) {
+    var curto = tela.querySelector("video");
+    if (!curto) return;
+    origem = tela;
+    var nome = curto.getAttribute("src").split("/").pop().replace(".webm", "");
+    document.querySelectorAll(".tela video").forEach(function (v) { v.pause(); });
+    cheio.src = "estilos/videos/completos/" + nome + ".mp4";
+    player.classList.add("aberta");
+    var p = cheio.play(); if (p && p.catch) p.catch(function () {});
+  }
+  function fecharVideo() {
+    cheio.pause(); cheio.removeAttribute("src"); cheio.load();
+    player.classList.remove("aberta");
+    // volta a rodar os trechos que estão na tela
+    document.querySelectorAll(".tela video").forEach(function (v) {
+      var r = v.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    });
+    if (origem) origem.focus({ preventScroll: true });
+  }
+  document.querySelectorAll(".tela").forEach(function (t) {
+    t.addEventListener("click", function () { abrirVideo(t); });
+    t.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrirVideo(t); } });
+  });
+  player.querySelector("button").addEventListener("click", fecharVideo);
+  player.addEventListener("click", function (e) { if (e.target === player) fecharVideo(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && player.classList.contains("aberta")) fecharVideo(); });
+
+  // vídeo fora da tela fica parado, para não pesar
+  var videos = document.querySelectorAll(".tela video");
+  if ("IntersectionObserver" in window) {
+    var olho = new IntersectionObserver(function (itens) {
+      itens.forEach(function (it) {
+        var v = it.target;
+        if (it.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else v.pause();
+      });
+    }, { threshold: 0.15 });
+    videos.forEach(function (v) { olho.observe(v); });
+  }
+})();
+</script>
+</body>
+</html>

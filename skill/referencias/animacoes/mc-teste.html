@@ -1,0 +1,66 @@
+<!-- TESTE: "nosso teste"; a caixa 3D do curso cai e bate, a etiqueta "editor de vídeo com IA" cola nela e a etiqueta de preço "R$ 47" balança; "21 de 100", com 21 bonecos verdes na grade; a fala real da Priscila (criadora de humor) num balão preto, com o retrato e o carimbo PASSA.
+M: [curso, edição, quarenta, só#2, vinte, Uma, meu#2, tira]. -->
+<style>
+.s3-cx { position: absolute; left: 290px; top: 600px; width: 500px; height: 450px; opacity: 0; }
+.s3-cx svg { width: 100%; height: 100%; overflow: visible; }
+.s3-tag { position: absolute; left: 560px; top: 420px; padding: 18px 30px 16px 44px; background: #ee6839; border: 4px solid #161616; box-shadow: 8px 8px 0 #161616; opacity: 0; transform-origin: 20px 20px; }
+.s3-tag b { display: block; font-weight: 900; font-size: 96px; line-height: .95; letter-spacing: -.04em; color: #161616; }
+.s3-tag small { display: block; margin-top: 6px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 22px; letter-spacing: .08em; text-transform: uppercase; }
+.s3-tag i { position: absolute; left: 12px; top: 12px; width: 20px; height: 20px; border-radius: 50%; background: #fdfcfa; border: 3px solid #161616; }
+.s3-21 { position: absolute; left: 130px; top: 350px; display: flex; align-items: flex-end; gap: 18px; opacity: 0; }
+.s3-21 b { display: inline-block; padding: 0 22px; background: #2fa850; color: #fff; font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -.04em; border: 4px solid #161616; box-shadow: 8px 8px 0 #161616; }
+.s3-21 span { font-weight: 900; font-size: 64px; letter-spacing: -.02em; padding-bottom: 14px; }
+.s3-g { left: 199px; top: 600px; width: 700px; }
+.s3-ret { left: 140px; top: 760px; width: 380px; height: 440px; background: #dcd6c8; overflow: hidden; opacity: 0; }
+.s3-ret svg { position: absolute; left: 40px; bottom: -14px; width: 300px; height: 370px; color: #161616; }
+.s3-nome { position: absolute; left: 140px; top: 1222px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; color: #4c4a45; opacity: 0; }
+</style>
+<div class="mc" id="$IDc">
+  <div class="mc-pil" id="$IDnt" style="left:130px;top:340px">nosso teste</div>
+  <div class="s3-cx" id="$IDcx"></div>
+  <div class="mc-et branca" id="$IDel" style="left:250px;top:900px;font-size:52px">editor de vídeo com IA</div>
+  <div class="s3-tag" id="$IDtg"><i></i><b>R$ 47</b><small>pagamento único</small></div>
+  <div class="s3-21" id="$ID21"><b>21</b><span>de 100</span></div>
+  <div class="mc-q s3-g" id="$IDg"></div>
+  <div class="mc-balao" id="$IDba" style="left:130px;top:390px;width:820px"><span id="$IDfa">“Meu vídeo é cru de propósito. Edição demais tira a graça.”</span></div>
+  <div class="mc-cartao s3-ret" id="$IDrt"></div>
+  <div class="mc-carimbo passa" id="$IDps" style="left:420px;top:728px;font-size:52px">passa</div>
+  <div class="s3-nome" id="$IDnm">Priscila · 29 · criadora de humor</div>
+  <div class="mc-et" id="$ID300" style="left:500px;top:930px;font-size:56px">300 mil<br>seguidores</div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui mc-base.js-->
+// a caixa de papelão em 3D: tampa clara, frente e lado mais escuros, contorno de tinta
+document.getElementById("$IDcx").innerHTML = `<svg viewBox="0 0 400 360"><ellipse cx="200" cy="338" rx="170" ry="22" fill="rgba(60,40,20,.2)"/>
+  <g stroke="#3d2610" stroke-width="3" stroke-linejoin="round">
+  <polygon points="40,110 200,48 360,110 200,172" fill="#dcaa72"/><polygon points="40,110 200,172 200,330 40,268" fill="#c68c50"/><polygon points="200,172 360,110 360,268 200,330" fill="#a46c37"/>
+  <polyline points="40,110 40,130 200,192 360,130 360,110" fill="none" stroke-width="2.5" opacity=".7"/><line x1="200" y1="48" x2="200" y2="172" stroke-width="2.5" opacity=".5"/></g></svg>`;
+document.getElementById("$IDrt").innerHTML = BONECO;
+// "nosso teste" e a caixa do curso caindo
+tl.fromTo("#$IDnt", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: .25, ease: "power3.out" }, t0 + .05);
+tl.fromTo("#$IDcx", { opacity: 0, y: -520, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: .42, ease: "power3.in" }, T(0) - .45);
+tl.to("#$IDcx", { keyframes: [{ scaleY: .88, scaleX: 1.06, duration: .07 }, { scaleY: 1.03, scaleX: .98, duration: .1 }, { scaleY: 1, scaleX: 1, duration: .14, ease: "sine.out" }], transformOrigin: "50% 100%" }, T(0) - .03);
+cola("#$IDel", T(1), -3);
+// a etiqueta de preço cai presa pelo furo e balança até parar
+tl.fromTo("#$IDtg", { opacity: 0, y: -60, rotation: 30 }, { opacity: 1, y: 0, rotation: 6, duration: .3, ease: "power2.out" }, T(2) - .1);
+tl.to("#$IDtg", { keyframes: [{ rotation: -4, duration: .22, ease: "sine.inOut" }, { rotation: 9, duration: .22, ease: "sine.inOut" }, { rotation: 6, duration: .3, ease: "sine.out" }] }, T(2) + .2);
+// "só vinte e um compraram"
+tl.to("#$IDnt, #$IDcx, #$IDel, #$IDtg", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(3) - .18);
+const bon = grade("$IDg", 100, 10, 52, 18);
+bon.forEach((b) => (b.style.color = "#cfc9bb"));
+tl.fromTo("#$ID21", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(1.8)" }, T(3));
+tl.set("#$IDg", { opacity: 1 }, T(3));
+tl.fromTo(bon, { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .2, ease: "back.out(2.4)", stagger: { each: .004, grid: [10, 10], from: "start" } }, T(3));
+const v = [2, 7, 11, 16, 23, 28, 30, 35, 44, 49, 51, 58, 62, 67, 73, 76, 81, 85, 90, 94, 99];
+tl.to(v.map((k) => bon[k]), { color: "#2fa850", duration: .15, stagger: .03 }, T(4));
+impacto("#$ID21 b", T(4), { de: 1.5 });
+// "Uma disse": a fala real, num balão, com o retrato e o carimbo
+tl.to("#$ID21, #$IDg", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(5) - .18);
+tl.fromTo("#$IDrt", { opacity: 0, y: 60, rotation: -4 }, { opacity: 1, y: 0, rotation: -2, duration: .35, ease: "back.out(1.6)" }, T(5));
+tl.fromTo("#$IDnm", { opacity: 0 }, { opacity: 1, duration: .2 }, T(5) + .2);
+carimbo("#$IDps", T(5) + .3, 6);
+tl.fromTo("#$IDba", { opacity: 0, y: 30, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .3, ease: "back.out(1.8)" }, T(6) - .2);
+digita("$IDfa", T(6), T(7) - T(6) + .3);
+cola("#$ID300", T(7), 4);
+</script>

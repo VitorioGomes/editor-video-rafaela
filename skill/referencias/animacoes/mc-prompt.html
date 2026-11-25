@@ -1,0 +1,130 @@
+<!-- PROMPT: o cartão do Claude com o pedido digitado e "1 prompt"; o boneco riscado "não é 1"; a grade dos 100 clientes criados; a ficha de um cliente real do teste (Wagner, 77 de 100) preenchendo orçamento, hábito e "diz não se", com o carimbo PASSA; a roda de clientes recebendo a ideia ("apresentado N/100"); quem comprou, quem recusou e por quê (contagens reais).
+M: [Funciona, prompt, não, cliente, cem, Cada, orçamento, hábitos, motivo, não#2, Depois, apresenta, comprou, recusou, por]. -->
+<style>
+.s2-comof { left: 90px; top: 360px; }
+.s2-cla { left: 130px; top: 470px; width: 820px; height: 440px; padding: 36px 44px; opacity: 0; }
+.s2-cla h5 { margin: 0 0 26px; display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 34px; }
+.s2-cla h5 svg { width: 38px; height: 38px; }
+.s2-cla p { margin: 0; font-weight: 800; font-size: 48px; line-height: 1.18; letter-spacing: -.01em; }
+.s2-env { position: absolute; right: 36px; bottom: 32px; width: 70px; height: 70px; border-radius: 50%; border: 4px solid #161616; background: #ee6839; display: flex; align-items: center; justify-content: center; }
+.s2-env svg { width: 34px; height: 34px; }
+.s2-um { left: 300px; top: 420px; width: 480px; height: 580px; background: #fff; border: 4px solid #161616; box-shadow: 12px 12px 0 #161616; overflow: hidden; }
+.s2-um svg.b { position: absolute; left: 70px; bottom: -10px; width: 340px; height: 420px; color: #161616; }
+.s2-um i { position: absolute; left: -40px; top: 270px; width: 560px; height: 12px; background: #e2402a; transform: rotate(-38deg); transform-origin: center; }
+.s2-g100 { left: 199px; top: 500px; width: 700px; }
+.s2-cab { position: absolute; left: 130px; top: 350px; display: flex; align-items: center; gap: 18px; opacity: 0; }
+.s2-cab b { display: inline-block; padding: 0 18px; background: #ee6839; font-weight: 900; font-size: 96px; line-height: 1.02; border: 4px solid #161616; box-shadow: 7px 7px 0 #161616; }
+.s2-cab span { font-family: var(--f-mono), monospace; font-weight: 600; font-size: 30px; letter-spacing: .08em; text-transform: uppercase; }
+.s2-fic { left: 130px; top: 400px; width: 820px; height: 760px; opacity: 0; overflow: hidden; }
+.s2-fic-cab { height: 200px; background: #dcd6c8; border-bottom: 4px solid #161616; display: flex; align-items: center; gap: 26px; padding: 0 34px; }
+.s2-fic-cab .mc-ava { width: 120px; height: 120px; } .s2-fic-cab .mc-ava svg { width: 86px; height: 86px; }
+.s2-fic-cab small { display: block; font-size: 24px; color: #4c4a45; margin-bottom: 4px; }
+.s2-fic-cab b { display: block; font-weight: 900; font-size: 60px; letter-spacing: -.03em; line-height: 1; }
+.s2-fic-cab em { display: block; font-style: normal; font-size: 26px; color: #4c4a45; margin-top: 8px; }
+.s2-campo { margin: 26px 34px 0; height: 140px; border: 3px dashed #b9b4a6; padding: 16px 22px; }
+.s2-campo small { display: block; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 20px; letter-spacing: .08em; text-transform: uppercase; color: #8a867c; }
+.s2-campo b { display: block; margin-top: 10px; font-weight: 900; font-size: 48px; letter-spacing: -.02em; opacity: 0; }
+.s2-roda { left: 0; top: 0; width: 1080px; height: 1920px; }
+.s2-meio { position: absolute; left: 440px; top: 660px; width: 200px; height: 200px; background: #ee6839; border: 4px solid #161616; box-shadow: 8px 8px 0 #161616; display: flex; align-items: center; justify-content: center; }
+.s2-meio svg { width: 120px; height: 120px; }
+.s2-lin { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.s2-lin line { stroke: #ee6839; stroke-width: 4; stroke-dasharray: 10 9; }
+.s2-p { position: absolute; width: 80px; height: 80px; margin: -40px 0 0 -40px; }
+.s2-cont { position: absolute; left: 130px; top: 1150px; display: flex; align-items: center; gap: 14px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 26px; letter-spacing: .08em; text-transform: uppercase; color: #4c4a45; }
+.s2-cont b { padding: 4px 16px; background: #161616; color: #fff; font-size: 40px; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.s2-cx { top: 380px; width: 400px; height: 450px; padding: 22px 26px; opacity: 0; }
+.s2-cx h6 { margin: 0 0 18px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 24px; letter-spacing: .08em; text-transform: uppercase; color: #fff; }
+.s2-cx .g { display: grid; justify-content: start; }
+.s2-cx .n { position: absolute; right: 22px; bottom: 14px; font-weight: 900; font-size: 64px; color: #fff; }
+.s2-pq { left: 130px; top: 880px; width: 820px; height: 360px; padding: 24px 30px; opacity: 0; }
+.s2-pq h6 { margin: 0 0 4px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 24px; letter-spacing: .08em; text-transform: uppercase; }
+</style>
+<div class="mc" id="$IDc">
+  <div class="mc-et" id="$IDcf" style="left:130px;top:360px">como funciona</div>
+  <div class="mc-cartao s2-cla" id="$IDcl"><h5 id="$IDch">Claude</h5><p id="$IDtx">Testa a minha ideia em 100 clientes: um curso de edição de vídeo com IA, de R$ 47.</p>
+    <div class="s2-env"><svg viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div></div>
+  <div class="mc-et verde" id="$IDp1" style="left:600px;top:410px">1 prompt</div>
+  <div class="mc-q s2-um" id="$IDum"><span id="$IDumb"></span><i id="$IDrisco"></i></div>
+  <div class="mc-et vermelha" id="$IDn1" style="left:500px;top:930px;font-size:80px">não é 1</div>
+  <div class="s2-cab" id="$IDcab"><b id="$IDcn">100</b><span>clientes criados</span></div>
+  <div class="mc-q s2-g100" id="$IDg"></div>
+  <div class="mc-cartao s2-fic" id="$IDfc">
+    <div class="s2-fic-cab"><div class="mc-ava laranja" id="$IDfa"></div><div><small class="mc-mono">cliente 77 de 100</small><b>Wagner Lima</b><em>45 · dono de oficina mecânica</em></div></div>
+    <div class="s2-campo"><small>orçamento</small><b id="$IDf0">R$ 60 por mês</b></div>
+    <div class="s2-campo"><small>hábito</small><b id="$IDf1">Posta um vídeo por mês</b></div>
+    <div class="s2-campo" id="$IDf2c"><small>diz não se</small><b id="$IDf2">Gravar pouco vídeo</b></div>
+  </div>
+  <div class="mc-carimbo passa" id="$IDps" style="left:700px;top:370px;font-size:60px">passa</div>
+  <div class="mc-q s2-roda" id="$IDrd">
+    <svg class="s2-lin" id="$IDln"></svg>
+    <div class="s2-meio" id="$IDmeio"></div>
+    <div class="s2-cont"><span>apresentado</span><b id="$IDcnt">0/100</b></div>
+  </div>
+  <div class="mc-cartao s2-cx" id="$IDcp" style="left:130px;background:#2fa850"><h6>quem comprou</h6><div class="g" id="$IDgc"></div><span class="n">21</span></div>
+  <div class="mc-cartao s2-cx" id="$IDrc" style="left:550px;background:#e2402a"><h6>quem recusou</h6><div class="g" id="$IDgr"></div><span class="n">79</span></div>
+  <div class="mc-cartao s2-pq" id="$IDpq"><h6>e por quê</h6>
+    <div class="mc-barra"><span style="background:#ee6839;color:#161616;width:520px">prefere terceirizar</span><b>14</b></div>
+    <div class="mc-barra"><span style="background:#dcd6c8;width:410px">já usa outro editor</span><b>11</b></div>
+    <div class="mc-barra"><span style="background:#dcd6c8;width:240px">grava pouco</span><b>6</b></div>
+  </div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui mc-base.js-->
+document.getElementById("$IDch").insertAdjacentHTML("afterbegin", ASTER());
+document.getElementById("$IDumb").innerHTML = BONECO.replace("<svg ", '<svg class="b" ');
+document.getElementById("$IDfa").innerHTML = BONECO;
+document.getElementById("$IDmeio").innerHTML = ASTER("#161616");
+// 1. "Funciona assim": a etiqueta e o cartão do Claude, com o pedido sendo digitado
+cola("#$IDcf", t0 + .05, -3);
+tl.fromTo("#$IDcl", { opacity: 0, y: 60, rotation: 2 }, { opacity: 1, y: 0, rotation: 0, duration: .4, ease: "back.out(1.5)" }, t0 + .15);
+digita("$IDtx", t0 + .4, T(1) - t0 - .2);
+cola("#$IDp1", T(1), 4);
+tl.to("#$IDcf, #$IDcl, #$IDp1", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(2) - .2);
+// 2. "não cria um cliente": o boneco sozinho, riscado
+quadro("#$IDum", T(2) - .05, T(4) - .25);
+tl.fromTo("#$IDrisco", { scaleX: 0 }, { scaleX: 1, duration: .25, ease: "power3.out" }, T(3) - .1);
+cola("#$IDn1", T(3), -4);
+tl.to("#$IDn1", { opacity: 0, duration: .16 }, T(4) - .25);
+// 3. "Ele cria cem": a grade dos 100 entra em onda
+const cem = grade("$IDg", 100, 10, 52, 18);
+tl.set("#$IDg", { opacity: 1 }, T(4) - .3);
+tl.fromTo(cem, { opacity: 0, scale: .3, y: -20 }, { opacity: 1, scale: 1, y: 0, duration: .25, ease: "back.out(2.5)", stagger: { each: .006, grid: [10, 10], from: "start" } }, T(4) - .3);
+tl.fromTo("#$IDcab", { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(1.8)" }, T(4) - .1);
+tl.to("#$IDg, #$IDcab", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(5) - .18);
+// 4. "Cada um": a ficha real, preenchendo no tempo de cada palavra
+tl.fromTo("#$IDfc", { opacity: 0, y: 80, rotation: -2 }, { opacity: 1, y: 0, rotation: 0, duration: .4, ease: "back.out(1.5)" }, T(5) - .05);
+[6, 7, 8].forEach((m, k) => tl.fromTo("#$IDf" + k, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: .25, ease: "power3.out" }, T(m)));
+tl.to("#$IDf2c", { backgroundColor: "#e2402a", borderColor: "#161616", borderStyle: "solid", duration: .2 }, T(8));
+tl.to("#$IDf2c small, #$IDf2", { color: "#ffffff", duration: .2 }, T(8));
+carimbo("#$IDps", T(9) - .05, 8);
+tl.to("#$IDfc, #$IDps", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(10) - .16);
+// 5. "Depois, o Claude apresenta a sua ideia pra cada um": a roda, com a ideia indo de um em um
+const rd = document.getElementById("$IDrd"), ln = document.getElementById("$IDln"), N = 16, cx = 540, cy = 760, R = 340;
+const pessoas = [];
+for (let k = 0; k < N; k++) {
+  const a = -Math.PI / 2 + k * 2 * Math.PI / N, x = cx + R * Math.cos(a), y = cy + R * Math.sin(a) * .95;
+  ln.insertAdjacentHTML("beforeend", `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" opacity="0"/>`);
+  const p = document.createElement("div"); p.className = "mc-ava s2-p"; p.style.left = x + "px"; p.style.top = y + "px"; p.innerHTML = BONECO; rd.appendChild(p); pessoas.push(p);
+}
+const linhas = Array.from(ln.children);
+tl.set("#$IDrd", { opacity: 1 }, T(10));
+impacto("#$IDmeio", T(10), { de: .4 });
+tl.fromTo(pessoas, { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2.4)", stagger: .025 }, T(10) + .1);
+const passo = (T(12) - T(11) - .3) / N;
+pessoas.forEach((p, k) => {
+  tl.set(linhas[k], { opacity: 1 }, T(11) + k * passo);
+  tl.to(p, { backgroundColor: "#ee6839", duration: .12 }, T(11) + k * passo + .05);
+});
+conta("$IDcnt", T(11), 0, 100, T(12) - T(11) - .3, 0, "", "/100");
+tl.to("#$IDrd", { opacity: 0, duration: .16, ease: "power2.in" }, T(12) - .18);
+// 6. quem comprou, quem recusou (as contagens do teste) e por quê
+const verdes = grade("$IDgc", 21, 7, 38, 12), vermelhos = grade("$IDgr", 79, 10, 26, 8);
+verdes.concat(vermelhos).forEach((b) => (b.style.color = "#ffffff"));
+tl.fromTo("#$IDcp", { opacity: 0, y: 50, rotation: -3 }, { opacity: 1, y: 0, rotation: -1, duration: .35, ease: "back.out(1.6)" }, T(12));
+tl.fromTo(verdes, { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .2, ease: "back.out(2.5)", stagger: .012 }, T(12) + .15);
+tl.fromTo("#$IDrc", { opacity: 0, y: 50, rotation: 3 }, { opacity: 1, y: 0, rotation: 1, duration: .35, ease: "back.out(1.6)" }, T(13));
+tl.fromTo(vermelhos, { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .18, ease: "back.out(2.5)", stagger: .005 }, T(13) + .15);
+tl.fromTo("#$IDpq", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(1.5)" }, T(14) - .1);
+tl.fromTo("#$IDpq .mc-barra span", { scaleX: 0 }, { scaleX: 1, duration: .45, ease: "power3.out", stagger: .1 }, T(14) + .05);
+</script>

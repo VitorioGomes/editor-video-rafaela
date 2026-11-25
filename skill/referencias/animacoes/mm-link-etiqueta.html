@@ -1,0 +1,43 @@
+<!-- Na frente, embaixo: a etiqueta do produto pendurada num fio, que cai balançando como pêndulo e assenta; embaixo, três setas verde-limão
+     acendendo em cascata para baixo, na direção do botão do anúncio. $R0 nome, $R1 linha de baixo. M: [acesse, link]. -->
+<style>
+<!--#inclui mm-base.css-->
+.le-caixa { position: relative; width: 860px; height: 430px; font-family: var(--f-forte), sans-serif; font-weight: 700; color: #121212; }
+.le-pend { position: absolute; left: 0; top: 0; width: 860px; height: 260px; opacity: 0; }
+.le-fio { position: absolute; left: 428px; top: 8px; width: 4px; height: 64px; background: #121212; border-radius: 2px; }
+.le-pino { position: absolute; left: 418px; top: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--c-metade); border: 3px solid #121212; z-index: 2; }
+.le-tag { position: absolute; left: 110px; top: 66px; width: 640px; height: 170px; background: #fff; border: 3px solid #121212; border-radius: 26px; box-shadow: 9px 9px 0 var(--c-metade), 9px 9px 0 3px #121212; display: flex; align-items: center; gap: 22px; padding: 0 30px; box-sizing: border-box; }
+.le-furo { position: absolute; left: 306px; top: -16px; width: 28px; height: 28px; border-radius: 50%; background: #f4f2ee; border: 3px solid #121212; }
+.le-ic { width: 92px; height: 92px; border-radius: 50%; background: var(--c-metade); border: 3px solid #121212; display: flex; align-items: center; justify-content: center; flex: none; }
+.le-tag b { display: block; font-size: 42px; letter-spacing: -.03em; white-space: nowrap; }
+.le-tag small { display: block; font-size: 27px; color: #6b675f; font-weight: 600; margin-top: 4px; }
+.le-setas { position: absolute; left: 380px; top: 268px; width: 100px; height: 160px; }
+.le-setas svg { position: absolute; left: 0; width: 100px; height: 56px; opacity: .15; }
+</style>
+<div class="le-caixa">
+  <div class="le-pend" id="$IDp">
+    <div class="le-fio"></div><div class="le-pino"></div>
+    <div class="le-tag"><div class="le-furo"></div>
+      <div class="le-ic"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2.6" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg></div>
+      <div><b>$R0</b><small>$R1</small></div>
+    </div>
+  </div>
+  <div class="le-setas">
+    <svg id="$IDv0" style="top:0" viewBox="0 0 100 56"><path d="M12 10l38 34 38-34" fill="none" stroke="var(--c-metade)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg id="$IDv1" style="top:50px" viewBox="0 0 100 56"><path d="M12 10l38 34 38-34" fill="none" stroke="var(--c-metade)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg id="$IDv2" style="top:100px" viewBox="0 0 100 56"><path d="M12 10l38 34 38-34" fill="none" stroke="var(--c-metade)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+<script>
+const a = t0 + Math.max(.05, M[0] - .15), b = t0 + Math.max(.5, M[1] - .05);
+// a etiqueta cai pendurada e balança até assentar; depois segue num balanço leve
+tl.set("#$IDp", { opacity: 1, transformOrigin: "430px 12px" }, a);
+tl.fromTo("#$IDp", { y: -260, rotation: 16 }, { y: 0, rotation: -11, duration: .42, ease: "power3.out" }, a);
+tl.to("#$IDp", { rotation: 7, duration: .32, ease: "sine.inOut" }, a + .42);
+tl.to("#$IDp", { rotation: -4, duration: .3, ease: "sine.inOut" }, a + .74);
+tl.to("#$IDp", { rotation: 2, duration: .28, ease: "sine.inOut" }, a + 1.04);
+tl.to("#$IDp", { rotation: -1.2, duration: .9, yoyo: true, repeat: Math.max(1, Math.floor((t0 + D - a - 1.32) / .9)), ease: "sine.inOut" }, a + 1.32);
+// no "link": as setas acendem em cascata, sem parar
+const n = Math.max(1, Math.floor((t0 + D - b) / .75));
+[0, 1, 2].forEach((k) => tl.fromTo("#$IDv" + k, { opacity: .15, y: 0 }, { opacity: 1, y: 8, duration: .25, yoyo: true, repeat: 2 * n - 1, repeatDelay: .25, ease: "power1.inOut" }, b + .12 * k));
+</script>

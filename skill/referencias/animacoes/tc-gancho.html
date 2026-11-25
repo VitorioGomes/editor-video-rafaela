@@ -1,0 +1,54 @@
+<!-- Gancho: o cartão "toda a base do Claude" conta de 99 a 60 segundos e sobe; embaixo, "com este vídeo: 1 min" contra "sozinho: 1, 2, 3 semanas de tentativa e erro", e o mascote. O cartão fica no fim: a cena seguinte o transforma no cronômetro. M: [60, Um, minuto, poupar, semanas, tentativa, erro]. -->
+<style>
+.g1-60 { left: 240px; top: 300px; width: 600px; height: 400px; text-align: center; padding-top: 44px; opacity: 0; transform-origin: 50% 50%; }
+.g1-60 .tc-rot { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 28px; }
+.g1-60 .tc-rot svg { width: 30px; height: 30px; }
+.g1-60 b { display: block; margin-top: 6px; font-weight: 800; font-size: 210px; line-height: 1; letter-spacing: -.04em; color: var(--tc-laranja); font-variant-numeric: tabular-nums; }
+.g1-60 .g1-seg { margin-top: 12px; font-size: 34px; }
+.g1-c { top: 620px; width: 390px; height: 410px; display: flex; flex-direction: column; align-items: center; padding-top: 48px; opacity: 0; }
+.g1-c .tc-rot { font-size: 30px; }
+.g1-c b { margin-top: 52px; height: 130px; font-weight: 800; font-size: 120px; line-height: 130px; letter-spacing: -.04em; color: var(--tc-laranja); }
+.g1-c .tc-chip { margin-top: 44px; }
+.g1-sem { margin-top: 64px; height: 100px; overflow: hidden; position: relative; width: 360px; text-align: center; }
+.g1-sem span { position: absolute; left: 0; right: 0; top: 0; font-weight: 800; font-size: 62px; line-height: 100px; letter-spacing: -.03em; color: #8f8c85; white-space: nowrap; }
+.g1-vs { position: absolute; left: 508px; top: 793px; width: 64px; height: 64px; border-radius: 50%; background: #dcdad4; color: #fff; font-weight: 800; font-size: 24px; display: flex; align-items: center; justify-content: center; opacity: 0; }
+.g1-m { left: 840px; top: 1060px; opacity: 0; }
+</style>
+<div class="tc" id="$IDc">
+  <div class="tc-cartao g1-60" id="$IDk"><div class="tc-rot" id="$IDa"></div><b id="$IDn">99</b><div class="tc-rot g1-seg">segundos</div></div>
+  <div class="tc-cartao g1-c" id="$IDe" style="left:95px"><div class="tc-rot">com este vídeo</div><b>1 min</b><span class="tc-chip verde">✓ passo a passo</span></div>
+  <div class="g1-vs" id="$IDv">vs</div>
+  <div class="tc-cartao g1-c" id="$IDd" style="left:595px"><div class="tc-rot">sozinho</div>
+    <div class="g1-sem"><span id="$IDs1" data-layout-allow-occlusion>1 semana</span><span id="$IDs2" data-layout-allow-occlusion>2 semanas</span><span id="$IDs3" data-layout-allow-occlusion>3 semanas</span></div>
+    <span class="tc-chip cinza" style="margin-top:34px">tentativa e erro</span></div>
+  <div class="tc-masc g1-m" id="$IDm"></div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui tc-base.js-->
+document.getElementById("$IDa").innerHTML = ASTER + "toda a base do Claude";
+document.getElementById("$IDm").innerHTML = MASC;
+// o cartão cai na tela e conta de 99 até o 60 da fala
+impacto("#$IDk", t0 + .02, { de: 1.25 });
+const o = { v: 99 }, n = document.getElementById("$IDn");
+tl.to(o, { v: 60, duration: T(0) - t0 - .2, ease: "power2.inOut", onUpdate: () => { n.textContent = Math.round(o.v); } }, t0 + .2);
+tl.fromTo("#$IDn", { scale: 1 }, { keyframes: [{ scale: 1.12, duration: .1, ease: "power2.out" }, { scale: 1, duration: .3, ease: "back.out(2.4)" }], immediateRender: false }, T(0));
+// "um minuto": o cartão sobe e encolhe, recuando antes de ir, e a comparação chega embaixo
+vai("#$IDk", T(1) - .1, { y: -164, scale: .5 }, .6, false);
+tl.fromTo("#$IDe", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, T(2) - .05);
+tl.fromTo("#$IDd", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, T(2) + .07);
+tl.fromTo("#$IDv", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.2)" }, T(2) + .25);
+tl.fromTo("#$IDe > *, #$IDd > *", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .28, ease: "power3.out", stagger: .05 }, T(2) + .15);
+// "poupar": o cartão do vídeo ganha a borda laranja
+tl.to("#$IDe", { boxShadow: "0 0 0 4px #d4704e, 0 34px 80px rgba(60,45,30,.12)", duration: .3, ease: "power2.out" }, T(3));
+// "semanas": o tempo sozinho rola de 1 para 2 e para 3 semanas
+tl.set("#$IDs2, #$IDs3", { yPercent: 110 }, t0);
+tl.to("#$IDs1", { yPercent: -110, duration: .32, ease: "power3.inOut" }, T(4));
+tl.to("#$IDs2", { yPercent: 0, duration: .32, ease: "back.out(1.4)" }, T(4) + .04);
+tl.to("#$IDs2", { yPercent: -110, duration: .32, ease: "power3.inOut" }, T(5));
+tl.to("#$IDs3", { yPercent: 0, duration: .32, ease: "back.out(1.4)" }, T(5) + .04);
+// o mascote entra e fica andando no lugar
+tl.fromTo("#$IDm", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, T(2) + .4);
+mascoteVivo("#$IDm", T(2) + .8, t0 + D - .3);
+sai("#$IDc", "#$IDk");
+</script>

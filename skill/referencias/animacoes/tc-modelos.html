@@ -1,0 +1,73 @@
+<!-- Os três modelos: o seletor de modelos da cena anterior cresce e vira o cartão "Qual modelo usar"; cada modelo acende na sua vez, com o que ele faz em pílulas e as barras de força e de limite. No fim, o conteúdo some e o cartão fica: a cena seguinte o transforma na lista das cinco bases.
+M: [traduzir, resumir, Haiku, simples, limite, escrever#2, analisar, Sonnet, meio-termo, análise, projeto, Opus, poderoso, come]. -->
+<style>
+.gm-c { left: 90px; top: 500px; width: 900px; height: 640px; opacity: 0; overflow: hidden; }
+.gm-c > * { opacity: 0; }
+.gm-cab { position: absolute; left: 40px; top: 32px; display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 36px; }
+.gm-cab svg { width: 40px; height: 40px; }
+.gm-sub { position: absolute; left: 94px; top: 84px; font-weight: 600; font-size: 19px; letter-spacing: .08em; text-transform: uppercase; color: var(--tc-apagado); }
+.gm-lin { position: absolute; left: 40px; right: 40px; height: 166px; border-top: 1.5px solid #efeee9; }
+.gm-nome { position: absolute; left: 0; top: 26px; font-weight: 600; font-size: 50px; letter-spacing: -.02em; color: #8f8c85; }
+.gm-b { position: absolute; left: 300px; right: 0; height: 18px; }
+.gm-b small { position: absolute; left: 0; top: -2px; font-weight: 600; font-size: 17px; letter-spacing: .06em; text-transform: uppercase; color: #6b6862; }
+.gm-b span { position: absolute; left: 100px; right: 0; top: 0; height: 18px; border-radius: 9px; background: #efeee9; overflow: hidden; }
+.gm-b i { display: block; height: 100%; width: 100%; border-radius: 9px; transform-origin: left center; transform: scaleX(0); }
+.gm-chips { position: absolute; left: 0; top: 102px; display: flex; gap: 12px; }
+.gm-chips > * { opacity: 0; font-size: 24px; padding: 8px 18px; }
+.gm-eco { left: 690px; top: 943px; width: 300px; height: 222px; }
+</style>
+<div class="tc" id="$IDc">
+  <!-- cópia do seletor de modelos da cena anterior -->
+  <div class="tc-suspenso ga-dm gm-eco" id="$IDe" style="opacity:1">
+    <div>Opus<small>For complex tasks</small></div>
+    <div>Sonnet<small>Most efficient for everyday tasks</small><em>✓</em></div>
+    <div style="background:#f1efe9">Haiku<small>Fastest for quick answers</small></div>
+  </div>
+  <div class="tc-cartao gm-c" id="$IDk">
+    <div class="gm-cab" id="$IDa">Qual modelo usar</div>
+    <div class="gm-sub">força e gasto do limite</div>
+    <div class="gm-lin" id="$IDr0" style="top:132px"><div class="gm-nome">Haiku</div>
+      <div class="gm-b" style="top:40px"><small>força</small><span><i style="background:#4cb071"></i></span></div>
+      <div class="gm-b" style="top:76px"><small>limite</small><span><i style="background:#d4704e"></i></span></div>
+      <div class="gm-chips"><span class="tc-chip laranja">traduzir</span><span class="tc-chip laranja">resumir</span><span class="tc-chip cinza">o mais simples</span></div></div>
+    <div class="gm-lin" id="$IDr1" style="top:298px"><div class="gm-nome">Sonnet</div>
+      <div class="gm-b" style="top:40px"><small>força</small><span><i style="background:#4cb071"></i></span></div>
+      <div class="gm-b" style="top:76px"><small>limite</small><span><i style="background:#d4704e"></i></span></div>
+      <div class="gm-chips"><span class="tc-chip laranja">escrever</span><span class="tc-chip laranja">analisar planilha</span><span class="tc-chip" style="background:#1d1c1b;color:#fff">meio-termo ★</span></div></div>
+    <div class="gm-lin" id="$IDr2" style="top:464px"><div class="gm-nome">Opus</div>
+      <div class="gm-b" style="top:40px"><small>força</small><span><i style="background:#4cb071"></i></span></div>
+      <div class="gm-b" style="top:76px"><small>limite</small><span><i style="background:#d4704e"></i></span></div>
+      <div class="gm-chips"><span class="tc-chip laranja">análise difícil</span><span class="tc-chip laranja">projeto grande</span></div></div>
+  </div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui tc-base.js-->
+document.getElementById("$IDa").insertAdjacentHTML("afterbegin", ASTER);
+// a emenda: o seletor cresce em arco até virar o cartão, e o conteúdo chega depois
+vira("#$IDk", t0, [690, 943, 300, 222, 16], [90, 500, 900, 640, 30], { dura: .55, partes: ".gm-cab, .gm-sub, .gm-lin", eco: "#$IDe" });
+const linhas = [0, 1, 2].map((j) => document.getElementById("$IDr" + j));
+const chips = linhas.map((l) => Array.from(l.querySelectorAll(".gm-chips > *")));
+const barras = linhas.map((l) => Array.from(l.querySelectorAll(".gm-b i")));
+const rotulos = linhas.map((l) => Array.from(l.querySelectorAll(".gm-b small")));
+const valores = [[.25, .08], [.6, .45], [1, 1]];
+// cada modelo, na sua vez: o nome acende em laranja, o anterior apaga, as pílulas entram na palavra e as barras enchem no nome
+const vez = (j, t, tChips, tBarras) => {
+  tl.to(linhas[j].querySelector(".gm-nome"), { color: "#d4704e", duration: .25 }, t);
+    if (j) { tl.to(linhas[j - 1].querySelector(".gm-nome"), { color: "#8f8c85", duration: .25 }, t); tl.to(linhas[j - 1], { opacity: .5, duration: .3 }, t); }
+  chips[j].forEach((c, k) => tl.fromTo(c, { opacity: 0, scale: .7, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: .3, ease: "back.out(2.4)" }, tChips[k]));
+  barras[j].forEach((b, k) => tl.fromTo(b, { scaleX: 0 }, { scaleX: valores[j][k], duration: .6, ease: "power3.out", immediateRender: false }, tBarras + k * .12));
+};
+vez(0, t0 + .45, [T(0), T(1), T(3)], T(2));
+// "gasta menos limite": a barrinha do limite pisca
+tl.fromTo(barras[0][1], { opacity: 1 }, { opacity: .3, duration: .12, yoyo: true, repeat: 3, immediateRender: false }, T(4));
+vez(1, T(5) - .15, [T(5), T(6), T(8)], T(7));
+vez(2, T(9) - .16, [T(9), T(10)], T(11));
+// "o mais poderoso": a força brilha; "come o limite mais rápido": o limite fica vermelho e treme
+tl.fromTo(barras[2][0], { filter: "brightness(1)" }, { filter: "brightness(1.35)", duration: .2, yoyo: true, repeat: 1, immediateRender: false }, T(12));
+tl.to(barras[2][1], { backgroundColor: "#e0402a", duration: .2 }, T(13));
+tl.fromTo(linhas[2].querySelectorAll(".gm-b")[1], { x: 0 }, { x: 7, duration: .05, yoyo: true, repeat: 5, ease: "none", immediateRender: false }, T(13) + .05);
+// fim: o conteúdo some e a forma fica
+tl.to("#$IDk > *", { opacity: 0, duration: .18, ease: "power1.in" }, t0 + D - .24);
+sai("#$IDc", "#$IDk");
+</script>

@@ -1,0 +1,30 @@
+<!-- Na frente: a caixa de comentário do Instagram com a palavra sendo digitada. $R0 a palavra, $R1 nome do perfil. M: [começa a digitar, publica]. Largura 860, longe das laterais. -->
+<style>
+<!--#inclui mm-base.css-->
+.mi-caixa { width: 860px; background: #121212; border: 3px solid #121212; border-radius: 30px; padding: 24px 30px 30px; color: #f5f5f5; font-family: var(--f-forte), sans-serif; font-weight: 700; box-shadow: 9px 9px 0 var(--c-metade); }
+.mi-t { text-align: center; font-size: 28px; padding-bottom: 20px; border-bottom: 1px solid #333; }
+.mi-linha { display: flex; align-items: center; gap: 18px; margin-top: 22px; }
+.mi-av { width: 66px; height: 66px; border-radius: 50%; background: var(--c-metade); flex: none; }
+.mi-in { flex: 1; height: 76px; border-radius: 38px; border: 2px solid #3a3a3c; display: flex; align-items: center; padding: 0 26px; font-size: 40px; }
+.mi-ph { color: #8e8e93; font-size: 30px; }
+.mi-l { opacity: 0; }
+.mi-pub { font-size: 32px; color: #4a6ea8; }
+</style>
+<div class="mi-caixa" id="$IDc">
+  <div class="mi-t">Comentários</div>
+  <div class="mi-linha"><div class="mi-av"></div>
+    <div class="mi-in"><span class="mi-ph" id="$IDph">Comente como $R1...</span><span id="$IDtx"></span></div>
+    <div class="mi-pub" id="$IDpub">Publicar</div></div>
+</div>
+<script>
+(function () {
+  const tx = document.querySelector("#$IDtx");
+  tx.innerHTML = "$R0".split("").map((c) => '<span class="mi-l">' + c + "</span>").join("");
+})();
+tl.fromTo("#$IDc", { y: 160, opacity: 0 }, { y: 0, opacity: 1, duration: .34, ease: "power3.out" }, t0);
+tl.set("#$IDph", { display: "none" }, t0 + M[0]);
+tl.set("#$IDtx .mi-l", { opacity: 1, stagger: .12 }, t0 + M[0]);
+tl.to("#$IDpub", { color: "var(--c-metade)", duration: .1 }, t0 + M[0] + .4);
+tl.fromTo("#$IDpub", { scale: 1 }, { scale: 1.18, duration: .12, yoyo: true, repeat: 1 }, t0 + M[1]);
+tl.to("#$IDc", { y: -10, duration: D - .4, ease: "sine.inOut" }, t0 + .4);
+</script>

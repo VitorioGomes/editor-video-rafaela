@@ -1,0 +1,11 @@
+<!-- Só ele: três etiquetas pequenas no peito, uma por palavra ("fácil", "rápida", "simples"), tortas e com um ✓. $R0 a $R2 as palavras. M: um tempo por palavra. -->
+<style>
+<!--#inclui mm-base.css-->
+.tc-caixa { width: 860px; display: flex; justify-content: center; gap: 22px; }
+.tc-c { display: inline-flex; align-items: center; gap: 10px; background: #fff; border: 3px solid #121212; box-shadow: 6px 6px 0 #121212; border-radius: 18px; padding: 12px 24px; font-family: var(--f-forte), sans-serif; font-weight: 700; font-size: 44px; letter-spacing: -.02em; opacity: 0; }
+.tc-c i { font-style: normal; width: 40px; height: 40px; border-radius: 50%; background: var(--c-metade); border: 3px solid #121212; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+</style>
+<div class="tc-caixa"><span class="tc-c" id="$IDc0"><i>✓</i>$R0</span><span class="tc-c" id="$IDc1"><i>✓</i>$R1</span><span class="tc-c" id="$IDc2"><i>✓</i>$R2</span></div>
+<script>
+[0, 1, 2].forEach((i) => tl.fromTo("#$IDc" + i, { opacity: 0, y: 30, rotation: 0 }, { opacity: 1, y: 0, rotation: [-3, 2, -2][i], duration: .24, ease: "back.out(2.2)" }, t0 + M[i] - .04));
+</script>

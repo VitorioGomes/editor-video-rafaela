@@ -1,0 +1,18 @@
+<!-- Títulos Desenhados: o alto da tela escurecido num degradê suave e fixo, onde os títulos vivem.
+     Uma camada só, do início ao fim, atrás dos títulos:
+     {"tipo": "bloco", "arquivo": "td-sombra.html", "de": 0, "ate": 99, "x": 0, "y": 0, "largura": 1080, "atras": true, "som": false}
+     A força do degradê são os números de opacidade abaixo (.84 no topo, .74, .56...). Para mudar só neste vídeo, sem
+     copiar o arquivo, use o campo "troca" da camada no roteiro.json: ele troca um pedaço do texto deste arquivo por
+     outro antes de montar. Parede muito clara atrás da cabeça, escureça mais:
+       "troca": {"rgba(14,10,8,.84) 0%": "rgba(14,10,8,.92) 0%", "rgba(14,10,8,.74) 26%": "rgba(14,10,8,.84) 26%"}
+     Fundo já escuro: troque pelos números menores (.84 por .6, .74 por .5). O montar avisa se o texto não for achado. -->
+<style>
+.td-sombra { width: 1080px; height: 860px;
+  background: linear-gradient(to bottom, rgba(14,10,8,.84) 0%, rgba(14,10,8,.74) 26%, rgba(14,10,8,.56) 48%,
+    rgba(14,10,8,.26) 66%, rgba(14,10,8,.08) 80%, rgba(14,10,8,0) 100%); }
+</style>
+<div class="td-sombra" id="$IDs"></div>
+<script>
+  // Fixo de propósito: o degradê não disputa com os títulos.
+  tl.set("#$IDs", { opacity: 1 }, t0);
+</script>

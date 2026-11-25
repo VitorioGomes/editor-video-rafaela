@@ -1,0 +1,42 @@
+<!-- Títulos Desenhados: o título do gancho. Manuscrita digitada ($R0), a palavra grande na cor do assunto ($R1) com o
+     logo girando ao lado e estrelinhas, a linha de baixo com outro logo ($R2), riscada por um X vermelho e apagada.
+     Do vídeo "ainda usando o Claude no navegador": $R0 "se você ainda usa o", $R1 "Claude", $R2 "no navegador?".
+     M: [manuscrita, palavra grande, linha de baixo, X, "errado"]. Camada: x 0, y 0, largura 1080, "som": false.
+     A cor (#D97757, o laranja do Claude) e os logos são deste vídeo: troque pela cor e pelo logo do seu assunto. -->
+<style>
+<!--#inclui td-base.css-->
+</style>
+<div class="td-tela">
+  <div class="td-cv td-centro" id="$IDa" style="top:228px;font-size:76px">$R0</div>
+  <div class="td-lg td-linha" id="$IDb" style="top:300px;font-size:214px;color:#D97757"><span id="$IDbt">$R1</span></div>
+  <div class="td-peca" id="$IDlogo" style="left:806px;top:292px;width:96px;height:96px;color:#D97757;opacity:0"><!--#inclui td-icone-claude.svg--></div>
+  <div class="td-peca td-brilho" id="$IDs1" style="left:232px;top:330px;width:40px;height:40px;color:#FFD9A8;opacity:0"><!--#inclui td-estrela.svg--></div>
+  <div class="td-peca td-brilho" id="$IDs2" style="left:880px;top:430px;width:30px;height:30px;color:#FFFFFF;opacity:0"><!--#inclui td-estrela.svg--></div>
+  <div class="td-peca td-brilho" id="$IDs3" style="left:262px;top:440px;width:24px;height:24px;color:#F3A77F;opacity:0"><!--#inclui td-estrela.svg--></div>
+  <div class="td-linha" id="$IDc" style="top:494px">
+    <div class="td-peca" id="$IDc1" style="width:92px;height:92px;margin-right:22px;opacity:0"><!--#inclui td-icone-chrome.svg--></div>
+    <div class="td-lg" style="font-size:122px;color:#fff;overflow:hidden"><span id="$IDct">$R2</span></div>
+  </div>
+  <svg class="td-traco td-x" id="$IDx" style="left:170px;top:470px;width:740px;height:150px" viewBox="0 0 740 150">
+    <path id="$IDx1" d="M20 22 C 230 60, 470 100, 718 132"/><path id="$IDx2" d="M24 128 C 260 98, 500 52, 712 18"/>
+  </svg>
+</div>
+<script>
+<!--#inclui td-base.js-->
+  const fim = t0 + D;
+  tdQuebra("#$IDa"); tdQuebra("#$IDbt"); tdQuebra("#$IDct");
+  tdDigita("#$IDa", t0 + M[0], 0.05);
+  tdPalavra("#$IDb", t0 + M[1], 0.8);
+  tdArco("#$IDlogo", t0 + M[1] + 0.14, -260, -150, 0.38, -220);
+  tdGira("#$IDlogo", t0 + M[1] + 0.64, fim, 140);
+  tdPisca("#$IDs1", t0 + M[1] + 0.41, fim, 0.62);
+  tdPisca("#$IDs2", t0 + M[1] + 0.58, fim, 0.48);
+  tdPisca("#$IDs3", t0 + M[1] + 0.76, fim, 0.74);
+  tdArco("#$IDc1", t0 + M[2] - 0.04, -320, -90, 0.34, -300);
+  tl.fromTo("#$IDct .td-l", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.26, ease: "power3.out", stagger: 0.025 }, t0 + M[2] + 0.02);
+  tdRisca("#$IDx1", t0 + M[3], 0.17);
+  tdRisca("#$IDx2", t0 + M[3] + 0.21, 0.2);
+  tdTreme("#$IDc", t0 + M[4]);
+  tdApaga("#$IDc", t0 + M[4] + 0.05);
+  tdSai(["#$IDa", "#$IDb", "#$IDlogo", "#$IDs1", "#$IDs2", "#$IDs3", "#$IDc", "#$IDx"], fim - 0.25);
+</script>

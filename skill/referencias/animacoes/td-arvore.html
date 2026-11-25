@@ -1,0 +1,52 @@
+<!-- Títulos Desenhados: a árvore de pastas que se abre, com uma chave levando ao nome que a pessoa dá para ela.
+     A pasta raiz entra e achata; o tronco se desenha de cima para baixo e as pastas chegam uma depois da outra; a chave
+     se desenha à mão e o nome entra, a segunda palavra maior e mais lenta.
+     Do vídeo "ainda usando o Claude no navegador": "organiza a tua empresa toda em uma pasta, que a gente chama de segundo
+     cérebro". $R0 a pasta raiz ("minha-empresa"); $R1 a $R5 as pastas de dentro (os nomes são exemplo: use os do assunto);
+     $R6 a manuscrita ("a gente chama de"); $R7 e $R8 o nome ("segundo", "cérebro").
+     M: [raiz, abre a árvore, pulso na raiz ("pasta"), manuscrita, chave, palavra 1, palavra 2].
+     Camada: x 0, y 0, largura 1080, "som": false. A árvore vai de 150 a ~570 px; o nome, de 646 a 930. -->
+<style>
+<!--#inclui td-base.css-->
+</style>
+<div class="td-tela">
+  <div class="td-peca" id="$IDraiz" style="left:150px;top:232px;width:92px;height:73px;color:#F5B83D;opacity:0"><!--#inclui td-icone-pasta.svg--></div>
+  <div class="td-mono" id="$IDrlab" style="left:256px;top:248px;font-size:44px">$R0</div>
+  <svg class="td-traco td-galho" id="$IDtronco" style="left:180px;top:304px;width:80px;height:270px" viewBox="0 0 80 270">
+    <path id="$IDv" d="M16 0 V 248"/>
+    <path id="$IDh0" d="M16 48 H 62"/><path id="$IDh1" d="M16 98 H 62"/><path id="$IDh2" d="M16 148 H 62"/><path id="$IDh3" d="M16 198 H 62"/><path id="$IDh4" d="M16 248 H 62"/>
+  </svg>
+  <div class="td-filho" id="$IDf0" style="left:236px;top:328px"><div class="td-mini"><!--#inclui td-icone-pasta.svg--></div><span class="td-mono" style="position:relative;font-size:34px">$R1</span></div>
+  <div class="td-filho" id="$IDf1" style="left:236px;top:378px"><div class="td-mini"><!--#inclui td-icone-pasta.svg--></div><span class="td-mono" style="position:relative;font-size:34px">$R2</span></div>
+  <div class="td-filho" id="$IDf2" style="left:236px;top:428px"><div class="td-mini"><!--#inclui td-icone-pasta.svg--></div><span class="td-mono" style="position:relative;font-size:34px">$R3</span></div>
+  <div class="td-filho" id="$IDf3" style="left:236px;top:478px"><div class="td-mini"><!--#inclui td-icone-pasta.svg--></div><span class="td-mono" style="position:relative;font-size:34px">$R4</span></div>
+  <div class="td-filho" id="$IDf4" style="left:236px;top:528px"><div class="td-mini"><!--#inclui td-icone-pasta.svg--></div><span class="td-mono" style="position:relative;font-size:34px">$R5</span></div>
+  <svg class="td-traco td-chave" id="$IDchave" style="left:596px;top:300px;width:60px;height:280px" viewBox="0 0 60 280">
+    <path id="$IDch" d="M8 6 C 34 6, 26 60, 28 110 C 29 128, 36 138, 52 140 C 36 142, 29 152, 28 170 C 26 220, 34 274, 8 274"/>
+  </svg>
+  <div class="td-cv" id="$IDgente" style="left:646px;width:284px;top:282px;font-size:44px;text-align:center">$R6</div>
+  <div class="td-lg" id="$IDp1" style="left:646px;width:284px;top:342px;font-size:100px;color:#F6A6C8;text-align:center">$R7</div>
+  <div class="td-lg" id="$IDp2" style="left:646px;width:284px;top:436px;font-size:112px;color:#F28DB2;text-align:center">$R8</div>
+</div>
+<script>
+<!--#inclui td-base.js-->
+  const fim = t0 + D;
+  ["#$IDrlab", "#$IDgente", "#$IDp1", "#$IDp2"].forEach(tdQuebra);
+  tdArco("#$IDraiz", t0 + M[0], -120, -120, 0.3, -20);
+  tdDigita("#$IDrlab", t0 + M[0] + 0.16, 0.035);
+  tdRisca("#$IDv", t0 + M[1], 0.55);
+  for (let i = 0; i < 5; i++) {
+    const t = t0 + M[1] + 0.07 + i * 0.11;
+    tdRisca("#$IDh" + i, t, 0.12);
+    tl.fromTo("#$IDf" + i, { x: -24, opacity: 0 }, { x: 0, opacity: 1, duration: 0.22, ease: "power3.out" }, t + 0.04);
+  }
+  tdAchata("#$IDraiz", t0 + M[2], 0.7);
+  tdTracejado("#$IDtronco path", t0 + M[1] + 0.72, fim, 10);
+  tdDigita("#$IDgente", t0 + M[3], 0.035);
+  tdRisca("#$IDch", t0 + M[4], 0.32);
+  tdLetras("#$IDp1", t0 + M[5], 0.24, 0.025);
+  tdAntecipa("#$IDp2", t0 + M[6]);
+  tdLetras("#$IDp2", t0 + M[6] - 0.03, 0.34, 0.035);
+  tdAchata("#$IDp2", t0 + M[6] + 0.29, 0.7);
+  tdSai(["#$IDraiz", "#$IDrlab", "#$IDtronco", "#$IDf0", "#$IDf1", "#$IDf2", "#$IDf3", "#$IDf4", "#$IDchave", "#$IDgente", "#$IDp1", "#$IDp2"], fim - 0.2);
+</script>

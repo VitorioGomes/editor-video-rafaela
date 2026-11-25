@@ -1,0 +1,20 @@
+<!-- A palavra grande de cada cena, sublinhada em laranja, trocando com a fala. M: o tempo de cada palavra da lista abaixo, na mesma ordem; o último tempo esconde a palavra (o "cinco bases" não tem título) e o "me segue" volta. -->
+<style>
+</style>
+<div class="tc" id="$IDc"><div class="tc-tit" id="$IDw"></div></div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui tc-base.js-->
+// a mesma ordem das marcas do roteiro; "" esconde
+const PALAVRAS = ["aplicativo", "3 abas", "chat", "cowork", "code", "anexar", "foto", "planilha", "voz", "projetos", "melhores", "3 modelos", "haiku", "sonnet", "opus", "", "me segue"];
+const caixa = document.getElementById("$IDw");
+caixa.innerHTML = PALAVRAS.map((p) => p ? `<span>${p}<i></i></span>` : "<span></span>").join("");
+const els = Array.from(caixa.children);
+// todas no mesmo lugar, centradas: absolutas com largura do próprio texto
+els.forEach((e) => { Object.assign(e.style, { position: "absolute", left: "0", right: "0", top: "0", width: "fit-content", margin: "0 auto", whiteSpace: "nowrap" }); });
+els.forEach((e, k) => {
+  if (!PALAVRAS[k]) return;
+  const ate = k + 1 < els.length ? T(k + 1) : null;
+  titulo(e, T(k), ate);
+});
+</script>

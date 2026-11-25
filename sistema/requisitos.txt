@@ -1,0 +1,9 @@
+faster-whisper==1.2.1
+numpy>=1.26
+pillow>=10.0
+# o alinhador, que acerta o tempo de cada palavra pelo som
+torch>=2.2
+transformers>=4.40
+# a engenharia reversa: baixar o vídeo de referência e uma peça do separador de voz
+yt-dlp>=2025.1.1
+omegaconf>=2.3

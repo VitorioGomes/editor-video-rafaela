@@ -1,0 +1,29 @@
+<!-- Estilo Metade: o painel de fundo, um só para o vídeo inteiro. Ele cresce, encolhe e sobe entre as montagens, em vez de corte seco.
+     $R0: estados separados por vírgula (meio, cheia, fora, meio-escuro, cheia-escuro). M: um tempo por estado. Pôr antes das outras animações. -->
+<style>
+.pl-p { position: absolute; left: 0; top: 0; width: 1080px; height: 0; overflow: hidden;
+  background-color: #f4f2ee; box-shadow: 0 18px 40px rgba(0,0,0,.28); }
+.pl-pontos { position: absolute; left: -60px; top: -60px; width: 1200px; height: 2040px;
+  background-image: radial-gradient(circle, rgba(18,18,18,.16) 2.2px, rgba(0,0,0,0) 2.6px); background-size: 40px 40px; }
+.pl-borda { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: var(--c-metade); }
+</style>
+<div class="pl-p" id="$IDp"><div class="pl-pontos" id="$IDpt"></div><div class="pl-borda" id="$IDb"></div></div>
+<script>
+(function () {
+  const estados = "$R0".split(",").map((x) => x.trim());
+  const altura = { meio: 860, cheia: 1920, fora: 0 };
+  tl.fromTo("#$IDpt", { x: 0, y: 0 }, { x: -40, y: -40, duration: D, ease: "none" }, t0);
+  // O primeiro estado já vale no quadro 0, fora da linha do tempo: senão o começo mostra o vídeo descido sem o painel.
+  const [f0, t0m] = estados[0].split("-");
+  gsap.set("#$IDp", { height: altura[f0], backgroundColor: t0m === "escuro" ? "#141414" : "#f4f2ee" });
+  estados.forEach((e, i) => {
+    const [forma, tom] = e.split("-");
+    const quando = t0 + M[i];
+    const d = i === 0 ? 0 : .42;
+    const escuro = tom === "escuro";
+    tl.to("#$IDp", { height: altura[forma], backgroundColor: escuro ? "#141414" : "#f4f2ee", duration: d, ease: "power2.inOut" }, quando);
+    tl.to("#$IDpt", { opacity: escuro ? .35 : 1, duration: d }, quando);
+    tl.to("#$IDb", { opacity: forma === "meio" ? 1 : 0, duration: d }, quando);
+  });
+})();
+</script>

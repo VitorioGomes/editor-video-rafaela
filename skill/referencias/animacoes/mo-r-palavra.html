@@ -1,0 +1,32 @@
+<!-- Estilo Motion: "Cada palavra entra na hora em que é falada." A frase entra palavra por palavra,
+     e embaixo um cabeçote corre pela onda da voz, acendendo uma marca no ponto de cada palavra. M: os tempos das 9 palavras. -->
+<style>
+.mr-onda { position: absolute; left: 110px; width: 860px; top: 1080px; height: 140px; display: flex; align-items: center; gap: 5px; opacity: 0; }
+.mr-onda i { display: block; width: 8px; border-radius: 4px; background: #3a3a40; }
+.mr-marca { position: absolute; top: 1040px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: #3a3a40; }
+.mr-cab { position: absolute; left: 110px; top: 1030px; width: 5px; height: 220px; background: var(--c-motion); border-radius: 3px; box-shadow: 0 0 18px rgba(255,106,43,.7); opacity: 0; }
+</style>
+<div class="mo" id="$IDc">
+  <div class="mo-t" id="$IDa" style="top:430px;font-size:136px;line-height:1.05"><span class="w">Cada</span> <span class="w">palavra</span><br><span class="w">entra</span> <span class="w mo-cinza">na</span> <span class="w mo-lar">hora</span><br><span class="w mo-cinza">em</span> <span class="w mo-cinza">que</span> <span class="w mo-cinza">é</span> <span class="w mo-serif mo-lar">falada.</span></div>
+  <div class="mr-onda" id="$IDo"></div>
+  <div id="$IDm"></div>
+  <div class="mr-cab" id="$IDh"></div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+palavras("#$IDa", M.map((m, i) => T(i)));
+const on = document.getElementById("$IDo");
+for (let i = 0; i < 66; i++) { const b = document.createElement("i"); b.style.height = (16 + Math.abs(Math.sin(i * 1.3) * 70 + Math.sin(i * .5) * 30)) + "px"; on.appendChild(b); }
+tl.to("#$IDo", { opacity: 1, duration: .2 }, t0);
+tl.to("#$IDh", { opacity: 1, duration: .1 }, t0);
+// o cabeçote anda do início ao fim da cena; cada palavra acende uma marca no ponto da onda em que ela é falada
+tl.fromTo("#$IDh", { x: 0 }, { x: 860, duration: D, ease: "none" }, t0);
+const caixa = document.getElementById("$IDm");
+M.forEach((m, i) => {
+  const d = document.createElement("div"); d.className = "mr-marca";
+  d.style.left = (110 + 860 * (T(i) - t0) / D) + "px"; caixa.appendChild(d);
+  tl.to(d, { background: "var(--c-motion)", scale: 1.5, duration: .1 }, T(i));
+  tl.to(d, { scale: 1, duration: .2 }, T(i) + .1);
+});
+sai("#$IDc");
+</script>

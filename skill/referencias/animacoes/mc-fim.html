@@ -1,0 +1,38 @@
+<!-- COMO FAZ: o campo "cole o prompt aqui" e a etiqueta "fácil"; o pedido final: a caixa de comentário recebe "PROMPT" digitado, o cursor vem em arco e clica em publicar, e chega a resposta "te mandei no Direct". M: [fácil, Comenta, PROMPT#2, mando]. -->
+<style>
+.s5-campo { left: 140px; top: 400px; width: 800px; height: 130px; border: 4px dashed #8a867c; background: rgba(255,255,255,.6); display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 30px; letter-spacing: .08em; text-transform: uppercase; color: #6d6a63; }
+.s5-campo i { width: 4px; height: 40px; background: #161616; display: block; }
+.s5-cx { left: 130px; top: 720px; width: 820px; height: 170px; display: flex; align-items: center; gap: 24px; padding: 0 30px; opacity: 0; }
+.s5-cx .mc-ava { width: 100px; height: 100px; } .s5-cx .mc-ava svg { width: 72px; height: 72px; }
+.s5-txt { position: relative; flex: 1; font-weight: 900; font-size: 70px; letter-spacing: -.02em; white-space: nowrap; }
+.s5-ph { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-weight: 600; font-size: 36px; color: #8a867c; letter-spacing: 0; }
+.s5-pub { padding: 14px 26px; background: #ee6839; border: 4px solid #161616; box-shadow: 5px 5px 0 #161616; font-weight: 900; font-size: 32px; text-transform: uppercase; }
+.s5-dm { left: 250px; top: 960px; padding: 22px 34px; font-size: 42px; box-shadow: 8px 8px 0 #2fa850; }
+</style>
+<div class="mc" id="$IDc">
+  <div class="mc-q s5-campo" id="$IDcp">cole o prompt aqui<i id="$IDcur1"></i></div>
+  <div class="mc-et verde" id="$IDfc" style="left:650px;top:500px;font-size:72px">fácil</div>
+  <div class="mc-cartao s5-cx" id="$IDcx"><div class="mc-ava laranja" id="$IDav"></div><div class="s5-txt"><span class="s5-ph" id="$IDph">Adicione um comentário…</span><span id="$IDtx"></span></div><div class="s5-pub" id="$IDpb">publicar</div></div>
+  <div class="mc-balao s5-dm" id="$IDdm">Te mandei no Direct 📩</div>
+  <div class="mc-cur" id="$IDk"></div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui mc-base.js-->
+document.getElementById("$IDav").innerHTML = BONECO;
+document.getElementById("$IDk").innerHTML = SETA;
+// "E montar é fácil": o campo de colar, com o cursor de texto piscando, e "fácil"
+quadro("#$IDcp", t0 + .02, T(1) - .1);
+tl.to("#$IDcur1", { opacity: 0, duration: .25, ease: "steps(1)", yoyo: true, repeat: 3 }, t0 + .3);
+cola("#$IDfc", T(0), 5);
+tl.to("#$IDfc", { opacity: 0, duration: .16 }, T(1) - .1);
+// "Comenta PROMPT que eu te mando": a caixa de comentário, a palavra digitada e o clique
+tl.fromTo("#$IDcx", { opacity: 0, y: 60, rotation: -2 }, { opacity: 1, y: 0, rotation: 0, duration: .35, ease: "back.out(1.6)" }, T(1) - .05);
+document.getElementById("$IDtx").textContent = "PROMPT";
+tl.to("#$IDph", { opacity: 0, duration: .05 }, T(2) - .05);
+digita("$IDtx", T(2) - .05, .35);
+cursor("#$IDk", [[T(2), 820, 1250, 0], [T(3) - .05, 840, 812, 1]]);
+tl.to("#$IDk", { opacity: 1, duration: .12 }, T(2) - .05);
+tl.fromTo("#$IDpb", { scale: 1 }, { keyframes: [{ scale: .9, duration: .07, ease: "power2.in" }, { scale: 1, duration: .2, ease: "back.out(3)" }], immediateRender: false }, T(3) - .05);
+tl.fromTo("#$IDdm", { opacity: 0, y: 30, scale: .85 }, { opacity: 1, y: 0, scale: 1, duration: .32, ease: "back.out(2)" }, T(3) + .3);
+</script>

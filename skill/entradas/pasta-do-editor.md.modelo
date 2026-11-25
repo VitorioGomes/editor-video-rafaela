@@ -1,0 +1,5 @@
+# Editor de vídeo da Rafaela
+
+Esta pasta é do editor de vídeo da Rafaela. Para editar um vídeo, ou qualquer pedido sobre os vídeos daqui, **leia `.ferramenta/skill/EDITAR.md` e siga aquele roteiro**. Ele é o mesmo para o Claude Code, o Codex e o Gemini CLI, e é a única fonte: não improvise um caminho seu.
+
+Os comandos rodam de dentro desta pasta. O que é da Rafaela: `brutos/`, `versoes/`, `editados/` e `meu-estilo/`.

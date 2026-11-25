@@ -1,0 +1,40 @@
+<!-- Estilo Motion claro: o fundo do vídeo inteiro (a metade de cima quase branca, com pontos bem leves; da metade para baixo, um chão em perspectiva, com os pontos maiores e mais espaçados perto da borda de baixo, que dá a profundidade, andando devagar na direção de quem assiste) e as abas de capítulo no topo. M: o tempo em que cada aba acende, na ordem das abas (a primeira já começa acesa). Pôr antes das cenas. -->
+<style>
+<!--#inclui mc-base.css-->
+.mf { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: linear-gradient(#ffffff 0%, #fbfaf7 38%, #f1eee6 52%, #e6e1d5 72%, #ddd7c9 100%); }
+/* em cima, pontos leves e chapados, sumindo perto do horizonte */
+.mf-pontos { position: absolute; left: -40px; right: -40px; top: -40px; height: 1000px; background-image: radial-gradient(#d3cebf 2px, transparent 2.5px); background-size: 38px 38px;
+  -webkit-mask-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.25) 70%, transparent 100%); mask-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.25) 70%, transparent 100%); }
+/* o chão: um plano de pontos deitado em perspectiva a partir do horizonte (y 900), que some suave no horizonte */
+.mf-chao-cx { position: absolute; left: 0; top: 900px; width: 1080px; height: 1020px; overflow: hidden; perspective: 1400px; perspective-origin: 50% 0;
+  -webkit-mask-image: linear-gradient(transparent 0, rgba(0,0,0,.6) 14%, #000 45%); mask-image: linear-gradient(transparent 0, rgba(0,0,0,.6) 14%, #000 45%); }
+.mf-chao { position: absolute; left: -1300px; width: 3680px; top: 0; height: 1100px; transform-origin: 50% 0; transform: rotateX(56deg);
+  background-image: radial-gradient(#b3ab98 4px, transparent 4.8px); background-size: 52px 52px; background-position: 0 0; }
+.mf-abas { position: absolute; left: 110px; right: 110px; top: 236px; height: 52px; display: flex; border: 3.5px solid #161616; background: #fff; box-shadow: 6px 6px 0 #161616; }
+.mf-abas i { width: 64px; display: flex; align-items: center; justify-content: center; border-right: 3px solid #161616; background: #fff; }
+.mf-abas i svg { width: 30px; height: 30px; }
+.mf-abas span { flex: 1; display: flex; align-items: center; justify-content: center; border-left: 3px solid #161616; font-family: var(--f-mono), monospace; font-weight: 600; font-size: 21px; letter-spacing: .08em; text-transform: uppercase; color: #161616; }
+.mf-abas span:first-of-type { border-left: 0; }
+</style>
+<div class="mf">
+  <div class="mf-pontos" id="$IDp"></div>
+  <div class="mf-chao-cx"><div class="mf-chao" id="$IDch"></div></div>
+  <div class="mf-abas" id="$IDa"><i id="$IDi"></i><span>ideia</span><span>prompt</span><span>teste</span><span>prova</span><span>como faz</span></div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui mc-base.js-->
+document.getElementById("$IDi").innerHTML = ASTER();
+tl.to("#$IDp", { y: 38, duration: D, ease: "none" }, t0);
+// o chão anda devagar na direção de quem assiste (três pontos no vídeo inteiro)
+tl.fromTo("#$IDch", { backgroundPosition: "0px 0px" }, { backgroundPosition: "0px 156px", duration: D, ease: "none" }, t0);
+const abas = Array.from(document.querySelectorAll("#$IDa span"));
+const ON = { backgroundColor: "#ee6839", color: "#161616" }, OFF = { backgroundColor: "#ffffff", color: "#161616" };
+tl.set(abas[0], ON, t0);
+M.forEach((m, k) => {
+  const t = t0 + m;
+  tl.to(abas[k], { ...OFF, duration: .12 }, t);
+  tl.to(abas[k + 1], { ...ON, duration: .12 }, t);
+  tl.fromTo(abas[k + 1], { y: 0 }, { keyframes: [{ y: -6, duration: .08 }, { y: 0, duration: .2, ease: "back.out(3)" }], immediateRender: false }, t);
+});
+</script>

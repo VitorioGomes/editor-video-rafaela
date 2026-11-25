@@ -1,0 +1,559 @@
+<!-- Exemplo do Estilo Série Animada: o dia 3 de uma série de sobrevivência num prédio (o menino do 1405), o episódio inteiro num bloco só.
+     Serve para ver como se faz: os lugares, os planos, o colo, o andar, o olho mágico, as peças da série.
+     Os personagens (sa-exemplo-elenco.js) e os lugares são desta história: cada história cria os seus. -->
+<style>
+<!--#inclui sa-base.css-->
+</style>
+<div class="sa" id="$IDc"><svg id="$IDs" width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg"><defs></defs></svg></div>
+<script>
+<!--#inclui sa-personagem.js-->
+<!--#inclui sa-base.js-->
+<!--#inclui sa-cenario.js-->
+<!--#inclui sa-exemplo-elenco.js-->
+(function () {
+const B = Boneco, S = SA.cena(document.getElementById("$IDs"), PALAVRAS), K = Cenario.kit(S);
+const { el, TINTA, W, H, clamp, lerp, suave, suave2, sai, entra, prog, chave, ruido, hash, camera, pisca, respira, andar, u, antes, arco, impacto, susto, segue, caminhada, passo } = S;
+const { L, R, C } = K;
+
+// ---------- tempo das falas ----------
+const F = i => S.falas[i];
+const ti = S.em, tf = S.ate; // quando a palavra começa e acaba na fala i (ou a fala inteira, sem palavra)
+const tosse = (t, a, b) => (t > a && t < b ? Math.pow(Math.abs(Math.sin((t - a) * 13)), 2) : 0);
+
+// ---------- luzes do dia 3 (a energia caiu no dia 1: só luz de janela) ----------
+const DIA = '#efe6d8', PENUMBRA = '#8a8296', BANHO = '#dfe8ee', SALA = '#e9dccb';
+const luzJanela = { ang: -30, recorte: '#fff1d6', forca: 0.8 };
+const luzFresta = { ang: -150, recorte: '#ffe2b0', forca: 0.9 };
+const luzOlho = { ang: -90, recorte: '#ffe7b8', forca: 0.5 };
+
+// ---------- elenco ----------
+// o menino sujo de fuligem: a ficha dele, com manchas escuras no rosto, no pijama e nas mãos
+const netoSujo = Object.assign({}, ELENCO.neto, {
+  detalhes(ctx) {
+    ELENCO.neto.detalhes(ctx);
+    const { el, pecas, M } = ctx, r = M.cabeca;
+    const mancha = (g, pts, cor = '#2a2420', op = 0.45) => { for (const [x, y, rr] of pts) el('ellipse', { cx: x, cy: y, rx: rr, ry: rr * 0.7, fill: cor, opacity: op }, g); };
+    mancha(pecas.cabeca.frente, [[r * 0.35, r * 0.35, 16], [-r * 0.2, r * 0.5, 12], [r * 0.55, -r * 0.1, 10]]);
+    for (const n of ['p1', 'pF']) mancha(pecas.tronco[n].extra, [[10, -60, 26], [-20, -150, 20], [30, -190, 14]], '#1d2a1c', 0.5);
+    mancha(pecas.pernaF.p1.extra, [[0, 50, 18]], '#1d2a1c', 0.5);
+  }
+});
+// o Marcos esverdeado: pupila pequena (já virou)
+const olhosZumbi = m => { for (const o of m.dados.pecas.cabeca.R.olhos || []) if (o.pupila) o.pupila.setAttribute('r', 4); };
+// o menino no colo de alguém: ele entra no corpo de quem carrega, entre o braço da frente e o tronco
+function noColo(quem, ficha) {
+  const n = B.criar(quem.dados.corpo, ficha);
+  quem.dados.corpo.insertBefore(n, quem.dados.pecas.bracoF.g1);
+  return n;
+}
+// pose do menino no colo, de frente para o ombro de quem carrega (em medidas de quem carrega)
+// no colo, de lado: o menino virado para o seu peito, sentado no seu antebraço, com os braços no seu pescoço (em medidas de quem carrega)
+const poseColo = (tosseK, x = 135, y = -40) => ({ x, y, esc: 1.05, vira: -1, tronco: 4 + tosseK * 10, cabeca: 10 + tosseK * 16, bracoF: { a: -120, b: -40 }, bracoT: { a: -110, b: -50 }, pernaF: { a: -75, b: 70, pe: 10 }, pernaT: { a: -65, b: 75, pe: 10 } });
+// no colo de quem está de frente (a síndica no flash do dia 2)
+const poseColoFrente = (tosseK, x = 168, y = -40) => ({ x, y, esc: 1.05, vira: -1, tronco: 8 + tosseK * 8, cabeca: 6 + tosseK * 12, bracoF: { a: -118, b: -40 }, bracoT: { a: -108, b: -50 }, pernaF: { a: -78, b: 84, pe: 10 }, pernaT: { a: -68, b: 88, pe: 10 } });
+// de lado: o braço da frente por baixo dele, o de trás nas costas dele
+// o comprimento de um passo, em px da tela: uns 0,6 da perna
+const passada = (ficha, esc) => 0.6 * (((ficha.medidas || {}).coxa || 196) + ((ficha.medidas || {}).canela || 190)) * esc * (ficha.escala || 1);
+const braçosCarregando = { bracoF: { mao: [150, -30], dobra: 1, punho: 0 }, bracoT: { mao: [190, -200], dobra: 1, punho: 0 } };
+
+// ====================== LUGARES DESTE EPISÓDIO ======================
+// O corredor do 14º de dia, de lado: 1401 a 1405, a porta da escada entre o 1403 e o 1404, a janela no fim.
+const CH_C = 1500, ALT_C = 1080;
+function corredor(g) {
+  K.fundo(g, '#3d3a3a');
+  K.parede(g, { x0: -1400, x1: 4400, y0: 300, y1: 1200, cor: '#6b5f55' });
+  K.rodape(g, 1210, '#4a4038', 24);
+  K.chao(g, { y: CH_C, cor: '#2e2a2a', fuga: 1500, passo: 180 });
+  for (let x = -400; x < 4000; x += 700) R(g, x - 50, 300, 100, 22, '#cfc8b0', { 'stroke-width': 4 }); // lâmpadas apagadas
+  // a janela no fim do corredor: a única luz
+  R(g, 3480, 520, 360, 640, '#d9d2c0'); el('rect', { x: 3500, y: 540, width: 320, height: 600, fill: '#cfe6f5' }, g);
+  L(g, 3660, 540, 3660, 1140, TINTA, 8);
+  el('ellipse', { cx: 3660, cy: 840, rx: 900, ry: 700, fill: u('brilhoQuente'), opacity: 0.35 }, g);
+  const portas = {};
+  [['1401', -580], ['1402', 120], ['1403', 820], ['1404', 2200], ['1405', 2900]].forEach(([n, x]) => { portas[n] = K.porta(g, { x, chao: CH_C, alt: ALT_C, numero: n, olho: true }); });
+  // a porta da escada, de metal, com a placa verde; atrás dela, os degraus no escuro
+  const esc = K.porta(g, { x: 1500, chao: CH_C, alt: ALT_C, cor: '#717a88', metal: true, macaneta: 'esq', placa: { nome: 'ESCADA' } });
+  for (let i = 0; i < 9; i++) L(esc.vao, 1540 + i * 30, 1480 - i * 90, 1640 + i * 30, 1480 - i * 90, '#1d2a22', 5);
+  el('ellipse', { cx: 1650, cy: 380, rx: 200, ry: 90, fill: '#5dff9a', opacity: 0.14 }, g);
+  R(g, 1395, 1040, 56, 140, '#c9302c', { rx: 18 }); R(g, 1408, 1012, 30, 30, '#2b2b2b', { rx: 6 }); // extintor
+  const atores = el('g', {}, g);
+  el('rect', { x: -2000, y: -2000, width: 8000, height: 6000, fill: '#fff0d6', opacity: 0.1 }, g);
+  return { portas, esc, atores };
+}
+
+// A sala do 1405, de cortina fechada: penumbra, fumaça parada, coisas no chão e a porta do banheiro com luz.
+const CH_S = 1620;
+function sala1405(g) {
+  K.fundo(g, '#3a3340');
+  K.parede(g, { x0: -800, x1: 2200, y0: -600, y1: CH_S, cor: '#4a4048', bolinhas: '#544a52' });
+  K.chao(g, { y: CH_S, cor: '#3b2c26', passo: 150 });
+  K.quadroParede(g, { x: 600, y: 420, w: 260, h: 200, torto: 9 });
+  const jan = K.janela(g, { x: 60, y: 420, w: 440, h: 640, vista: 'dia', cortina: '#6e5a3a' });
+  K.sofa(g, { x: -40, chao: CH_S, larg: 640, cor: '#5b4a6a' });
+  K.mesa(g, { x: 700, chao: CH_S, larg: 300, alt: 260, tombada: -78 });
+  K.bagunca(g, { x: 60, w: 900, chao: CH_S + 40, n: 7, cores: ['#c94f6d', '#e6b422', '#3a7bd5', '#e7e2f0'] });
+  const ban = K.porta(g, { x: 1180, chao: CH_S, alt: 1120, cor: '#8a7a68', vaoCor: '#cfdde6' });
+  el('ellipse', { cx: 1340, cy: 1100, rx: 280, ry: 600, fill: u('brilhoFrio'), opacity: 0.25 }, g);
+  const atores = el('g', {}, g);
+  const fum = S.fumaca(g, 9, { x: -200, y: 300, w: 1600, h: 1100, vento: 8, r: 200 }, '#6f6a72', 4);
+  const penumbra = el('rect', { x: -2000, y: -2000, width: 6000, height: 6000, fill: '#0b0a12', opacity: 0.38 }, g);
+  g.appendChild(jan.feixe);
+  return { jan, ban, atores, fum, penumbra };
+}
+
+// O banheiro do 1405: azulejo, janela alta, o box com o vidro e o chuveiro.
+const CH_B = 1560;
+function banheiro(g) {
+  K.fundo(g, '#9fb1bd');
+  K.azulejo(g, { x: -600, y: -600, w: 2400, h: CH_B + 600, cor: '#d6e2e9', rejunte: '#9fb1bd', passo: 110 });
+  K.chao(g, { y: CH_B, cor: '#7f95a3', tipo: 'liso' });
+  for (let x = -600; x < 1800; x += 120) L(g, x, CH_B, x - 60, CH_B + 500, '#6f8593', 4);
+  // janela alta, com luz fria de manhã
+  R(g, 120, 260, 260, 170, '#d9d2c0'); el('rect', { x: 136, y: 276, width: 228, height: 138, fill: '#e8f4ff' }, g);
+  el('ellipse', { cx: 250, cy: 360, rx: 420, ry: 300, fill: u('brilhoFrio'), opacity: 0.45 }, g);
+  // o box: piso um pouco mais alto, a parede do fundo, o chuveiro
+  R(g, 400, CH_B - 30, 640, 40, '#b8c7d1');
+  const chuv = el('g', {}, g); L(chuv, 860, 200, 860, 420, '#9aa3ab', 14); R(chuv, 800, 410, 120, 30, '#c9ced6', { rx: 10 });
+  const atores = el('g', {}, g);
+  // o vidro do box na frente, transparente, com um reflexo
+  const vidro = el('g', {}, g);
+  el('rect', { x: 400, y: 330, width: 330, height: CH_B - 360, fill: '#dff3ff', opacity: 0.22, stroke: '#7d93a3', 'stroke-width': 8 }, vidro);
+  el('path', { d: `M 450 420 L 520 380 M 450 520 L 600 430`, stroke: '#ffffff', 'stroke-width': 10, opacity: 0.35, 'stroke-linecap': 'round' }, vidro);
+  L(g, 1040, 330, 1040, CH_B - 30, '#7d93a3', 10);
+  return { atores, vidro };
+}
+
+// A sua sala de dia (1402): parede de listras, a janela com a cidade, o sofá. O mesmo lugar dos dias 1 e 2, com luz de dia.
+const CH_V = 1600;
+function suaSala(g) {
+  K.fundo(g, '#2c3048');
+  K.parede(g, { x0: -800, x1: 2000, y0: -600, y1: CH_V, cor: '#3a4060', listras: { cor: '#40466a' } });
+  K.chao(g, { y: CH_V, cor: '#3b2c26', passo: 160 });
+  const jan = K.janela(g, { x: 80, y: 360, w: 460, h: 600, vista: 'dia', cortina: '#7a3b3b' });
+  const sofa = K.sofa(g, { x: 180, chao: CH_V, larg: 820, cor: '#4d6b6e' });
+  // a porta de entrada, trancada, à direita
+  const porta = K.porta(g, { x: 1180, chao: CH_V, alt: 1160, cor: '#7a4f38', olho: true });
+  const atores = el('g', {}, g);
+  el('rect', { x: -2000, y: -2000, width: 6000, height: 6000, fill: '#fff0d6', opacity: 0.08 }, g);
+  return { jan, sofa, porta, atores };
+}
+
+// Close do braço do menino: o antebraço deitado, a mão aberta, os três riscos e a manga do pijama de dinossauro.
+function braco(g) {
+  K.fundo(g, '#2a2430');
+  el('ellipse', { cx: 300, cy: 700, rx: 700, ry: 500, fill: u('brilhoQuente'), opacity: 0.25 }, g);
+  el('rect', { x: -400, y: 1330, width: 2000, height: 1200, fill: '#4d6b6e' }, g); // o sofá, embaixo, fora de foco
+  el('rect', { x: -400, y: 1320, width: 2000, height: 20, fill: '#3d5558', filter: u('desf10') }, g);
+  const a = el('g', { transform: 'translate(-150 960) rotate(-8)' }, g);
+  const pele = '#a8693f', peleS = '#7a4727';
+  // antebraço e mão (de cima), com a sombra embaixo
+  el('path', { d: 'M -300 -95 L 640 -78 Q 700 -76 730 -60 L 730 70 Q 700 84 640 84 L -300 100 Z', fill: pele, stroke: TINTA, 'stroke-width': 7, 'stroke-linejoin': 'round' }, a);
+  el('path', { d: 'M -300 50 L 640 44 Q 700 46 730 60 L 730 70 Q 700 84 640 84 L -300 100 Z', fill: peleS }, a);
+  const mao = el('g', { transform: 'translate(740 0)' }, a);
+  el('path', { d: 'M -30 -70 Q 60 -96 120 -60 Q 150 -20 140 40 Q 120 90 40 96 Q -20 96 -30 70 Z', fill: pele, stroke: TINTA, 'stroke-width': 7, 'stroke-linejoin': 'round' }, mao);
+  const dedos = [];
+  for (const [y, l] of [[-56, 120], [-18, 136], [22, 128], [58, 104]]) { const d = el('g', { transform: `translate(130 ${y})` }, mao); el('rect', { x: -10, y: -18, width: l, height: 36, rx: 18, fill: pele, stroke: TINTA, 'stroke-width': 6 }, d); dedos.push(d); }
+  const pol = el('g', { transform: 'translate(40 -80) rotate(-40)' }, mao); el('rect', { x: -10, y: -18, width: 110, height: 38, rx: 19, fill: pele, stroke: TINTA, 'stroke-width': 6 }, pol);
+  // fuligem na pele
+  for (let i = 0; i < 9; i++) el('ellipse', { cx: -200 + hash(i) * 860, cy: -60 + hash(i + 3) * 120, rx: 14 + hash(i + 7) * 20, ry: 10, fill: '#2a2420', opacity: 0.4 }, a);
+  // os três riscos vermelhos: o inchaço em volta e o risco por cima
+  const riscos = el('g', {}, a);
+  for (const [x, y] of [[300, -60], [350, -50], [400, -40]]) {
+    el('path', { d: `M ${x} ${y} Q ${x + 40} ${y + 50} ${x + 70} ${y + 112}`, fill: 'none', stroke: '#e58a7a', 'stroke-width': 24, 'stroke-linecap': 'round', opacity: 0.7 }, riscos);
+    el('path', { d: `M ${x} ${y} Q ${x + 40} ${y + 50} ${x + 70} ${y + 112}`, fill: 'none', stroke: '#b3141c', 'stroke-width': 10, 'stroke-linecap': 'round' }, riscos);
+  }
+  // a manga do pijama: verde, com os espinhos laranja do dinossauro em cima; a borda anda (cobre ou mostra os riscos)
+  const manga = el('g', {}, a);
+  const corpoManga = el('path', { d: '', fill: '#58b05a', stroke: TINTA, 'stroke-width': 7, 'stroke-linejoin': 'round' }, manga);
+  const sombraManga = el('path', { d: '', fill: '#3d8740' }, manga);
+  const punho = el('rect', { y: -112, width: 46, height: 230, rx: 16, fill: '#3d8740', stroke: TINTA, 'stroke-width': 6 }, manga);
+  const espinhos = el('path', { d: '', fill: '#f07a2a', stroke: TINTA, 'stroke-width': 5, 'stroke-linejoin': 'round' }, manga);
+  // a outra mão do menino, puxando a manga
+  const outra = el('g', {}, g);
+  el('path', { d: 'M 0 -60 Q 70 -70 110 -30 Q 130 20 100 60 Q 50 90 0 70 Z', fill: pele, stroke: TINTA, 'stroke-width': 7 }, outra);
+  for (const y of [-34, 0, 34]) el('rect', { x: 80, y: y - 16, width: 80, height: 32, rx: 16, fill: pele, stroke: TINTA, 'stroke-width': 6 }, outra);
+  const ate = x => {
+    corpoManga.setAttribute('d', `M -400 -120 L ${x} -112 L ${x + 6} 118 L -400 126 Z`);
+    sombraManga.setAttribute('d', `M -400 70 L ${x} 66 L ${x + 6} 118 L -400 126 Z`);
+    punho.setAttribute('x', x - 20);
+    let d = ''; for (let k = -380; k < x - 40; k += 70) d += `M ${k} -114 L ${k + 26} -168 L ${k + 52} -113 Z `;
+    espinhos.setAttribute('d', d);
+  };
+  return { a, dedos, riscos, outra, quadro(t, e = {}) {
+    const x = e.manga ?? 150; ate(x);
+    // a outra mão segue a borda da manga (em coordenadas da tela: o braço está girado -8°)
+    const ang = -8 * Math.PI / 180, bx = x + 10, by = -130;
+    const tx = -150 + bx * Math.cos(ang) - by * Math.sin(ang), ty = 960 + bx * Math.sin(ang) + by * Math.cos(ang);
+    const [ox, oy] = arco(e.chega ?? 1, [-160, 260], [0, 0], 70); // a mão chega em arco, de baixo
+    outra.setAttribute('transform', `translate(${tx - 60 + ox} ${ty - 20 + oy}) rotate(${20 + 8 * Math.sin(t * 2)})`);
+    outra.setAttribute('opacity', e.puxa ?? 0);
+    dedos.forEach((d, i) => d.setAttribute('transform', d.getAttribute('transform').replace(/ rotate\([^)]*\)/, '') + ` rotate(${(e.fecha ?? 0) * (30 + i * 6) + Math.sin(t * 3 + i) * 2})`));
+  } };
+}
+
+// ====================== PLANOS ======================
+const P = [];
+const plano = o => (P.push(o), o);
+const escC = K.escala(ALT_C, ELENCO.voce);
+
+// A · gancho: o braço do menino, os três riscos; ele puxa a manga para esconder
+plano({ ini: 0, fim: F(1).inicio - 0.1, montar(g) {
+  const b = braco(g);
+  return (t, tl) => {
+    camera(g, lerp(420, 470, tl / 4), lerp(960, 990, tl / 4), lerp(1.12, 1.25, suave(tl / 4)), t, 0.4);
+    const tb = ti(0, 'braco'), cobre = antes(prog(t, tb - 0.1, tf(0) + 0.4));
+    b.quadro(t, { manga: lerp(170, 520, cobre), puxa: Math.min(1, prog(t, tb - 0.7, tb - 0.4)), chega: sai(prog(t, tb - 0.7, tb - 0.1)), fecha: antes(prog(t, tb + 0.1, tf(0) + 0.6)) * 0.6 });
+  };
+} });
+
+// B · seis da manhã: o corredor de dia, de lado; você na porta do 1402, a escada no meio, o 1405 entreaberto no fundo
+plano({ ini: F(1).inicio - 0.1, fim: F(2).inicio - 0.1, montar(g) {
+  const c = corredor(g);
+  const r = B.criar(c.atores, ELENCO.voce);
+  return (t, tl) => {
+    const k = suave(prog(t, ti(1, 'buscar'), tf(1) + 0.3));
+    camera(g, lerp(560, 2000, k), lerp(1020, 980, k), lerp(0.78, 0.5, k), t, 0.4);
+    c.portas['1402'].abrir(0.55); c.esc.abrir(0.1); c.portas['1405'].abrir(0.14);
+    const tv = ti(1, 'buscar'), virou = t > tv, rec = prog(t, tv - 0.25, tv);
+    B.posar(r, Object.assign({ x: 470, y: K.pe(ELENCO.voce, CH_C, escC), esc: escC, vira: virou ? 1 : -1, tronco: 4 + respira(t) - (virou ? 0 : 6 * rec), cabeca: virou ? 4 : 10, achata: (virou ? 0 : 0.35 * rec) + impacto(t, tv + 0.12, 0.5) }, S.parado), { olhaX: virou ? 1 : 0.6, medo: 0.5, pisca: pisca(t, 5) }, luzJanela, DIA);
+  };
+} });
+
+// C · você passa colado na parede, pela porta da escada encostada; pela fresta, a escada escura
+plano({ ini: F(2).inicio - 0.1, fim: F(3).inicio - 0.1, montar(g) {
+  const c = corredor(g);
+  const r = B.criar(c.atores, ELENCO.voce);
+  return (t, tl) => {
+    const d = F(3).inicio - F(2).inicio;
+    const xDe = tt => chave(tt, [[F(2).inicio, 1100], [ti(2, 'encostada') - 0.2, 1500], [ti(2, 'la') + 0.6, 1780], [F(3).inicio, 2350]], k => k);
+    const cw = caminhada(xDe, t, F(2).inicio - 0.1, passada(ELENCO.voce, escC)), x = cw.x;
+    const naPorta = Math.max(0, 1 - Math.abs(x - 1650) / 260);
+    const perto = suave(prog(t, ti(2, 'la') - 0.4, ti(2, 'la') + 0.8));
+    camera(g, lerp(x, 1660, perto), lerp(1050, 1150, perto), lerp(0.85, 1.35, perto), t, 0.5);
+    c.portas['1402'].abrir(0.55); c.esc.abrir(0.1 + 0.01 * Math.sin(t)); c.portas['1405'].abrir(0.14);
+    B.posar(r, Object.assign({ x, y: K.pe(ELENCO.voce, CH_C - 6, escC), esc: escC, tronco: -4, cabeca: 10 - 14 * naPorta, achata: passo(cw.ph) * cw.amp }, andar(cw.ph, 0.55 * cw.amp)), { olhaX: 1, medo: 0.75 + 0.25 * naPorta, pisca: naPorta > 0.3 ? 0 : pisca(t, 5) }, luzJanela, DIA);
+  };
+} });
+
+// D · o 1405: cortina fechada, fumaça parada; a tosse vem do banheiro, com luz
+plano({ ini: F(3).inicio - 0.1, fim: F(4).inicio - 0.1, montar(g) {
+  const s = sala1405(g);
+  const esc = K.escala(1120, ELENCO.voce);
+  const r = B.criar(s.atores, ELENCO.voce);
+  return (t, tl) => {
+    const k = suave(prog(t, ti(3, 'tosse') - 0.4, F(4).inicio));
+    camera(g, lerp(520, 1150, k), lerp(1000, 1080, k), lerp(0.82, 0.95, k), t, 0.4 + tosse(t, ti(3, 'tosse'), ti(3, 'tosse') + 1.2) * 0.8);
+    s.jan.quadro(t, { fechada: 1, luz: 1 });
+    s.ban.abrir(0.35);
+    s.fum(t, 0.55, 0.3);
+    const tt_ = ti(3, 'tosse'), xDe = tt => lerp(-100, 700, sai(prog(tt, F(3).inicio, tt_))) + 180 * suave(prog(tt, tt_ + 0.6, F(4).inicio)), parado = t > tt_ && t < tt_ + 0.6;
+    const cw = caminhada(xDe, t, F(3).inicio - 0.1, passada(ELENCO.voce, esc)), x = cw.x;
+    B.posar(r, Object.assign({ x, y: K.pe(ELENCO.voce, CH_S - 6, esc), esc, tronco: parado ? -4 : 6, cabeca: parado ? -6 : 4, achata: susto(t, tt_ + 0.05, 1.2) + passo(cw.ph) * cw.amp }, andar(cw.ph, 0.5 * cw.amp)), { olhaX: 1, medo: parado ? 1 : 0.8, pisca: parado ? 0 : pisca(t, 5) }, luzFresta, PENUMBRA);
+  };
+} });
+
+// E · o banheiro: o menino encolhido no chão do box, abraçado nos joelhos, de pijama sujo de fuligem
+plano({ ini: F(4).inicio - 0.1, fim: F(5).inicio - 0.05, montar(g) {
+  const b = banheiro(g);
+  const n = B.criar(b.atores, netoSujo);
+  const esc = K.escala(1180, ELENCO.voce);
+  return (t, tl) => {
+    camera(g, lerp(640, 690, tl / 5), lerp(1260, 1300, tl / 5), lerp(1.1, 1.3, suave(tl / 5)), t, 0.4);
+    const ts = tosse(t, ti(4, 'pijama') - 0.2, ti(4, 'pijama') + 1.4);
+    B.posar(n, { x: 690, y: CH_B - 40 - 30 * esc, esc, vira: -1, tronco: 26 + ts * 10, cabeca: 22 + tosse(t - 0.08, ti(4, 'pijama') - 0.2, ti(4, 'pijama') + 1.4) * 14, achata: ts * 0.5, bracoF: { mao: [150, -80], dobra: -1 }, bracoT: { mao: [140, -100], dobra: -1 }, pernaF: { a: -128, b: 140, pe: 10 }, pernaT: { a: -118, b: 140, pe: 10 } }, { medo: 1, boca: 0.2 + ts * 0.7, pisca: ts > 0.4 ? 1 : pisca(t, 12), olhaX: 0.6 }, luzJanela, BANHO);
+  };
+} });
+
+// F · você pega ele no colo; ele tosse no seu ombro. Alto demais.
+plano({ ini: F(5).inicio - 0.05, fim: F(7).inicio - 0.1, montar(g) {
+  const b = banheiro(g);
+  const esc = K.escala(1180, ELENCO.voce);
+  const r = B.criar(b.atores, ELENCO.voce);
+  const n = noColo(r, netoSujo);
+  return (t, tl) => {
+    const t0F = F(5).inicio, sobe = antes(prog(t, t0F + 0.25, t0F + 1.3), 1.0), forte = tosse(t, ti(5, 'tosse'), F(6).fim + 0.3);
+    const perto = suave(prog(t, F(6).inicio - 0.2, F(6).inicio + 0.3));
+    camera(g, lerp(620, 650, perto), lerp(1150, 900, perto), lerp(1.0, 1.7, perto), t, 0.4 + forte * 1.6 * perto);
+    B.posar(r, Object.assign({ x: 560, y: K.pe(ELENCO.voce, CH_B, esc), esc, vira: 1, tronco: lerp(38, 4, sobe) + respira(t) * (1 - perto), cabeca: lerp(20, -4, sobe), achata: (1 - sobe) * 0.35 + impacto(t, t0F + 1.3, 0.45) + susto(t, F(6).inicio, 0.5) }, braçosCarregando, { pernaF: { a: lerp(-30, -3, sobe), b: lerp(50, 2, sobe) }, pernaT: { a: lerp(-10, 4, sobe), b: lerp(40, 2, sobe) }, quadrilY: lerp(70, 0, sobe) }), { olhaX: 1, medo: 0.7 + perto * 0.3, pisca: perto > 0.2 ? 0 : pisca(t, 5) }, luzJanela, BANHO);
+    B.posar(n, poseColo(forte, lerp(180, 135, sobe), lerp(300, -40, sobe)), { medo: 0.8, boca: 0.15 + forte * 0.8, pisca: forte > 0.3 ? 1 : pisca(t, 12) }, luzJanela, BANHO);
+  };
+} });
+
+// G1 · na volta, pelo corredor, com o menino no colo
+plano({ ini: F(7).inicio - 0.1, fim: ti(7, 'range') - 0.05, montar(g) {
+  const c = corredor(g);
+  const r = B.criar(c.atores, ELENCO.voce);
+  const n = noColo(r, netoSujo);
+  return (t, tl) => {
+    const g0 = F(7).inicio - 0.1, cw = caminhada(tt => lerp(2700, 2250, (tt - g0) / 1.6), t, g0, passada(ELENCO.voce, escC)), x = cw.x;
+    camera(g, x - 100, 1040, 0.85, t, 0.5);
+    c.portas['1402'].abrir(0.55); c.esc.abrir(0.1); c.portas['1405'].abrir(0.5);
+    B.posar(r, Object.assign({ x, y: K.pe(ELENCO.voce, CH_C - 6, escC), esc: escC, vira: -1, tronco: 6, cabeca: 2, achata: passo(cw.ph) * cw.amp }, andar(cw.ph, 0.5 * cw.amp), braçosCarregando), { olhaX: 1, medo: 0.7, pisca: pisca(t, 5) }, luzJanela, DIA);
+    B.posar(n, poseColo(0), { medo: 0.6, pisca: 1 }, luzJanela, DIA);
+  };
+} });
+
+// G2 · corte seco: a porta da escada range, perto
+plano({ ini: ti(7, 'range') - 0.05, fim: ti(7, 'cima') - 0.1, corte: true, montar(g) {
+  const c = corredor(g);
+  return (t, tl) => {
+    camera(g, 1640, 1000, lerp(1.45, 1.6, tl), t, 0.6);
+    c.portas['1402'].abrir(0.55); c.portas['1405'].abrir(0.5);
+    c.esc.abrir(0.1 + 0.07 * sai(prog(tl, 0, 0.8)), Math.sin(t * 50) * 3 * (1 - prog(tl, 0, 0.6)));
+  };
+} });
+
+// G3 · o prédio em corte: um vulto descendo a escada, andar por andar, até o 14º
+plano({ ini: ti(7, 'cima') - 0.1, fim: F(9).inicio - 0.1, montar(g) {
+  const c = K.corte(g, { destaque: { 14: '#f0b55a' } });
+  const voce = K.marcador(g, '#5ad18a'), vulto = K.marcador(g, '#ff5a4a');
+  const a14 = c.andarY(14);
+  const rot = S.texto(g, { x: c.X1 + 20, y: a14 + 54, 'font-size': 30, fill: '#5ad18a' }, 'VOCÊ');
+  return (t, tl) => {
+    camera(g, 520, lerp(800, a14, suave(tl / 2)), lerp(0.85, 1.25, suave(tl / 2)), t, 0.3);
+    voce.em(c.X0 + 400, a14 + 44, t);
+    const q = 3 * prog(t, ti(7, 'passos'), F(9).inicio - 0.2), lance = Math.min(2, Math.floor(q));
+    const p = 16.6 - 0.5 * (lance + suave(Math.min(1, (q - lance) * 1.6))); // um lance, uma pausa
+    const [x, y] = c.escada(p); vulto.em(x, y - 18, t);
+  };
+} });
+
+// H1 · você corre, entra e tranca (com o menino no colo)
+plano({ ini: F(9).inicio - 0.1, fim: ti(9, 'marcos') - 0.1, montar(g) {
+  const p = K.portaPorDentro(g, { esc: 0.95 });
+  const esc = K.escala(p.alt, ELENCO.voce);
+  const r = B.criar(p.atores, ELENCO.voce);
+  const n = noColo(r, netoSujo);
+  // de perto: a sua mão na chave, girando (a pele e a manga do "você")
+  const mao = el('g', { opacity: 0 }, g), pv = ELENCO.voce.pele;
+  R(mao, -14, -9, 28, 70, '#c9a24a', { rx: 6, 'stroke-width': 4 });                       // a chave
+  el('path', { d: 'M -60 30 Q -70 -40 -10 -50 Q 40 -55 48 -10 Q 52 40 10 60 Q -40 75 -60 30 Z', fill: pv, stroke: TINTA, 'stroke-width': 6 }, mao);
+  R(mao, -20, -46, 64, 22, pv, { rx: 11, 'stroke-width': 5 });                             // o polegar e o indicador na chave
+  el('path', { d: 'M -60 30 L -200 160 L -120 230 L 10 60 Z', fill: ELENCO.voce.camisa || '#2f7a80', stroke: TINTA, 'stroke-width': 6 }, mao);
+  return (t, tl) => {
+    const vai = suave(prog(t, ti(9, 'tranca') - 0.5, ti(9, 'tranca') - 0.1));
+    camera(g, lerp(600, p.macaneta[0] - 20, vai), lerp(1100, p.macaneta[1], vai), lerp(1.0, 2.6, vai), t, 0.6 + vai);
+    const fecha = sai(prog(tl, 0, 0.5)), gira = prog(t, ti(9, 'tranca') - 0.1, ti(9, 'tranca') + 0.45);
+    p.quadro(t, { abre: 0.5 * (1 - fecha), tranca: sai(gira), luzFora: 0.6, vaoCor: '#8f8578' });
+    const [mx, my] = p.macaneta;
+    mao.setAttribute('transform', `translate(${mx + 6 * impacto(t, ti(9, 'tranca') + 0.4, 1)} ${my}) rotate(${-90 * antes(gira, 1.2)})`); mao.setAttribute('opacity', clamp(vai * 2 - 1));
+    r.setAttribute('opacity', 1 - clamp(vai * 2)); // de perto, só a mão e a fechadura
+    const xr = 800, yr = K.pe(ELENCO.voce, p.chao, esc), E = esc * (ELENCO.voce.escala || 1);
+    B.posar(r, Object.assign({ x: xr, y: yr, esc, vira: -1, tronco: 8 + respira(t), cabeca: 6 }, braçosCarregando, { pernaF: S.parado.pernaF, pernaT: S.parado.pernaT }), { olhaX: 1, medo: 0.9, pisca: pisca(t, 5) }, luzJanela, SALA);
+    B.posar(n, poseColo(0), { medo: 0.6, pisca: 1 }, luzJanela, SALA);
+  };
+} });
+
+// H2 · pelo olho mágico: o Marcos esverdeado sai da escada, vai até o 1405, cheira a porta e volta para a frente da sua
+const portasOlho = [{ lado: -1, de: 0.08, ate: 0.4 }, { lado: 1, de: 0.08, ate: 0.4, placa: '#d9c9a0' }, { lado: -1, de: 0.52, ate: 0.66, cor: '#717a88', placa: '#2e9b57' }, { lado: 1, de: 0.7, ate: 0.84, placa: '#d9c9a0' }];
+function olhoComMarcos(g) {
+  const o = K.olhoMagico(g, { portas: portasOlho });
+  o.portas[2].abrir(0.15); o.portas[3].abrir(0.1);
+  const m = B.criar(o.atores, ELENCO.marcosZ);
+  return { o, m };
+}
+plano({ ini: ti(9, 'marcos') - 0.1, fim: F(11).inicio - 0.2, montar(g) {
+  const { o, m } = olhoComMarcos(g);
+  return (t, tl) => {
+    o.quadro(t, { zoom: lerp(1.0, 1.1, suave(prog(t, F(10).inicio - 0.3, F(10).fim))), luz: 0.6 });
+    const t1 = ti(9, 'cheira'), t2 = ti(9, 'volta');
+    // da escada (fundo, à esquerda) até o 1405 (fundo, à direita); depois vem para perto, de frente
+    const kDe = tt => chave(tt, [[ti(9, 'marcos'), 0.62], [t1 - 0.2, 0.74], [t2, 0.74], [F(10).inicio, 0.1]]);
+    const xDe = tt => chave(tt, [[ti(9, 'marcos'), 330], [t1 - 0.2, 760], [t2, 760], [F(10).inicio, 540]]);
+    const k = kDe(t), xLado = xDe(t), noPiso = o.noPiso(k, ELENCO.marcosZ);
+    const cw = caminhada(tt => [xDe(tt), o.noPiso(kDe(tt), ELENCO.marcosZ).y], t, ti(9, 'marcos') - 0.1, passada(ELENCO.marcosZ, noPiso.esc));
+    const cheira = prog(t, t1 - 0.1, t2), deFrente = t > F(10).inicio;
+    const anda = t < t1 - 0.2 || (t > t2 && !deFrente);
+    const assenta = impacto(t, F(10).inicio - 0.3, 0.7) + impacto(t, t1 - 0.2, 0.4) + susto(t, t2, 0.4);
+    B.posar(m, Object.assign({ x: xLado, vira: t > t2 ? -1 : 1, frente: deFrente, achata: assenta }, noPiso, deFrente ? zumbiDeFrente(t) : anda ? zumbi(cw.ph, cw.amp) : { tronco: 14 + 10 * Math.sin(cheira * 9), cabeca: 18 + 12 * Math.sin(cheira * Math.PI * 2), bracoF: { a: -70, b: -10 }, bracoT: { a: -60, b: -14 }, pernaF: { a: -2, b: 2 }, pernaT: { a: 3, b: 2 } }), { olhaX: deFrente ? 0 : 1, boca: 0.3, pisca: 0 }, luzOlho, '#c9c2b0');
+    olhosZumbi(m);
+  };
+} });
+function zumbi(ph, amp = 1) { return { tronco: 16, cabeca: 18 + 6 * Math.sin(ph * 0.5), pernaF: { a: -14 * amp * Math.sin(ph), b: Math.max(0, 22 * Math.sin(ph + 1.2)) * amp }, pernaT: { a: 14 * amp * Math.sin(ph), b: Math.max(0, -22 * Math.sin(ph + 1.2)) * amp }, bracoF: { a: -84 + 6 * Math.sin(ph), b: -6 }, bracoT: { a: -76 - 6 * Math.sin(ph), b: -10 }, quadrilY: -Math.abs(Math.cos(ph)) * 6 * amp }; }
+// de frente para a câmera: de pé, sem inclinar (de frente, o giro do perfil vira um tombo para o lado)
+const zumbiDeFrente = t => ({ tronco: Math.sin(t * 1.3) * 1.5, cabeca: Math.sin(t * 0.9) * 2, bracoF: { a: -10, b: -8 }, bracoT: { a: 10, b: -8 }, pernaF: { a: -2, b: 2 }, pernaT: { a: 2, b: 2 } });
+
+// I1 · você limpa o rosto do menino com um pano molhado, no sofá
+plano({ ini: F(11).inicio - 0.2, fim: ti(11, 'tres') - 0.15, montar(g) {
+  const s = suaSala(g);
+  const esc = K.escala(1160, ELENCO.voce);
+  const n = B.criar(s.atores, netoSujo), r = B.criar(s.atores, ELENCO.voce);
+  const pano = el('g', {}, r.dados.pecas.bracoF.prop); R(pano, -30, -10, 60, 70, '#e7e2f0', { rx: 14, 'stroke-width': 5 });
+  return (t, tl) => {
+    camera(g, 600, 1180, lerp(1.15, 1.3, tl / 4), t, 0.4);
+    s.jan.quadro(t, { fechada: 0.2, luz: 0.5 });
+    const yN = s.sofa.assento - 20;
+    B.posar(n, { x: 520, y: yN, esc: esc * 1.0, vira: 1, tronco: -4, cabeca: -6 - 6 * segue(t, 0.1, x => 0.5 + 0.5 * Math.sin(x * 5)), achata: 0.15 * segue(t, 0.06, x => 0.5 + 0.5 * Math.sin(x * 5)), bracoF: { a: -40, b: -20 }, bracoT: { a: -30, b: -30 }, pernaF: { a: -86, b: 86, pe: 0 }, pernaT: { a: -80, b: 90, pe: 0 } }, { medo: 0.6, olhaX: 1, pisca: Math.sin(t * 5) > 0.5 ? 0.9 : pisca(t, 9) }, luzJanela, SALA);
+    const vem = 0.5 + 0.5 * Math.sin(t * 5), [px, py] = arco(vem, [340, -280], [420, -320], 30);
+    const coxa = ((ELENCO.voce.medidas || {}).coxa || 196) * esc * (ELENCO.voce.escala || 1);
+    B.posar(r, Object.assign({ x: 880, y: K.pe(ELENCO.voce, CH_V, esc) + coxa, esc, vira: -1, tronco: 30, cabeca: 14, bracoF: { mao: [px, py], dobra: 1, punho: 0 }, bracoT: { a: 20, b: -40 } }, { pernaF: { a: -90, b: 90, pe: 0 }, pernaT: { a: 4, b: 92, pe: 0 } }), { olhaX: 1, medo: 0.4, pisca: pisca(t, 5) }, luzJanela, SALA);
+  };
+} });
+
+// I2 · o braço, de perto: a manga sobe e aparecem os três riscos
+plano({ ini: ti(11, 'tres') - 0.15, fim: F(12).inicio + 1.6, montar(g) {
+  const b = braco(g);
+  return (t, tl) => {
+    camera(g, lerp(480, 440, tl / 3), 940, lerp(1.25, 1.55, suave(tl / 3)), t, 0.4);
+    const mostra = antes(prog(tl, 0, 0.7));
+    b.quadro(t, { manga: lerp(520, 150, mostra), puxa: 0, fecha: 0.2 + 0.4 * antes(prog(tl, 0.25, 0.9)) });
+  };
+} });
+
+// J1 · flash do dia 2: a mão do Marcos no ombro da síndica, o menino escorregando do colo dela
+plano({ ini: F(13).inicio - 0.1, fim: ti(13, 'apareceu') - 0.1, corte: true, montar(g) {
+  const o = K.olhoMagico(g);
+  const s = B.criar(o.atores, ELENCO.rosangela), m = B.criar(o.atores, ELENCO.marcosZ);
+  const n = noColo(s, ELENCO.neto);
+  const sepia = el('rect', { x: -500, y: -500, width: 3000, height: 3000, fill: '#c9a46a', opacity: 0.28, style: 'mix-blend-mode:color' }, g);
+  return (t, tl) => {
+    o.quadro(t, { zoom: lerp(1.1, 1.2, tl / 3), luz: 0.3 });
+    const k = sai(prog(tl, 0, 0.25)), sac = Math.sin(t * 20) * 6, ag = F(13).inicio + 0.15;
+    B.posar(s, { x: 640 + sac, y: 1250, esc: 1.15, frente: true, tronco: 0, cabeca: 0, achata: susto(t, ag, 0.8), bracoF: { mao: [150, -40], dobra: -1, punho: 20 }, bracoT: { mao: [110, -60], dobra: 1, punho: 0 }, pernaF: { a: -2, b: 0 }, pernaT: { a: 2, b: 0 } }, { medo: 1, boca: 0.8, pisca: 0 }, luzOlho, '#8a8fb0');
+    const escorrega = suave(prog(tl, 0.6, 2.2));
+    B.posar(n, poseColoFrente(0.3, 168, lerp(-40, 220, escorrega)), { medo: 1, boca: 0.5, pisca: 0 }, luzOlho, '#8a8fb0');
+    B.posar(m, { x: lerp(330, 430, k), y: 1290, esc: 1.2, frente: false, tronco: 30, cabeca: 20, achata: -0.5 * (1 - k) + impacto(t, ag, 0.9), bracoF: { mao: [260, -420], dobra: 1 }, bracoT: { a: -90, b: -10 }, pernaF: { a: -20, b: 20 }, pernaT: { a: 18, b: 10 } }, { boca: 0.6, pisca: 0 }, luzOlho, '#6a7090');
+    olhosZumbi(m);
+  };
+} });
+
+// J2 · o Marcos ainda gente, de braço enfaixado; e na mesma noite já tinha virado
+plano({ ini: ti(13, 'apareceu') - 0.1, fim: ti(13, 'ninguem') - 0.1, montar(g) {
+  const c = corredor(g);
+  const h = B.criar(c.atores, ELENCO.marcos), z = B.criar(c.atores, ELENCO.marcosZ);
+  const noite = el('rect', { x: -2000, y: -2000, width: 8000, height: 6000, fill: '#0a0c1c', opacity: 0 }, g);
+  return (t, tl) => {
+    camera(g, 1000, 1030, lerp(1.05, 1.18, tl / 4), t, 0.4);
+    c.portas['1402'].abrir(0); c.esc.abrir(0); c.portas['1405'].abrir(0);
+    const vira = suave(prog(t, ti(13, 'virado') - 0.5, ti(13, 'virado') + 0.2));
+    noite.setAttribute('opacity', 0.15 + 0.4 * vira);
+    const pose = { x: 1000, y: K.pe(ELENCO.marcos, CH_C, escC), esc: escC, vira: -1, tronco: 4 + respira(t), cabeca: 6, bracoF: { mao: [70, -260], dobra: 1, punho: 0 }, bracoT: { a: 4, b: -10 }, pernaF: { a: -3, b: 2 }, pernaT: { a: 4, b: 2 } };
+    h.setAttribute('opacity', 1 - vira); z.setAttribute('opacity', vira);
+    const tv2 = ti(13, 'virado'); pose.achata = impacto(t, tv2 - 0.3, 0.8) + susto(t, tv2, 0.6);
+    B.posar(h, pose, { olhaX: 1, desconfia: 0.4, pisca: pisca(t, 7) }, luzJanela, '#cfc6b8');
+    B.posar(z, Object.assign({}, pose, { tronco: 16, cabeca: 20 + 14 * segue(t, 0.18, x => impacto(x, tv2, 1)), bracoF: { a: -80, b: -8 }, bracoT: { a: -70, b: -12 } }), { olhaX: 1, boca: 0.4, pisca: 0 }, luzJanela, '#8a8fb0');
+    olhosZumbi(z);
+  };
+} });
+
+// J3 · ninguém sabe quanto tempo leva: o Marcos parado, de frente, pelo olho mágico
+plano({ ini: ti(13, 'ninguem') - 0.1, fim: F(14).inicio - 0.2, montar(g) {
+  const { o, m } = olhoComMarcos(g);
+  return (t, tl) => {
+    o.quadro(t, { zoom: lerp(1.1, 1.2, tl / 3), luz: 0.6 });
+    B.posar(m, Object.assign({ x: 540, frente: true, tronco: 2 + Math.sin(t * 1.3) * 2, cabeca: 6 + Math.sin(t * 0.9) * 4, bracoF: { a: -8, b: -6 }, bracoT: { a: 8, b: -6 }, pernaF: { a: -2, b: 2 }, pernaT: { a: 2, b: 2 } }, o.noPiso(0.1, ELENCO.marcosZ)), { boca: 0.3, pisca: 0 }, luzOlho, '#c9c2b0');
+    olhosZumbi(m);
+  };
+} });
+
+// K · meio-dia: o menino deitado no sofá, suado; a mão dele na sua
+function sofaComMenino(g) {
+  const s = suaSala(g);
+  const esc = K.escala(1160, ELENCO.voce);
+  const deitado = el('g', {}, s.atores);
+  const n = B.criar(deitado, netoSujo);
+  const r = B.criar(s.atores, ELENCO.voce);
+  const pano = el('g', {}, r.dados.pecas.bracoF.prop); R(pano, -30, -10, 60, 70, '#e7e2f0', { rx: 14, 'stroke-width': 5 });
+  const suor = [0, 1, 2].map(() => el('path', { d: 'M 0 -14 Q 9 0 0 8 Q -9 0 0 -14 Z', fill: '#cfe8ff', stroke: TINTA, 'stroke-width': 3 }, s.atores));
+  const yA = s.sofa.assento;
+  return { s, esc, n, r, pano, quadro(t, e = {}) {
+    s.jan.quadro(t, { fechada: 0.3, luz: 0.6 });
+    // ele deitado de costas, a cabeça no braço do sofá do seu lado (à direita): o corpo todo girado e espelhado
+    deitado.setAttribute('transform', `translate(420 ${yA - 50}) scale(-1 1) rotate(-90)`);
+    B.posar(n, { x: 0, y: 0, esc: esc, vira: 1, tronco: 0, cabeca: -6 + Math.sin(t * 1.5) * 2, bracoF: { a: 10, b: -20 }, bracoT: { a: -20, b: -30 }, pernaF: { a: -6, b: 6 }, pernaT: { a: 4, b: 10 }, quadrilY: Math.sin(t * 2.6) * 2 }, { medo: 0.3, olhaX: -0.4, pisca: e.olhos ?? 0.7, boca: 0.15 }, luzJanela, SALA);
+    suor.forEach((s_, i) => { const k = (t * 0.5 + i / 3) % 1; s_.setAttribute('transform', `translate(${650 + i * 30} ${yA - 150 + k * 40})`); s_.setAttribute('opacity', Math.sin(k * Math.PI) * (e.suor ?? 1)); });
+    const passa = (e.pano ?? 0) * Math.sin(t * 4) * 22;
+    const coxa = ((ELENCO.voce.medidas || {}).coxa || 196) * esc * (ELENCO.voce.escala || 1);
+    B.posar(r, { x: 900, y: K.pe(ELENCO.voce, CH_V, esc) + coxa, esc, vira: -1, tronco: 30, cabeca: 14, bracoF: { mao: e.pano ? arco(0.5 + 0.5 * Math.sin(t * 4), [200, -110], [270, -130], 20) : [230, -40], dobra: 1, punho: 0 }, bracoT: { a: 20, b: -40 }, pernaF: { a: -90, b: 90, pe: 0 }, pernaT: { a: 4, b: 92, pe: 0 } }, { olhaX: 1, medo: 0.6, desconfia: e.desconfia || 0, pisca: e.segura ? 0 : pisca(t, 5) }, luzJanela, SALA);
+    pano.setAttribute('opacity', e.pano ? 1 : 0);
+  } };
+}
+plano({ ini: F(14).inicio - 0.2, fim: F(16).inicio - 0.2, montar(g) {
+  const k = sofaComMenino(g);
+  return (t, tl) => {
+    const perto = suave(prog(t, F(15).inicio - 0.3, F(16).inicio));
+    camera(g, lerp(600, 640, perto), lerp(1150, 1220, perto), lerp(1.0, 1.6, perto), t, 0.4);
+    k.quadro(t, { olhos: 0.75, desconfia: 0.8 * suave(prog(t, F(15).inicio - 0.1, F(15).inicio + 0.4)), segura: t > F(15).inicio - 0.1 });
+  };
+} });
+
+// L1 · a panela lá em cima: o Marcos vira a cabeça e sobe pela porta da escada; o corredor fica vazio
+plano({ ini: F(16).inicio - 0.2, fim: F(18).inicio - 0.2, montar(g) {
+  const { o, m } = olhoComMarcos(g);
+  return (t, tl) => {
+    o.quadro(t, { zoom: 1.08, luz: 0.6 });
+    const tP = ti(16, 'panela'), tV = ti(16, 'vira'), tE = F(17).inicio - 0.1;
+    const olhaCima = antes(prog(t, tP, tP + 0.7), 1.6);
+    // ele vira e anda até a porta da escada (fundo, à esquerda) e entra
+    const kDe = tt => chave(tt, [[tV + 0.3, 0.1], [tE, 0.56]], suave), xDe = tt => chave(tt, [[tV + 0.3, 540], [tE, 300]], suave);
+    const k = kDe(t), xx = xDe(t), noPiso = o.noPiso(k, ELENCO.marcosZ);
+    const cw = caminhada(tt => [xDe(tt), o.noPiso(kDe(tt), ELENCO.marcosZ).y], t, tV + 0.3, passada(ELENCO.marcosZ, noPiso.esc));
+    const entrou = prog(t, tE - 0.2, tE + 0.3);
+    m.setAttribute('opacity', 1 - entrou);
+    if (t < tV + 0.3) B.posar(m, Object.assign({ x: 540, frente: true }, zumbiDeFrente(t), { achata: -0.35 * olhaCima + 0.3 * prog(t, tV, tV + 0.3) }, o.noPiso(0.1, ELENCO.marcosZ)), { boca: 0.3, pisca: 0, olhaY: -olhaCima }, luzOlho, '#c9c2b0');
+    else B.posar(m, Object.assign({ x: xx, vira: -1, achata: susto(t, tV + 0.3, 0.6) }, noPiso, zumbi(cw.ph, cw.amp)), { boca: 0.3, pisca: 0 }, luzOlho, '#c9c2b0');
+    olhosZumbi(m);
+  };
+} });
+
+// M1 · opção 1: as chaves na sua mão, na frente da porta
+plano({ ini: F(18).inicio - 0.2, fim: ti(18, 'mas') - 0.2, montar(g) {
+  const p = K.portaPorDentro(g, { esc: 0.95 });
+  const esc = K.escala(p.alt, ELENCO.voce);
+  const r = B.criar(p.atores, ELENCO.voce);
+  const ch = el('g', { transform: 'translate(0 18)' }, r.dados.pecas.bracoF.prop);
+  el('circle', { cx: 0, cy: 0, r: 14, fill: 'none', stroke: '#cfcfd6', 'stroke-width': 6 }, ch);
+  for (const [a, cor] of [[-24, '#d9b45a'], [16, '#a8a8b0']]) { const k = el('g', { transform: `rotate(${a})` }, ch); R(k, -5, 10, 10, 46, cor, { 'stroke-width': 3 }); }
+  return (t, tl) => {
+    camera(g, 640, 1050, lerp(1.0, 1.12, tl / 4), t, 0.5);
+    p.quadro(t, { abre: 0, tranca: 1, luzFora: 0.5 });
+    B.posar(r, Object.assign({ x: 820, y: K.pe(ELENCO.voce, p.chao, esc), esc, vira: -1, tronco: 6 + respira(t), cabeca: lerp(18, 0, antes(prog(t, ti(18, 'portaria') - 0.2, ti(18, 'portaria') + 0.4))), bracoF: { mao: [170, -230 + 10 * impacto(t, ti(18, 'chave') + 0.1, 1) + Math.sin(t * 6) * 3], dobra: 1, punho: -30 }, bracoT: { a: 8, b: -12 } }, { pernaF: S.parado.pernaF, pernaT: S.parado.pernaT }), { olhaX: 1, medo: 0.6, pisca: pisca(t, 5) }, luzJanela, SALA);
+  };
+} });
+
+// M2 · o prédio em corte: a escada até o térreo, a portaria e a cisterna; lá em cima, o Marcos
+plano({ ini: ti(18, 'mas') - 0.2, fim: F(19).inicio - 0.2, montar(g) {
+  const c = K.corte(g, { destaque: { 14: '#f0b55a', 1: '#9fc7ff' }, terreo: 'T' });
+  const voce = K.marcador(g, '#5ad18a'), marcos = K.marcador(g, '#ff5a4a');
+  const yT = c.andarY(1);
+  R(g, c.X0 + 170, yT + 10, 190, 60, '#2f3a55', { rx: 8, 'stroke-width': 4 }); S.texto(g, { x: c.X0 + 265, y: yT + 50, 'text-anchor': 'middle', 'font-size': 26, fill: '#cfe2ff' }, 'PORTARIA');
+  R(g, c.X1 - 250, c.YB + 30, 230, 120, '#1f3a55'); el('rect', { x: c.X1 - 244, y: c.YB + 64, width: 218, height: 80, fill: '#3d8bd1' }, g);
+  S.texto(g, { x: c.X1 - 135, y: c.YB + 190, 'text-anchor': 'middle', 'font-size': 28, fill: '#9fc7ff' }, 'CISTERNA');
+  return (t, tl) => {
+    const lin = prog(t, ti(18, 'mas'), ti(18, 'marcos', 1) - 0.3), q = lin * 13, i = Math.min(12, Math.floor(q));
+    const desce = (i + suave(Math.min(1, (q - i) * 1.5))) / 13; // um andar, uma pausa curta
+    camera(g, 540, lerp(c.andarY(14) + 200, 1083, desce), lerp(1.0, 0.68, desce), t, 0.3);
+    const p = lerp(14.2, 1.2, desce), [x, y] = c.escada(p);
+    voce.em(x, y - 18, t);
+    const [mx, my] = c.escada(16.5); marcos.em(mx + 60, my - 18, t);
+    const tm = ti(18, 'marcos', 1) - 0.3, km = prog(t, tm, tm + 0.3);
+    marcos.g.setAttribute('opacity', Math.min(1, km * 3));
+    marcos.g.setAttribute('transform', marcos.g.getAttribute('transform') + ` scale(${(0.4 + 0.6 * sai(km)) * (1 + 0.25 * impacto(t, tm + 0.3, 1))})`);
+  };
+} });
+
+// N · opção 2: você passa o pano na testa dele; a porta trancada atrás
+plano({ ini: F(19).inicio - 0.2, fim: S.duracao + 1, montar(g) {
+  const k = sofaComMenino(g);
+  return (t, tl) => {
+    const fimK = suave(prog(t, F(20).inicio - 0.2, F(20).inicio + 1.5));
+    camera(g, lerp(580, 600, fimK), lerp(1100, 1000, fimK), lerp(1.05, 0.95, fimK), t, 0.4);
+    k.s.porta.abrir(0);
+    k.quadro(t, { pano: 1, olhos: 0.85 });
+  };
+} });
+
+// ====================== PEÇAS DA SÉRIE POR CIMA ======================
+S.selo({ nome: 'CONDOMÍNIO FECHADO · DIA 3', horas: [[0, '12:04'], [F(1).inicio - 0.1, '06:12'], [F(7).inicio - 0.1, '06:19'], [F(11).inicio - 0.2, '06:40'], [F(14).inicio - 0.2, '12:04'], [F(16).inicio - 0.2, '12:07']] });
+S.contador({ icone: g => el('path', { d: 'M 730 256 C 714 282 706 294 706 306 A 24 24 0 0 0 754 306 C 754 294 746 282 730 256 Z', fill: '#4fa3e8', stroke: '#cfe6ff', 'stroke-width': 4 }, g), valor: tt => tt < tf(11, 'molhado') ? '52 L' : '51 L' });
+S.cartao([[ti(12, 'quarto') - 0.1, F(13).inicio - 0.15, 'PROBLEMA Nº 4', 'O ARRANHÃO']]);
+S.escolha({ opcoes: [
+  { em: ti(18, 'opcao'), titulo: 'DESCER AGORA', risco: '⚠ 14 andares de escada, e o Marcos pode voltar' },
+  { em: ti(19, 'opcao'), titulo: 'FICAR TRANCADO', risco: '⚠ sem remédio, trancado com ele' } ],
+  fecho: { em: F(20).inicio, cima: 'COMENTA 1 OU 2', botao: 'COMENTA', baixo: 'A MAIORIA DECIDE O DIA 4' } });
+S.legenda({ trocas: [['catorze zero cinco', '1405'], ['opção um', 'opção 1'], ['opção dois', 'opção 2'], ['um ou dois', '1 ou 2'], ['dia quatro', 'dia 4']],
+  chave: ['menino', 'braço', 'maioria', 'buscar', '1405', 'escada', 'encostada', 'barulho', 'cortina', 'fumaça', 'tosse', 'banheiro', 'box', 'dinossauro', 'fuligem', 'colo', 'ombro', 'alto', 'demais', 'range', 'passos', 'descendo', 'tranca', 'marcos', 'cheira', 'sua', 'noite', 'pano', 'três', 'riscos', 'vermelhos', 'quarto', 'arranhão', 'síndica', 'enfaixado', 'virado', 'ninguém', 'quente', 'febre', 'panela', 'sobe', 'livre', '1', '2', 'portaria', 'cisterna', 'catorze', 'voltar', 'trancado', 'remédio', 'ele', 'comenta', 'maioria', '4'] });
+
+S.ligar(S.filme(P), tl, t0, D);
+})();
+</script>

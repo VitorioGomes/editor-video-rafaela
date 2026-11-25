@@ -1,0 +1,18 @@
+<!-- Etiquetas coladas na parede, atrás da pessoa, uma por palavra. Use com "atras": true. "rotulos": até 5 textos. M: um tempo por rótulo. -->
+<style>
+.cp-area { position: absolute; left: -40px; top: -120px; width: 1080px; height: 900px; }
+.cp-c { position: absolute; font-family: var(--f-mao), cursive; font-style: italic; font-size: 54px; color: var(--c-parede); background: #fff7c9; padding: 18px 28px; border-radius: 10px; box-shadow: 0 8px 18px rgba(40,30,10,.22); white-space: nowrap; opacity: 0; }
+</style>
+<div class="cp-area">
+  <div class="cp-c" id="$IDc0" style="left:20px;top:150px">$R0</div>
+  <div class="cp-c" id="$IDc1" style="right:20px;top:90px">$R1</div>
+  <div class="cp-c" id="$IDc2" style="left:50px;top:400px">$R2</div>
+  <div class="cp-c" id="$IDc3" style="right:30px;top:340px">$R3</div>
+  <div class="cp-c" id="$IDc4" style="left:30px;top:610px">$R4</div>
+</div>
+<script>
+const giro = [-5, 4, 3, -4, -3];
+M.forEach((m, i) => {
+  tl.fromTo("#$IDc" + i, { opacity: 0, scale: 1.5, rotation: giro[i] * 3 }, { opacity: 1, scale: 1, rotation: giro[i], duration: .16, ease: "back.out(1.8)" }, t0 + m);
+});
+</script>

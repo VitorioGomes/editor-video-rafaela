@@ -1,0 +1,32 @@
+<!-- Estilo Parede: a parede vira um quadro de museu. A palavra ($R0) aparece pintada na parede, uma moldura preta se desenha em volta
+     e uma plaquinha de museu ($R2, $R3) entra embaixo, meio torta. $R1: frase pequena em cima. Use com "atras": true.
+     M: [palavra, moldura]. -->
+<style>
+.qd-c { position: relative; width: 600px; height: 460px; }
+.qd-f { position: absolute; left: 0; top: 0; width: 600px; text-align: center; font-family: var(--f-mao), cursive; font-style: italic; font-size: 58px; color: var(--c-parede); opacity: 0; }
+.qd-p { position: absolute; left: 0; top: 118px; width: 600px; text-align: center; font-family: var(--f-serifa), serif; font-size: 170px; line-height: 1; letter-spacing: -.01em; color: var(--c-acento); -webkit-text-stroke: 2px var(--c-acento); opacity: 0; }
+.qd-m { position: absolute; left: 0; top: 96px; overflow: visible; }
+.qd-m rect { fill: none; stroke: var(--c-parede); }
+.qd-pl { position: absolute; left: 0; top: 372px; width: 250px; padding: 12px 18px; background: #fbf8ef; border: 2px solid var(--c-parede); font-family: var(--f-forte), sans-serif; font-weight: 700; font-size: 24px; color: var(--c-parede); box-shadow: 0 6px 14px rgba(40,30,10,.25); opacity: 0; }
+.qd-pl small { display: block; font-weight: 600; font-size: 18px; color: #6b675f; margin-top: 3px; }
+</style>
+<div class="qd-c">
+  <div class="qd-f" id="$IDf">$R1</div>
+  <div class="qd-p" id="$IDp">$R0</div>
+  <svg class="qd-m" width="600" height="260" viewBox="0 0 600 260">
+    <rect id="$IDm0" x="8" y="8" width="584" height="244" stroke-width="14" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+    <rect id="$IDm1" x="30" y="30" width="540" height="200" stroke-width="3" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+  </svg>
+  <div class="qd-pl" id="$IDl">$R2<small>$R3</small></div>
+</div>
+<script>
+  const a = t0 + M[0], b = t0 + M[1];
+  tl.fromTo("#$IDf", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .2, ease: "power2.out" }, t0 + .05);
+  // a palavra "pintada": entra grande e assenta, como tinta batendo na parede
+  tl.fromTo("#$IDp", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .16, ease: "power3.out" }, a - .05);
+  // no "quadro": a moldura se desenha dando a volta e a plaquinha de museu entra torta
+  tl.to("#$IDm0", { strokeDashoffset: 0, duration: .45, ease: "power2.inOut" }, b - .1);
+  tl.to("#$IDm1", { strokeDashoffset: 0, duration: .4, ease: "power2.inOut" }, b + .05);
+  tl.fromTo("#$IDl", { opacity: 0, y: 30, rotation: 0 }, { opacity: 1, y: 0, rotation: -3, duration: .3, ease: "back.out(2)" }, b + .4);
+  tl.fromTo("#$IDp", { rotation: 0 }, { rotation: -1.2, duration: 1.2, yoyo: true, repeat: 1, ease: "sine.inOut", immediateRender: false }, b + .5);
+</script>

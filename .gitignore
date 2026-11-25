@@ -1,0 +1,13 @@
+# pastas de uso (testes feitos dentro do repositório)
+/brutos/
+/versoes/
+/editados/
+/meu-estilo/
+/roteiros/
+/.projetos/
+/.ferramenta/
+.env
+__pycache__/
+*.pyc
+node_modules/
+.hyperframes/

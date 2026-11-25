@@ -1,0 +1,15 @@
+<!-- Estilo Parede: uma palavra ($R0) escondida atrás da cabeça da pessoa sai de trás dela, espiando, e fica ao lado. Use com "atras": true,
+     com o bloco no centro da cabeça. M: [sai]. -->
+<style>
+.ep-c { position: relative; width: 600px; height: 160px; }
+.ep-t { position: absolute; left: 0; top: 0; width: 600px; text-align: center; font-family: var(--f-mao), cursive; font-style: italic; font-size: 76px; color: var(--c-parede); white-space: nowrap; }
+</style>
+<div class="ep-c"><div class="ep-t" id="$IDt">$R0</div></div>
+<script>
+  const a = t0 + M[0];
+  // escondida atrás da cabeça, sai de lado num movimento curto, passa um pouco e volta
+  tl.set("#$IDt", { x: 0, rotation: 0 }, t0);
+  tl.to("#$IDt", { x: 360, rotation: 8, duration: .35, ease: "back.out(2.2)" }, a - .1);
+  tl.to("#$IDt", { rotation: -4, duration: .3, ease: "sine.inOut" }, a + .25);
+  tl.to("#$IDt", { rotation: 2, duration: .6, yoyo: true, repeat: 3, ease: "sine.inOut" }, a + .55);
+</script>

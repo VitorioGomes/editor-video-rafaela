@@ -1,0 +1,59 @@
+{
+  "idioma": "pt",
+  "transcricao": {
+    "modelo": "large-v3",
+    "modelo_rapido": "turbo",
+    "vocabulario": ""
+  },
+  "tratamento": {
+    "cor": "eq=contrast=1.05:saturation=1.06:gamma=0.99,curves=master='0/0 0.08/0.07 0.5/0.5 0.94/0.96 1/1',unsharp=5:5:0.25",
+    "voz": "highpass=f=80,acompressor=threshold=-18dB:ratio=2:attack=5:release=80:makeup=1"
+  },
+  "fontes": {
+    "serifa": "Instrument Serif",
+    "mao": "Mali",
+    "forte": "Inter",
+    "lista": "Caveat",
+    "mono": "JetBrains Mono",
+    "condensada": "League Gothic",
+    "caixinha": "Poppins"
+  },
+  "arquivos_de_fonte": [
+    {"familia": "Instrument Serif", "arquivo": "InstrumentSerif-Regular.woff2"},
+    {"familia": "Instrument Serif", "arquivo": "InstrumentSerif-Italic.woff2", "estilo": "italic"},
+    {"familia": "Mali", "arquivo": "Mali-SemiBoldItalic.woff2", "peso": 600, "estilo": "italic"},
+    {"familia": "Inter", "arquivo": "Inter-Regular.woff2", "peso": 400},
+    {"familia": "Inter", "arquivo": "Inter-Medium.woff2", "peso": 500},
+    {"familia": "Inter", "arquivo": "Inter-SemiBold.woff2", "peso": 600},
+    {"familia": "Inter", "arquivo": "Inter-Bold.woff2", "peso": 700},
+    {"familia": "Inter", "arquivo": "Inter-ExtraBold.woff2", "peso": 800},
+    {"familia": "Inter", "arquivo": "Inter-ExtraBoldItalic.woff2", "peso": 800, "estilo": "italic"},
+    {"familia": "Inter", "arquivo": "Inter-Black.woff2", "peso": 900},
+    {"familia": "Caveat", "arquivo": "Caveat-SemiBold.woff2", "peso": 600},
+    {"familia": "JetBrains Mono", "arquivo": "JetBrainsMono-Medium.woff2", "peso": 500},
+    {"familia": "League Gothic", "arquivo": "LeagueGothic-Regular.woff2", "peso": 400},
+    {"familia": "Poppins", "arquivo": "Poppins-Bold.woff2", "peso": 700}
+  ],
+  "cores": {
+    "texto": "#f6f4e8",
+    "destaque": "#fdf0a8",
+    "alerta": "#e0162b",
+    "acento": "#8e1fe6",
+    "parede": "#16130f",
+    "motion": "#ff6a2b",
+    "metade": "#c8f560",
+    "motion_fim": "#7b5cff",
+    "serie": "#ffa53a",
+    "legenda": "#ffffff",
+    "legenda_destaque": "#ffd84a"
+  },
+  "legenda": {
+    "classe": "leg-forte",
+    "x": 140,
+    "largura": 800,
+    "y": 1250
+  },
+  "efeitos": {
+    "ganho": -2
+  }
+}

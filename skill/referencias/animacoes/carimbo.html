@@ -1,0 +1,9 @@
+<!-- Carimbo vermelho batendo na tela, com o texto em "rotulos". M: [batida]. -->
+<style>
+.cb-c { display: inline-block; font-family: var(--f-serifa), serif; font-size: 142px; line-height: 1; letter-spacing: .01em; color: var(--c-alerta); border: 12px solid var(--c-alerta); border-radius: 20px; padding: 18px 40px 26px; background: rgba(255,255,255,.88); white-space: nowrap; opacity: 0; }
+.cb-f { text-align: center; }
+</style>
+<div class="cb-f"><div class="cb-c" id="$IDc">$R0</div></div>
+<script>
+tl.fromTo("#$IDc", { opacity: 0, scale: 2.4, rotation: -11 }, { opacity: 1, scale: 1, rotation: -6, duration: .12, ease: "power4.in" }, t0 + M[0]);
+</script>

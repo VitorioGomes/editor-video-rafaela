@@ -1,0 +1,25 @@
+<!-- Meio a meio: título do gancho num card, com as ferramentas entrando como etiquetas. $R0 texto, $R1 palavra em destaque, $R2 linha de baixo, $R3 e $R4 etiquetas. M: um tempo por etiqueta. -->
+<style>
+<!--#inclui mm-base.css-->
+.mt-card { left: 110px; top: 240px; width: 860px; padding: 40px 36px 36px; text-align: center; }
+.mt-t { font-size: 84px; line-height: 1.05; letter-spacing: -.04em; }
+.mt-s { margin-top: 16px; font-size: 38px; color: #6b675f; letter-spacing: -.01em; }
+.mt-chips { position: absolute; left: 0; width: 1080px; top: 610px; display: flex; justify-content: center; gap: 28px; }
+.mt-chip { display: flex; align-items: center; gap: 16px; padding: 18px 30px; border-radius: 20px; background: #fff; border: 3px solid #121212; box-shadow: 6px 6px 0 #121212; font-size: 42px; letter-spacing: -.02em; opacity: 0; }
+.mt-ico { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 32px; }
+</style>
+<div class="mm mm-meio">
+  <div class="mm-card mt-card" id="$IDcard">
+    <div class="mt-t">$R0 <span class="mm-sal">$R1</span></div>
+    <div class="mt-s">$R2</div>
+  </div>
+  <div class="mt-chips">
+    <div class="mt-chip" id="$IDc0"><span class="mt-ico" style="background:#d97757">✳</span>$R3</div>
+    <div class="mt-chip" id="$IDc1"><span class="mt-ico" style="background:#121212;font-size:24px">&gt;_</span>$R4</div>
+  </div>
+</div>
+<script>
+tl.fromTo("#$IDcard", { y: -30, opacity: 0, rotation: -2 }, { y: 0, opacity: 1, rotation: 0, duration: .32, ease: "back.out(1.6)" }, t0 + .1);
+tl.to("#$IDcard", { y: -8, duration: D - .5, ease: "sine.inOut" }, t0 + .42);
+[0, 1].forEach((i) => tl.fromTo("#$IDc" + i, { opacity: 0, y: 30, rotation: i ? 4 : -4 }, { opacity: 1, y: 0, rotation: i ? 1.5 : -1.5, duration: .22, ease: "back.out(2)" }, t0 + M[i]));
+</script>

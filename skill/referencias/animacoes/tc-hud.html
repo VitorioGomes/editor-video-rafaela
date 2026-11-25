@@ -1,0 +1,35 @@
+<!-- As peças do alto, do "Bora" até o fim das cinco bases: o cartão de 60 segundos do gancho vira o cronômetro (que desce de 60 a 0, um pouco mais rápido que o relógio, para zerar no "cinco bases") e, à direita, o progresso "1/5". M: [Primeiro, No, Em#2, Pro#2, São#2, bases]. -->
+<style>
+.gh-tempo { left: 56px; top: 230px; width: 214px; opacity: 0; }
+.gh-tempo > * { opacity: 0; }
+.gh-prog { left: 800px; top: 230px; width: 224px; opacity: 0; }
+.gh-eco { left: 240px; top: 300px; width: 600px; height: 400px; text-align: center; padding-top: 44px; transform: translateY(-164px) scale(.5); }
+</style>
+<div class="tc" id="$IDc">
+  <div class="tc-pilula gh-tempo" id="$IDt"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><b id="$IDn">60</b><small>seg</small></div>
+  <div class="tc-pilula gh-prog" id="$IDp"><b id="$IDf">1/5</b><span class="tc-pontos"><i></i><i></i><i></i><i></i><i></i></span></div>
+  <!-- cópia do cartão do gancho, que some quando a forma vira a pílula -->
+  <div class="tc-cartao g1-60 gh-eco" id="$IDe" style="opacity:1"><div class="tc-rot" id="$IDa"></div><b>60</b><div class="tc-rot g1-seg">segundos</div></div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui tc-base.js-->
+document.getElementById("$IDa").innerHTML = ASTER + "toda a base do Claude";
+// a emenda: o cartão encolhe até a pílula do cronômetro, que escurece no caminho
+vira("#$IDt", t0, [390, 236, 300, 200, 15], [56, 230, 214, 76, 38], { dura: .55, partes: "svg, b, small", cor: ["#ffffff", "#1d1c1b"], eco: "#$IDe" });
+// o cronômetro desce de 60 a 0 até o "cinco bases"
+const o = { v: 60 }, n = document.getElementById("$IDn");
+tl.to(o, { v: 0, duration: T(5) - t0 - .6, ease: "none", onUpdate: () => { n.textContent = Math.ceil(o.v); } }, t0 + .6);
+// o progresso entra no "Primeiro" e avança a cada base
+tl.fromTo("#$IDp", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(1.8)" }, T(0) - .1);
+const pontos = document.querySelectorAll("#$IDp .tc-pontos i");
+const marcos = [0, 1, 2, 3, 4].map((k) => T(k) - (k ? .05 : -.15)), f = document.getElementById("$IDf"), rel = { v: 0 };
+// o número da base acompanha o tempo (onUpdate, que vale também quando o render pula para um quadro qualquer)
+tl.to(rel, { v: 1, duration: D, ease: "none", onUpdate: () => { const agora = t0 + rel.v * D; let k = 1; marcos.forEach((m, i) => { if (agora >= m) k = i + 1; }); f.textContent = k + "/5"; } }, t0);
+for (let k = 0; k < 5; k++) {
+  const t = marcos[k];
+  tl.to(pontos[k], { backgroundColor: "#d4704e", duration: .2 }, t);
+  tl.fromTo(pontos[k], { scale: 1 }, { keyframes: [{ scale: 1.8, duration: .1, ease: "power2.out" }, { scale: 1, duration: .25, ease: "back.out(2.5)" }], immediateRender: false }, t);
+  if (k) tl.fromTo("#$IDf", { y: 0 }, { keyframes: [{ y: -6, duration: .08 }, { y: 0, duration: .2, ease: "back.out(3)" }], immediateRender: false }, t);
+}
+</script>

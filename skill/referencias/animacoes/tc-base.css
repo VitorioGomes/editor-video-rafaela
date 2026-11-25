@@ -1,0 +1,98 @@
+/* Base do Estilo Tela do Claude: inclua com o comentário "#inclui tc-base.css" no estilo de cada cena.
+   Fundo claro bege-cinza, a janela do app do Claude copiada (barra lateral, abas Chat/Cowork/Code, caixa de pedido),
+   uma palavra grande sublinhada em laranja por cena, cartões brancos de sombra macia, o cronômetro e o progresso no alto
+   e o mascote de pixel. Única cor forte: o laranja do Claude. Área: conteúdo entre y 230 e 1300. */
+.tc { --tc-fundo: #e9e9e6; --tc-app: #faf9f5; --tc-lado: #f3f2ed; --tc-borda: #e2e0d9; --tc-texto: #1f1e1c; --tc-apagado: #64615b; --tc-claro: #77746d;
+  --tc-laranja: #d4704e; --tc-verde: #3aa865; --tc-escuro: #1d1c1b; --tc-sombra: 0 34px 80px rgba(60,45,30,.12), 0 3px 10px rgba(60,45,30,.06);
+  position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: var(--f-forte), sans-serif; font-weight: 500; color: var(--tc-texto); }
+.tc * { box-sizing: border-box; }
+.tc svg { display: block; }
+/* cartão branco de sombra macia */
+.tc-cartao { position: absolute; background: #fff; border-radius: 30px; box-shadow: var(--tc-sombra); }
+.tc-rot { font-weight: 700; font-size: 30px; letter-spacing: .1em; text-transform: uppercase; color: var(--tc-texto); }
+.tc-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 22px; border-radius: 999px; font-weight: 600; font-size: 30px; }
+.tc-chip.verde { background: #e3f4e8; color: #23774a; }
+.tc-chip.cinza { background: #eeede9; color: var(--tc-apagado); }
+.tc-chip.laranja { background: #f8e3da; color: #a8482a; }
+.tc-chip.branco { background: #fff; color: var(--tc-texto); box-shadow: 0 8px 22px rgba(60,45,30,.10); }
+
+/* ---------- a janela do app do Claude (posição e tamanho no style de quem usa) ---------- */
+.tc-app { position: absolute; background: var(--tc-app); border: 1.5px solid var(--tc-borda); border-radius: 22px; overflow: hidden; box-shadow: var(--tc-sombra); }
+.tc-barra { position: absolute; left: 0; right: 0; top: 0; height: 44px; display: flex; align-items: center; gap: 9px; padding: 0 18px; border-bottom: 1px solid var(--tc-borda); background: #f6f5f0; }
+.tc-barra i { width: 13px; height: 13px; border-radius: 50%; display: block; background: #ff5f57; }
+.tc-barra i:nth-child(2) { background: #febc2e; } .tc-barra i:nth-child(3) { background: #28c840; }
+.tc-barra span { margin-left: 14px; font-family: var(--f-mono), monospace; font-size: 17px; color: var(--tc-apagado); }
+.tc-lado { position: absolute; left: 0; top: 44px; bottom: 0; width: 310px; background: var(--tc-lado); border-right: 1px solid var(--tc-borda); }
+.tc-ico-lado { position: absolute; left: 22px; top: 16px; display: flex; gap: 18px; color: #6f6c65; }
+.tc-ico-lado svg { width: 26px; height: 26px; }
+.tc-alterna { position: absolute; left: 16px; right: 16px; top: 58px; height: 48px; border-radius: 12px; background: #e9e7e1; display: flex; padding: 4px; }
+.tc-alterna span { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 9px; font-size: 22px; color: var(--tc-apagado); }
+.tc-alterna span.on { background: #fff; color: var(--tc-texto); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.tc-menu { position: absolute; left: 12px; right: 12px; top: 120px; }
+.tc-menu div { height: 40px; display: flex; align-items: center; gap: 14px; padding: 0 12px; border-radius: 10px; font-size: 22px; color: var(--tc-texto); }
+.tc-menu div svg { width: 22px; height: 22px; color: #5f5c56; }
+.tc-menu div.on { background: #e7e5df; }
+.tc-menu small { font-size: 15px; padding: 2px 8px; border-radius: 6px; background: #e7e5df; color: #57544e; }
+.tc-recentes { position: absolute; left: 24px; right: 18px; top: 390px; }
+.tc-recentes b { display: block; font-weight: 500; font-size: 19px; color: var(--tc-apagado); margin-bottom: 12px; }
+.tc-recentes div { font-size: 20px; line-height: 37px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tc-user { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 1px solid var(--tc-borda); display: flex; align-items: center; gap: 12px; padding: 0 18px; font-size: 21px; background: var(--tc-lado); }
+.tc-user i { width: 36px; height: 36px; border-radius: 50%; background: #dedcd5; display: flex; align-items: center; justify-content: center; font-style: normal; font-weight: 600; font-size: 18px; }
+.tc-user small { font-size: 21px; color: var(--tc-apagado); }
+.tc-main { position: absolute; left: 310px; right: 0; top: 44px; bottom: 0; }
+.tc-ola { position: absolute; left: 0; right: 0; top: 180px; text-align: center; }
+.tc-ola > span { display: block; }
+.tc-ola svg { width: 64px; height: 64px; margin: 0 auto 22px; }
+.tc-ola p { margin: 0; font-family: var(--f-serifa), serif; font-size: 46px; line-height: 1.08; color: var(--tc-texto); }
+/* a caixa de pedido, embaixo da área principal */
+.tc-pedido { position: absolute; left: 28px; right: 28px; bottom: 28px; height: 150px; background: #fff; border: 1.5px solid var(--tc-borda); border-radius: 20px; box-shadow: 0 6px 18px rgba(60,45,30,.06); }
+.tc-pedido .tc-txt { position: absolute; left: 22px; right: 22px; top: 22px; font-size: 24px; color: var(--tc-texto); white-space: nowrap; }
+.tc-pedido .tc-ph { color: var(--tc-claro); }
+.tc-linha { position: absolute; left: 14px; right: 14px; bottom: 14px; height: 44px; }
+.tc-mais { position: absolute; left: 2px; top: 2px; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--tc-borda); display: flex; align-items: center; justify-content: center; font-size: 26px; color: #6f6c65; }
+.tc-modos { position: absolute; left: 52px; top: 0; height: 44px; display: flex; padding: 3px; border-radius: 11px; background: #efeee9; }
+.tc-modos span { padding: 0 14px; display: flex; align-items: center; border-radius: 8px; font-size: 21px; color: var(--tc-apagado); }
+.tc-modos span.on { background: #fff; color: var(--tc-texto); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.tc-modelo { position: absolute; left: 350px; top: 0; height: 44px; display: flex; align-items: center; gap: 6px; font-size: 21px; color: var(--tc-texto); }
+.tc-mic { position: absolute; left: 470px; top: 8px; width: 28px; height: 28px; color: #6f6c65; }
+.tc-env { position: absolute; left: 508px; top: 1px; width: 42px; height: 42px; border-radius: 50%; background: var(--tc-laranja); display: flex; align-items: center; justify-content: center; }
+.tc-env svg { width: 22px; height: 22px; }
+/* anexo na caixa de pedido */
+.tc-anexo { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border-radius: 10px; border: 1.5px solid var(--tc-borda); background: #fff; font-size: 18px; white-space: nowrap; }
+.tc-anexo i { width: 24px; height: 24px; border-radius: 6px; display: block; }
+/* menu suspenso (pasta, anexar, modelo) */
+.tc-suspenso { position: absolute; background: #fff; border: 1.5px solid var(--tc-borda); border-radius: 16px; box-shadow: 0 20px 50px rgba(60,45,30,.16); padding: 8px; }
+.tc-suspenso div { padding: 10px 14px; border-radius: 10px; font-size: 21px; }
+.tc-suspenso div.on { background: #f1efe9; }
+.tc-suspenso small { display: block; font-size: 16px; color: var(--tc-apagado); margin-top: 2px; }
+/* janela escura (página de download, editor de código) */
+.tc-escura { position: absolute; background: var(--tc-escuro); border-radius: 22px; overflow: hidden; box-shadow: 0 34px 80px rgba(0,0,0,.25); color: #f3f1ea; }
+.tc-escura .tc-barra { background: #262524; border-bottom-color: #333230; }
+
+/* ---------- peças do alto: cronômetro e progresso ---------- */
+.tc-pilula { position: absolute; height: 76px; border-radius: 38px; background: var(--tc-escuro); color: #fff; display: flex; align-items: center; gap: 12px; padding: 0 26px; box-shadow: 0 14px 30px rgba(0,0,0,.18); }
+.tc-pilula b { font-weight: 700; font-size: 40px; font-variant-numeric: tabular-nums; }
+.tc-pilula small { font-weight: 600; font-size: 24px; color: #8f8d88; }
+.tc-pilula svg { width: 32px; height: 32px; }
+.tc-pontos { display: flex; gap: 8px; }
+.tc-pontos i { width: 11px; height: 11px; border-radius: 50%; background: #4a4947; display: block; }
+.tc-pontos i.on { background: var(--tc-laranja); }
+
+/* ---------- a palavra grande da cena, sublinhada ---------- */
+.tc-tit { position: absolute; left: 60px; right: 60px; top: 318px; text-align: center; }
+.tc-tit span { position: relative; display: inline-block; font-weight: 900; font-size: 118px; line-height: 1; letter-spacing: -.02em; text-transform: uppercase; color: var(--tc-texto); opacity: 0; }
+.tc-tit span i { position: absolute; left: 0; right: 0; bottom: -26px; height: 11px; border-radius: 6px; background: var(--tc-laranja); transform-origin: left center; transform: scaleX(0); }
+
+/* ---------- o mascote de pixel ---------- */
+.tc-masc { position: absolute; width: 190px; height: 130px; }
+.tc-masc svg { width: 100%; height: 100%; shape-rendering: crispEdges; }
+
+/* cursor: posição por x/y do GSAP */
+.tc-cur { position: absolute; left: 0; top: 0; width: 46px; height: 54px; z-index: 30; pointer-events: none; opacity: 0; }
+.tc-cur svg { width: 40px; height: 48px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.25)); }
+
+/* a legenda deste estilo: texto escuro sem sombra, as palavras que ainda vêm em cinza e a palavra-chave sublinhada em laranja */
+.leg.leg-forte { font-weight: 700; font-size: 58px; letter-spacing: -.015em; text-shadow: none; line-height: 1.15; }
+.leg.leg-forte .leg-futura { opacity: 1; color: #8f8c85; }
+.leg.leg-forte .leg-destaque { color: inherit; text-decoration: underline; text-decoration-color: #d4704e; text-decoration-thickness: 6px; text-underline-offset: 12px; }
+.leg.leg-forte .leg-futura.leg-destaque { text-decoration-color: transparent; }

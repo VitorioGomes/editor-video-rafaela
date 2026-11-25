@@ -1,0 +1,79 @@
+<!-- IDEIA: os 100 peões em perspectiva com o asterisco 3D; acendem em laranja no "cem" e a etiqueta "100 clientes de mentira" bate; no "compraria", 21 ficam verdes e entra "quem compra?". Depois, as fichas de clientes com os carimbos (falas reais do teste), "antes de gastar" e "R$ 1", e o recibo do teste com total R$ 0 e "de graça".
+M: [cem, clientes, compraria, antes, gastar, único, E, graça]. -->
+<style>
+.s1-peoes { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.s1-peoes div { position: absolute; color: #ebe5d8; }
+.s1-ast { position: absolute; left: 405px; top: 450px; width: 270px; height: 270px; opacity: 0; z-index: 20; filter: drop-shadow(0 26px 18px rgba(80,40,10,.28)); }
+.s1-100 { left: 130px; top: 330px; z-index: 21; display: flex; align-items: center; gap: 0; opacity: 0; }
+.s1-100 b { display: inline-block; padding: 0 22px; background: #ee6839; color: #161616; font-weight: 900; font-size: 118px; line-height: 1.02; letter-spacing: -.04em; border: 4px solid #161616; box-shadow: 8px 8px 0 #161616; }
+.s1-100 span { display: inline-block; margin-left: 18px; padding: 8px 20px; background: #161616; color: #fff; font-weight: 900; font-size: 44px; letter-spacing: -.02em; text-transform: uppercase; }
+.s1-fichas { left: 130px; top: 350px; width: 820px; }
+.s1-f { position: relative; height: 170px; margin-bottom: 26px; display: flex; align-items: center; gap: 24px; padding: 0 230px 0 26px; }
+.s1-f small { display: block; font-size: 22px; color: #6d6a63; margin-bottom: 6px; }
+.s1-f p { margin: 0; font-weight: 800; font-size: 33px; line-height: 1.16; }
+.s1-f .mc-carimbo { right: 24px; top: 54px; font-size: 34px; }
+.s1-rec { position: absolute; left: 220px; top: 380px; width: 640px; padding: 48px 50px 54px; background: #fff; border: 4px solid #161616; box-shadow: 12px 12px 0 #161616; font-family: var(--f-mono), monospace; font-weight: 500; font-size: 32px; opacity: 0; }
+.s1-rec h4 { margin: 0 0 22px; text-align: center; font-size: 34px; letter-spacing: .12em; border-bottom: 3px dashed #b9b4a6; padding-bottom: 18px; font-weight: 600; }
+.s1-rec p { display: flex; justify-content: space-between; margin: 16px 0; text-transform: uppercase; }
+.s1-rec small { display: block; margin-top: 26px; border-top: 3px dashed #b9b4a6; padding-top: 18px; font-size: 26px; letter-spacing: .1em; }
+.s1-rec b { display: block; font-family: var(--f-forte), sans-serif; font-weight: 900; font-size: 170px; line-height: 1; letter-spacing: -.05em; text-align: center; }
+</style>
+<div class="mc" id="$IDc">
+  <span id="$IDg"></span>
+  <div class="s1-peoes" id="$IDpe"></div>
+  <div class="s1-ast" id="$IDa"></div>
+  <div class="mc-q s1-100" id="$IDcem"><b>100</b><span>clientes de mentira</span></div>
+  <div class="mc-et verde" id="$IDqc" style="left:480px;top:1180px;font-size:54px;z-index:21">quem compra?</div>
+  <div class="mc-q s1-fichas" id="$IDfi">
+    <div class="mc-cartao s1-f"><div class="mc-ava"></div><div><small class="mc-mono">Samuel · 30 · canal dark</small><p>“Voz de IA mais edição automática é o canal dark inteiro.”</p></div><span class="mc-carimbo compra">compra</span></div>
+    <div class="mc-cartao s1-f"><div class="mc-ava"></div><div><small class="mc-mono">Wagner · 45 · dono de oficina</small><p>“Posto um vídeo por mês, se tanto.”</p></div><span class="mc-carimbo passa">passa</span></div>
+    <div class="mc-cartao s1-f"><div class="mc-ava"></div><div><small class="mc-mono">Vanessa · 39 · infoprodutora</small><p>“Faço 20 Reels por mês. Qualquer hora a menos já vale.”</p></div><span class="mc-carimbo compra">compra</span></div>
+    <div class="mc-cartao s1-f"><div class="mc-ava"></div><div><small class="mc-mono">Otávio · 34 · fotógrafo</small><p>“Edito no Premiere há dez anos, não preciso.”</p></div><span class="mc-carimbo passa">passa</span></div>
+  </div>
+  <div class="mc-et preta" id="$IDag" style="left:130px;top:1180px">antes de gastar</div>
+  <div class="mc-et verde" id="$IDr1" style="left:700px;top:1170px;font-size:72px">R$ 1</div>
+  <div class="s1-rec" id="$IDrc"><h4>sua conta</h4><p><span>100 clientes</span><span>R$ 0,00</span></p><p><span>100 apresentações</span><span>R$ 0,00</span></p><p><span>o veredito</span><span>R$ 0,00</span></p><small>total</small><b>R$ 0</b></div>
+  <div class="mc-et verde" id="$IDgr" style="left:460px;top:1010px;font-size:96px">de graça</div>
+</div>
+<script>
+<!--#inclui mo-base.js-->
+<!--#inclui mc-base.js-->
+document.getElementById("$IDg").innerHTML = SOMBREADO("$IDsh");
+document.getElementById("$IDa").innerHTML = ASTER3D("$IDx");
+document.querySelectorAll("#$IDfi .mc-ava").forEach((a) => (a.innerHTML = BONECO));
+// os 100 peões, em 10 fileiras: as de trás menores e mais altas na tela, as da frente maiores
+const pe = document.getElementById("$IDpe"), peoes = [];
+for (let r = 0; r < 10; r++) for (let c = 0; c < 10; c++) {
+  const s = .52 + r * .053, w = 72 * s, x = 540 + (c - 4.5) * 80 * s - w / 2, y = 560 + r * 70 - 132 * s;
+  const d = document.createElement("div");
+  Object.assign(d.style, { left: x + "px", top: y + "px", width: w + "px", height: 132 * s + "px", zIndex: r });
+  d.innerHTML = PEAO("$IDsh"); pe.appendChild(d); peoes.push({ d, r, c });
+}
+const centro = (p) => Math.hypot(p.c - 4.5, (p.r - 2) * 1.2);
+tl.fromTo(peoes.map((p) => p.d), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "power3.out", stagger: { each: .004, from: "end" } }, t0);
+impacto("#$IDa", t0 + .15, { de: .4 });
+tl.to("#$IDa", { rotation: 40, duration: D, ease: "none" }, t0 + .5);
+// "cem": a onda laranja sai do centro
+tl.to(peoes.map((p) => p.d), { color: "#ee6839", duration: .2, stagger: (k) => centro(peoes[k]) * .06 }, T(0) - .1);
+tl.fromTo("#$IDcem", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(1.8)" }, T(1));
+cola("#$IDcem span", T(1) + .15, -2);
+// "compraria": 21 ficam verdes, o resto volta ao creme
+const verdes = [3, 8, 12, 17, 21, 26, 34, 38, 41, 45, 52, 57, 63, 66, 71, 74, 79, 85, 88, 92, 96];
+tl.to(peoes.map((p) => p.d), { color: (k) => verdes.includes(k) ? "#2fa850" : "#ebe5d8", duration: .25, stagger: { each: .006, from: "random" } }, T(2) - .1);
+cola("#$IDqc", T(2) + .1, -4);
+// "antes de gastar": as fichas de clientes, com o carimbo de cada um
+tl.to("#$IDpe, #$IDa, #$IDcem, #$IDqc", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(3) - .18);
+tl.set("#$IDfi", { opacity: 1 }, T(3));
+const fichas = Array.from(document.querySelectorAll("#$IDfi .s1-f"));
+fichas.forEach((f, k) => {
+  tl.fromTo(f, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(1.6)" }, T(3) + k * .12);
+  carimbo(f.querySelector(".mc-carimbo"), T(3) + .2 + k * .14);
+});
+cola("#$IDag", T(4), -3);
+cola("#$IDr1", T(5), 4);
+// "E é totalmente de graça": o recibo do teste
+tl.to("#$IDfi, #$IDag, #$IDr1", { opacity: 0, y: -20, duration: .16, ease: "power2.in" }, T(6) - .18);
+tl.fromTo("#$IDrc", { opacity: 0, y: 120, rotation: 6 }, { opacity: 1, y: 0, rotation: -2, duration: .45, ease: "back.out(1.4)" }, T(6));
+tl.fromTo("#$IDrc p, #$IDrc small, #$IDrc b", { opacity: 0 }, { opacity: 1, duration: .15, stagger: .1 }, T(6) + .25);
+cola("#$IDgr", T(7) - .05, -5);
+</script>

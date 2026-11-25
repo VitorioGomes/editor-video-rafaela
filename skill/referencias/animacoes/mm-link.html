@@ -1,0 +1,17 @@
+<!-- Na frente: o botão do anúncio ("Saiba mais") com uma seta apontando para baixo. $R0 texto do botão. M: [aparece a seta]. Largura 860, longe das laterais. -->
+<style>
+<!--#inclui mm-base.css-->
+.ml-caixa { width: 860px; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.ml-bt { width: 860px; height: 116px; border-radius: 26px; background: var(--c-metade); color: #121212; border: 3px solid #121212; box-shadow: 9px 9px 0 #121212; display: flex; align-items: center; justify-content: space-between; padding: 0 42px; font-size: 48px; letter-spacing: -.02em; }
+.ml-seta { width: 92px; height: 92px; border-radius: 50%; background: #121212; color: var(--c-metade); display: flex; align-items: center; justify-content: center; font-size: 56px; opacity: 0; }
+</style>
+<div class="ml-caixa">
+  <div class="ml-bt" id="$IDb"><span>$R0</span><span>›</span></div>
+  <div class="ml-seta" id="$IDs">↓</div>
+</div>
+<script>
+tl.fromTo("#$IDb", { y: 160, opacity: 0 }, { y: 0, opacity: 1, duration: .34, ease: "power3.out" }, t0);
+tl.set("#$IDs", { opacity: 1 }, t0 + M[0]);
+tl.fromTo("#$IDs", { y: -10 }, { y: 14, duration: .35, yoyo: true, repeat: Math.max(1, Math.floor((D - M[0]) / .35) - 1), ease: "sine.inOut" }, t0 + M[0]);
+tl.fromTo("#$IDb", { scale: 1 }, { scale: 1.04, duration: .3, yoyo: true, repeat: 1, ease: "sine.inOut" }, t0 + M[0] + .2);
+</script>

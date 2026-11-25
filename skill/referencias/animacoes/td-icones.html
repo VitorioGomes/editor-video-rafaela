@@ -1,0 +1,71 @@
+<!-- Títulos Desenhados: a fila de ícones de verdade, cada um entrando na palavra que o nomeia, e a frase embaixo.
+     A fila abre espaço para o próximo (recua antes de ir); no fim, a faísca sai da frase e voa para dentro de cada ícone.
+     Do vídeo "ainda usando o Claude no navegador": "baixa logo o aplicativo ou o VS Code e roda o Claude Code lá dentro,
+     ou até mesmo no terminal". $R0 a $R2: os nomes embaixo dos ícones ("aplicativo", "VS Code", "terminal");
+     $R3 a manuscrita ("roda o"); $R4 a palavra grande ("Claude Code").
+     M: [ícone 1, "ou", ícone 2, manuscrita, palavra grande, "lá dentro", segundo "ou" (a fila abre), ícone 3].
+     Camada: x 0, y 0, largura 1080, "som": false, os efeitos em "sons".
+     Posições: ícone de 150 px; com 2 ícones, centros em 370 e 700; com 3, em 260, 530 e 810 (tudo entre 150 e 930). -->
+<style>
+<!--#inclui td-base.css-->
+.td-slot { width: 150px; height: 150px; top: 244px; opacity: 0; }
+.td-rot { top: 404px; left: 0; width: 0; font-size: 52px; display: flex; justify-content: center; }
+.td-ou { top: 284px; font-size: 60px; color: #e9e4dc; opacity: 0; }
+</style>
+<div class="td-tela">
+  <div class="td-slot" id="$IDs1" style="left:465px"><div class="td-ic" id="$IDi1"><!--#inclui td-icone-claude-app.svg--></div><div class="td-badge" id="$IDb1" style="opacity:0"><!--#inclui td-icone-claude.svg--></div></div>
+  <div class="td-slot" id="$IDs2" style="left:465px"><div class="td-ic" id="$IDi2"><!--#inclui td-icone-vscode-app.svg--></div><div class="td-badge" id="$IDb2" style="opacity:0"><!--#inclui td-icone-claude.svg--></div></div>
+  <div class="td-slot" id="$IDs3" style="left:735px"><div class="td-ic" id="$IDi3"><!--#inclui td-icone-terminal.svg--></div><div class="td-badge" id="$IDb3" style="opacity:0"><!--#inclui td-icone-claude.svg--></div></div>
+  <div class="td-cv td-ou" id="$IDo1" style="left:515px">ou</div>
+  <div class="td-cv td-ou" id="$IDo2" style="left:650px">ou</div>
+  <div class="td-cv td-rot" id="$IDr1" style="color:#F0A584"><span id="$IDr1t">$R0</span></div>
+  <div class="td-cv td-rot" id="$IDr2" style="color:#4FB3F6"><span id="$IDr2t">$R1</span></div>
+  <div class="td-cv td-rot" id="$IDr3" style="color:#4BE08A"><span id="$IDr3t">$R2</span></div>
+  <div class="td-linha" id="$IDf" style="top:496px">
+    <div class="td-cv" id="$IDfm" style="font-size:66px;margin-right:22px;top:8px">$R3</div>
+    <div class="td-lg" id="$IDfg" style="font-size:124px;color:#D97757"><span id="$IDfgt">$R4</span></div>
+  </div>
+</div>
+<script>
+<!--#inclui td-base.js-->
+  const fim = t0 + D;
+  ["#$IDr1t", "#$IDr2t", "#$IDr3t", "#$IDfm", "#$IDfgt"].forEach(tdQuebra);
+  // posições dos rótulos (o centro do ícone)
+  tl.set("#$IDr1", { x: 540, y: 0 }, 0); tl.set("#$IDr2", { x: 700 }, 0); tl.set("#$IDr3", { x: 810 }, 0);
+  tl.set("#$IDs2", { x: 160 }, 0);
+  // 1. o primeiro ícone cai em arco, no centro, e achata ao pousar
+  tl.set("#$IDs1", { opacity: 1 }, t0 + M[0]);
+  tdArco("#$IDi1", t0 + M[0], 160, -230, 0.36, 25);
+  tdDigita("#$IDr1t", t0 + M[0] + 0.34, 0.035);
+  // 2. a fila abre espaço (recua antes de ir) e o segundo entra do lado oposto
+  tdVai("#$IDs1", t0 + M[1], -170); tdVai("#$IDr1", t0 + M[1], 370);
+  tl.fromTo("#$IDo1", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, t0 + M[1] + 0.07);
+  tl.set("#$IDs2", { opacity: 1 }, t0 + M[2]);
+  tdArco("#$IDi2", t0 + M[2], 240, -180, 0.32, 30);
+  tdDigita("#$IDr2t", t0 + M[2] + 0.37, 0.04);
+  // 3. a frase de baixo: a manuscrita e a palavra grande, mais lenta (é a mais pesada)
+  tdDigita("#$IDfm", t0 + M[3], 0.05);
+  tdAntecipa("#$IDfg", t0 + M[4]);
+  tdLetras("#$IDfg", t0 + M[4] - 0.03, 0.4, 0.03);
+  tdAchata("#$IDfg", t0 + M[4] + 0.35, 0.6);
+  // 4. "lá dentro": a faísca sai da frase e voa em arco até o canto de cada ícone
+  tl.set(["#$IDb1", "#$IDb2"], { opacity: 1 }, t0 + M[5]);
+  tdArco("#$IDb1", t0 + M[5], 160, 230, 0.34, -180);
+  tdArco("#$IDb2", t0 + M[5] + 0.12, -40, 230, 0.34, 180);
+  // 5. o segundo "ou": a fila abre de novo e o terceiro entra
+  tdVai("#$IDs1", t0 + M[6] + 0.1, -280, 0.42); tdVai("#$IDr1", t0 + M[6] + 0.1, 260, 0.42);
+  tdVai("#$IDo1", t0 + M[6] + 0.1, -140, 0.42);
+  tdVai("#$IDs2", t0 + M[6] + 0.12, -10, 0.42); tdVai("#$IDr2", t0 + M[6] + 0.12, 530, 0.42);
+  tl.fromTo("#$IDo2", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, t0 + M[6] + 0.3);
+  tl.set("#$IDs3", { opacity: 1 }, t0 + M[7]);
+  tdArco("#$IDi3", t0 + M[7], 200, -200, 0.32, 25);
+  tdDigita("#$IDr3t", t0 + M[7] + 0.27, 0.04);
+  tl.to("#$IDi3 .td-cursor", { opacity: 0, duration: 0.01, yoyo: true, repeat: 3, repeatDelay: 0.22 }, t0 + M[7] + 0.37);
+  tl.set("#$IDb3", { opacity: 1 }, t0 + M[7] + 0.39);
+  tdArco("#$IDb3", t0 + M[7] + 0.39, -260, 230, 0.3, -180);
+  // vivo até o fim: os ícones boiam em ritmos diferentes, as faíscas giram
+  tdBoia("#$IDi1", t0 + M[0] + 0.74, fim, 5, 0.9);
+  tdBoia("#$IDi2", t0 + M[2] + 0.67, fim, 5, 0.75);
+  tdGira(["#$IDb1", "#$IDb2"], t0 + M[5] + 0.6, fim, 90);
+  tdSai(["#$IDs1", "#$IDo1", "#$IDs2", "#$IDo2", "#$IDs3", "#$IDr1", "#$IDr2", "#$IDr3", "#$IDf"], fim - 0.25);
+</script>

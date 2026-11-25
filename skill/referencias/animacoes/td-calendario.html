@@ -1,0 +1,50 @@
+<!-- Títulos Desenhados: o calendário de destacar e o ano grande. As folhas viram até o mês certo; um algarismo do ano
+     pisca na cor de destaque e segue pulsando; no fim, a pergunta manuscrita com um logo e um "?" que balança.
+     Do vídeo "ainda usando o Claude no navegador": "Em 2026, final de 2026, e você ainda está usando o Claude no navegador?".
+     $R0 o ano sem o último algarismo ("202"); $R1 o último ("6"); $R2 e $R3 a pergunta em dois pedaços ("e ainda ", "no navegador").
+     As folhas (JAN a DEZ) estão no HTML: mude os meses se o vídeo pedir outro intervalo.
+     M: [calendário e ano, as folhas viram, o algarismo pisca, pergunta 1, pergunta 2, logo, "?"].
+     Camada: x 0, y 0, largura 1080, "som": false. Fica até o fim do vídeo. Tudo abaixo de ~540 px: aqui a cabeça subiu. -->
+<style>
+<!--#inclui td-base.css-->
+</style>
+<div class="td-tela">
+  <div class="td-cal" id="$IDcal" style="left:180px;top:240px;opacity:0">
+    <div class="td-cal-topo"><span class="td-cal-argola" style="left:34px"></span><span class="td-cal-argola" style="right:34px"></span></div>
+    <div class="td-cal-corpo">
+      <div class="td-folha" id="$IDm0" style="z-index:20">JAN</div><div class="td-folha" id="$IDm1" style="z-index:19">FEV</div>
+      <div class="td-folha" id="$IDm2" style="z-index:18">MAR</div><div class="td-folha" id="$IDm3" style="z-index:17">ABR</div>
+      <div class="td-folha" id="$IDm4" style="z-index:16">MAI</div><div class="td-folha" id="$IDm5" style="z-index:15">JUN</div>
+      <div class="td-folha" id="$IDm6" style="z-index:14">JUL</div><div class="td-folha" id="$IDm7" style="z-index:13">AGO</div>
+      <div class="td-folha" id="$IDm8" style="z-index:12">SET</div><div class="td-folha" id="$IDm9" style="z-index:11">OUT</div>
+      <div class="td-folha" id="$IDm10" style="z-index:10">NOV</div><div class="td-folha" id="$IDm11" style="z-index:9">DEZ</div>
+    </div>
+  </div>
+  <div class="td-lg td-linha" id="$IDano" style="left:420px;width:540px;top:236px;font-size:236px;color:#fff"><span id="$IDanot">$R0</span><span id="$IDdig" class="td-l">$R1</span></div>
+  <div class="td-linha" id="$IDrow" style="top:466px">
+    <div class="td-cv" id="$IDq" style="font-size:66px"><span id="$IDq1">$R2</span><span id="$IDq2">$R3</span></div>
+    <div class="td-peca" id="$IDlogo" style="width:70px;height:70px;margin-left:18px;opacity:0"><!--#inclui td-icone-chrome.svg--></div>
+    <div class="td-lg" id="$IDint" style="font-size:118px;color:#D97757;margin-left:10px;top:-10px;opacity:0">?</div>
+  </div>
+</div>
+<script>
+<!--#inclui td-base.js-->
+  const fim = t0 + D;
+  ["#$IDanot", "#$IDq1", "#$IDq2"].forEach(tdQuebra);
+  tl.set("#$IDq1 .td-l, #$IDq2 .td-l", { opacity: 0 }, 0);
+  document.querySelectorAll("[id^='$IDm']").forEach((f) => f.setAttribute("data-layout-allow-overlap", ""));
+  tdArco("#$IDcal", t0 + M[0], -160, -120, 0.34, -12);
+  tdPalavra("#$IDano", t0 + M[0] + 0.06, 0.6);
+  tdFolhas("#$IDm", 12, t0 + M[1]);
+  tl.to("#$IDcal", { rotation: 3, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor((fim - t0 - M[1] - 0.7) / 0.5)) }, t0 + M[1] + 0.66);
+  // o algarismo pisca na cor do assunto e segue pulsando
+  tl.to("#$IDdig", { color: "#D97757", duration: 0.01 }, t0 + M[2]);
+  tl.to("#$IDdig", { color: "#FFFFFF", duration: 0.01, yoyo: true, repeat: 5, repeatDelay: 0.11 }, t0 + M[2] + 0.12);
+  tl.to("#$IDdig", { color: "#D97757", textShadow: "0 0 34px rgba(217,119,87,.85)", duration: 0.2 }, t0 + M[2] + 0.78);
+  tl.to("#$IDdig", { scale: 1.06, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor((fim - t0 - M[2] - 0.9) / 0.45)) }, t0 + M[2] + 0.88);
+  tdDigita("#$IDq1", t0 + M[3], 0.05);
+  tdDigita("#$IDq2", t0 + M[4], 0.035);
+  tdArco("#$IDlogo", t0 + M[5], 160, -110, 0.3, 200);
+  tl.fromTo("#$IDint", { opacity: 0, scale: 0.2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.3, ease: "back.out(2.4)" }, t0 + M[6]);
+  tl.to("#$IDint", { rotation: 10, duration: 0.18, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, Math.floor((fim - t0 - M[6] - 0.3) / 0.18)) }, t0 + M[6] + 0.3);
+</script>

@@ -1,0 +1,21 @@
+<!-- Estilo Motion claro: o fundo, um só para o vídeo inteiro. Quase branco, papel com pontos bem leves e uma luz da cor motion que passeia devagar. M: [entra a cor motion_fim] (pedido final). Pôr antes das cenas; as cenas usam class="mo claro". -->
+<style>
+<!--#inclui mo-base.css-->
+.mfc { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: radial-gradient(120% 80% at 50% 35%, #f6f5f2 0%, #e9e8e4 75%); }
+.mfc-pontos { position: absolute; inset: -40px; background-image: radial-gradient(rgba(0,0,0,.06) 1.5px, transparent 1.6px); background-size: 44px 44px; }
+.mfc-luz { position: absolute; width: 1200px; height: 1200px; border-radius: 50%; left: -60px; top: 260px; background: radial-gradient(circle, color-mix(in srgb, var(--c-motion) 9%, transparent) 0%, color-mix(in srgb, var(--c-motion) 0%, transparent) 65%); }
+.mfc-fim { position: absolute; width: 1300px; height: 1300px; border-radius: 50%; left: -110px; top: 260px; opacity: 0; background: radial-gradient(circle, color-mix(in srgb, var(--c-motion-fim) 14%, transparent) 0%, color-mix(in srgb, var(--c-motion-fim) 0%, transparent) 65%); }
+.mfc-vinheta { position: absolute; inset: 0; background: radial-gradient(95% 75% at 50% 45%, transparent 60%, rgba(60,50,40,.10) 100%); }
+</style>
+<div class="mfc" id="$IDc">
+  <div class="mfc-pontos" id="$IDp"></div>
+  <div class="mfc-luz" id="$IDl"></div>
+  <div class="mfc-fim" id="$IDr"></div>
+  <div class="mfc-vinheta"></div>
+</div>
+<script>
+// nunca parado: a luz passeia e os pontos andam devagar o vídeo todo
+tl.to("#$IDl", { x: 140, y: -200, scale: 1.12, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, t0);
+tl.to("#$IDp", { y: 44, duration: D, ease: "none" }, t0);
+if (M.length) tl.to("#$IDr", { opacity: 1, duration: .5, ease: "power2.out" }, t0 + M[0] - .1);
+</script>

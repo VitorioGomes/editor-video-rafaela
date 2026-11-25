@@ -1,0 +1,19 @@
+/* Base do Estilo Metade: inclua com <!--#inclui mm-base.css--> dentro do <style>. Aqui ficam os cartões; o painel é outro arquivo.
+   Prancheta de pontos, contorno preto, sombra dura e a cor "metade" da marca (verde-limão no padrão) de destaque.
+   A fonte e as cores valem dentro de um elemento com a classe "mm": envolva a animação num <div class="mm">.
+   Área segura: nada importante acima de 220 px nem a menos de 110 px das laterais. */
+.mm { position: relative; width: 1080px; overflow: visible; font-family: var(--f-forte), sans-serif; font-weight: 700; color: #121212; }
+.mm-meio { height: 860px; }
+.mm-cheia { height: 1920px; }
+.mm-escuro { color: #f4f2ee; }
+.mm-card { position: absolute; background: #fff; border: 3px solid #121212; border-radius: 26px; box-shadow: 9px 9px 0 #121212; }
+.mm-escuro .mm-card { background: #1d1d1d; border-color: #3a3a3a; box-shadow: 9px 9px 0 var(--c-metade); }
+.mm-janela { height: 64px; border-bottom: 3px solid #121212; display: flex; align-items: center; gap: 12px; padding: 0 26px; font-size: 26px; color: #121212; }
+.mm-escuro .mm-janela { border-color: #3a3a3a; color: #bdbab3; }
+.mm-janela i { width: 16px; height: 16px; border-radius: 50%; border: 3px solid #121212; display: block; background: #fff; }
+.mm-janela i:first-child { background: var(--c-metade); }
+.mm-janela i:nth-child(3) { margin-right: 12px; }
+.mm-selo { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 14px; background: #121212; color: var(--c-metade); font-size: 36px; }
+.mm-tag { display: inline-block; padding: 10px 22px; border-radius: 999px; font-size: 30px; background: var(--c-metade); color: #121212; border: 3px solid #121212; }
+.mm-sal { background: var(--c-metade); color: #121212; padding: 0 .14em; border-radius: .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.mm-verde { color: #1f8a4c; }
