@@ -1,6 +1,6 @@
 # Manutenção (para o Vitório)
 
-Versão do Editor IA feita só para a Rafaela (criada em 2026-11-25). Repositório privado: `VitorioGomes/editor-video-rafaela`.
+Versão do Editor IA feita só para a Rafaela (criada em 2026-11-25). Repositório público (desde 2026-11-25, pedido do Vitório): `VitorioGomes/editor-video-rafaela`.
 
 ## O que é diferente do produto
 
@@ -22,7 +22,3 @@ Versão do Editor IA feita só para a Rafaela (criada em 2026-11-25). Repositór
 ## Estilo novo para a Rafaela
 
 Um estilo criado no computador dela fica em `meu-estilo/estilos/` (só lá). Para ele entrar na ferramenta e no catálogo: trazer o guia para `skill/estilos/`, as imagens e um trecho do vídeo aprovado (360 px, VP9, uns 5 s) para o catálogo, citar em "Qual estilo" do `EDITAR.md` e no README, commit e push. Ela recebe com "atualize o editor".
-
-## Acesso
-
-Repositório privado: quem instala precisa de uma conta do GitHub com acesso (colaborador). O `atualizar` faz `git pull` e falha sem acesso.

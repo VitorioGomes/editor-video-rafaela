@@ -23,7 +23,7 @@ Quem opera pode ser o Vitório (que fez o editor) ou alguém da equipa da Rafael
 
 - **Tudo o que você escreve na tela é em português de Portugal:** títulos, frases de apoio, etiquetas, pedido final. "Ecrã", "telemóvel", "equipa", "contacto", "facto", "receção", "ótimo", "registar", "a fazer" (nunca "fazendo"), "tu"/"você" como ela usar na fala. Na dúvida sobre uma palavra, use a forma de Portugal.
 - **A legenda é a fala dela**, como ela disse, em português de Portugal. A transcrição às vezes "abrasileira" uma palavra: corrija para a forma de Portugal.
-- **Não acrescente promessa, número nem caso que ela não falou.** Nada de "cura", prazo ou resultado na tela que não esteja na fala. Os números dela variam de uma fonte para outra: na tela, só o que ela disse no vídeo.
+- **Não acrescente promessa, número nem caso que ela não falou.** Nada de "cura", prazo ou resultado na tela que não esteja na fala. Número na tela, só o que ela disse no vídeo.
 - **Nomes da marca, sempre assim:** Terapia SER (nunca traduzir "Somatic Emotional Reset"), Bioreprogramação Somatoemocional, Jornada MIA, Ascensão Áurea, Certificação SER PRO, SER ITC.
 - O que ilustra a fala é do assunto dela: o corpo, a respiração, a emoção, as etapas de um processo, a sessão, o paciente. Os guias dos estilos usam como exemplo vídeos do Vitório sobre IA, com logos de ferramentas: aproveite o jeito de editar, não o assunto.
 
@@ -55,7 +55,7 @@ O resto é trabalho seu, em pastas escondidas:
 
 ## Atualizar
 
-Quando pedirem para atualizar o editor, rode `python .ferramenta/sistema/editar.py atualizar`. Ele baixa a versão nova e não toca nos arquivos da Rafaela. Se disser que os requisitos mudaram, rode o `pip install` que ele mostrar. O repositório é privado: se o download for recusado, a conta do GitHub deste computador não tem acesso, e quem resolve é o Vitório.
+Quando pedirem para atualizar o editor, rode `python .ferramenta/sistema/editar.py atualizar`. Ele baixa a versão nova e não toca nos arquivos da Rafaela. Se disser que os requisitos mudaram, rode o `pip install` que ele mostrar.
 
 ## Primeira conversa
 

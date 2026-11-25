@@ -14,7 +14,7 @@ Estilo novo: mande o link de um vídeo com a edição que quer, e a IA monta o e
 
 ## Como instalar
 
-Precisa de uma IA de terminal (Claude Code, Codex ou Gemini CLI), do [Git](https://git-scm.com) e de **acesso a este repositório no GitHub** (é privado: peça ao Vitório). O resto (Python, Node.js e ffmpeg) a IA verifica e instala com você.
+Precisa de uma IA de terminal (Claude Code, Codex ou Gemini CLI) e do [Git](https://git-scm.com). O resto (Python, Node.js e ffmpeg) a IA verifica e instala com você.
 
 Abra a IA na pasta onde quer o editor (uma pasta vazia) e cole:
 
