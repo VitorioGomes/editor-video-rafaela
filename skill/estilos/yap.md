@@ -36,7 +36,7 @@ Clique em cada texto que entra, swish em imagem e animação, dinheiro em valor,
 
 ## Num corte de live
 
-Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aprovado para seguir como modelo:
+Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aguardando a aprovação do Vitório:
 
 ```json
 {
