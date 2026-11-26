@@ -176,6 +176,15 @@ Ela anda o vídeo a cada 0,2 s com a animação correndo e mede cada título: **
 
 Aviso desses num elemento que não é título nem legenda, ou um aviso que não está na lista, é para olhar no quadro.
 
+## Num corte de live
+
+Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aguardando a aprovação do Vitório:
+
+- **Abra mais espaço em cima que no Yap:** `live.py abrir-topo ... --px 460`. Com 380 px, ela levanta a cabeça em vários momentos e o `titulos` acusou os três títulos encostando no cabelo. O alto escurecido cobre a parede desfocada, e o título claro fica forte.
+- **Títulos do assunto dela:** BRUXISMO (azul claro da marca, `#9FD3E6`) com "maxilar tenso" à mão e um zigue-zague dos dentes a ranger; RAIVA (vermelho `#EF5A5F`) com "que ficou calada" e uma boca costurada que se desenha em "não disse"; PASSADO (cinza) → seta tracejada → AGORA (azul claro). Sem estrelas no assunto pesado.
+- **Legenda:** num corte em que ela fica muito perto da câmera, não há lugar que nunca toque no rosto. Em `"y": 1690` ela fica abaixo da boca na maior parte do tempo (o `titulos` avisa "legenda baixa": a base passa um pouco de 1.700).
+- **Efeitos baixos** (`"ganho": -8`), um por título.
+
 ## O que já foi corrigido neste estilo
 
 - **Legenda abaixo da barba**, não em cima: em cima da barba ela fica estranha, mesmo sem cobrir a boca. Vale descer até entrar um pouco na faixa de baixo que o Instagram cobre.
