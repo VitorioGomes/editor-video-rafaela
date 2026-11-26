@@ -2,6 +2,7 @@
 
   python .ferramenta/extras/live.py baixar LINK_OU_ARQUIVO --saida .projetos/lives/NOME
   python .ferramenta/extras/live.py quadros .projetos/lives/NOME 125 840 1310
+  python .ferramenta/extras/live.py abrir-topo .projetos/TRECHO/corte/base.mp4 .projetos/TRECHO/corte/base-topo.mp4 [--px 380]
   python .ferramenta/extras/live.py trecho .projetos/lives/NOME DE ATE --saida brutos/NOME-TRECHO.mp4 [--x 0.5] [--seguir]
 
 baixar   baixa o vídeo e escreve a fala inteira com o tempo (fala.md, para ler, e fala.json). Usa a legenda automática
@@ -259,6 +260,26 @@ def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float, seguir: bo
           + (", seguindo o rosto)" if cmds else ")"))
 
 
+def abrir_topo(entrada: Path, saida: Path, px: int, emenda: int = 200) -> None:
+    """Abre espaço em cima para os estilos com título (Yap, Títulos Desenhados, Metade) num corte de live, em que a
+    cabeça fica quase no topo: o vídeo desce px, na largura toda (sai um pouco do peito embaixo), e o espaço de cima
+    é a própria imagem desfocada, com uma emenda suave de `emenda` px, como se a parede continuasse.
+    Encolher o vídeo, com faixas dos lados, ficou um quadro dentro do quadro (teste de 2026-11-26).
+    Mesma duração e mesmo som: o palavras.json do corte continua valendo."""
+    mascara = saida.with_name("mascara-topo.png")
+    rodar(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "color=black:s=1080x1920", "-vf",
+           f"format=gray,geq=lum='if(lt(Y\\,{emenda})\\,255*Y/{emenda}\\,255)'", "-frames:v", "1", str(mascara)])
+    filtro = ("[0:v]split[a][b];[a]scale=1080:1920,boxblur=40:3,eq=brightness=-0.06:saturation=0.9[fundo];"
+              "[b]format=yuva420p[frente0];[1:v]format=gray[m];[frente0][m]alphamerge[frente];"
+              f"[fundo][frente]overlay=0:{px}:shortest=1,format=yuv420p,setsar=1[v]")
+    rodar(["ffmpeg", "-v", "error", "-y", "-i", str(entrada), "-loop", "1", "-i", str(mascara), "-filter_complex", filtro,
+           "-map", "[v]", "-map", "0:a", "-c:v", "libx264", "-crf", "17", "-preset", "fast", "-g", "30",
+           "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-c:a", "copy", "-shortest",
+           str(saida)])
+    mascara.unlink(missing_ok=True)
+    print(f"{saida}: o vídeo dela desceu {px} px; o topo é a própria imagem desfocada.")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Cortes de live")
     sub = ap.add_subparsers(dest="acao", required=True)
@@ -275,8 +296,14 @@ def main() -> None:
     t.add_argument("--saida", required=True)
     t.add_argument("--x", type=float, default=0.5, help="posição do recorte parado (0 a 1)")
     t.add_argument("--seguir", action="store_true", help="a janela segue o rosto (OpenCV)")
+    en = sub.add_parser("abrir-topo")
+    en.add_argument("entrada")
+    en.add_argument("saida")
+    en.add_argument("--px", type=int, default=380, help="quanto o vídeo desce (o espaço livre em cima)")
     a = ap.parse_args()
-    if a.acao == "baixar":
+    if a.acao == "abrir-topo":
+        abrir_topo(Path(a.entrada), Path(a.saida), a.px)
+    elif a.acao == "baixar":
         baixar(a.fonte, Path(a.saida))
     elif a.acao == "quadros":
         quadros(Path(a.pasta), a.tempos)

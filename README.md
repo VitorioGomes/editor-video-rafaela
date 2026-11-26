@@ -32,7 +32,7 @@ Para atualizar, peça à IA: "atualize o editor".
 ## O que saber antes
 
 - **Gravação:** em pé (vertical), câmera parada. Nos estilos com título (Yap, Títulos Desenhados, Metade), com espaço livre acima da cabeça.
-- **Live:** deitada também serve: o recorte em pé fica no meio.
+- **Live:** deitada também serve: o recorte em pé fica no meio. Nos estilos com título, o vídeo desce e o topo vira a parede desfocada, para o título caber.
 - **Placa de vídeo** não é obrigatória; com uma placa NVIDIA, a transcrição fica mais rápida.
 - No Metade, recortar a Rafaela do fundo é o passo mais demorado: uns 15 a 20 minutos para 80 segundos de vídeo.
 - Na primeira transcrição, os modelos de voz baixam sozinhos (uns 6 GB). Depois, tudo roda sem internet.

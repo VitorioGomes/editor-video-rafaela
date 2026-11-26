@@ -34,6 +34,27 @@ A pessoa fala para a câmera e **o topo da tela resume cada ideia**: um título 
 
 Clique em cada texto que entra, swish em imagem e animação, dinheiro em valor, teclado em linha digitada, caneta no risco. Som literal e pontual quando a fala pedir (uma buzina, um erro no ✕), escolhido à mão. Sem pop. Efeitos um pouco abaixo do padrão: `"efeitos": {"ganho": -2}`.
 
+## Num corte de live
+
+Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aprovado para seguir como modelo:
+
+```json
+{
+  "legenda": { "classe": "leg-serifa", "x": 90, "largura": 900, "y": 495, "cor": "#1E293B" },
+  "css": ".topo { color: #1E293B; text-shadow: 0 0 22px rgba(255,255,255,.75), 0 0 6px rgba(255,255,255,.6); } .topo .mao, .topo .manuscrita { color: #2F6478; text-shadow: 0 0 18px rgba(255,255,255,.9), 0 0 5px rgba(255,255,255,.8); } .topo .destaque { color: #2F6478; } .leg-serifa { font-size: 58px; text-shadow: 0 0 14px rgba(255,255,255,.8); } .topo::before { content: ''; position: absolute; left: -80px; right: -80px; top: -70px; bottom: -110px; z-index: -1; background: radial-gradient(ellipse at 50% 50%, rgba(246,240,231,.82) 0%, rgba(246,240,231,.55) 45%, rgba(246,240,231,0) 72%); }",
+  "efeitos": { "ganho": -6 },
+  "camadas": [
+    { "tipo": "serifa", "de": 0, "ate": "@Normalmente", "texto": "Bruxismo", "manuscrita": "maxilar tenso", "digita_em": "@maxilar", "tamanho": 140, "y": 225 },
+    { "tipo": "texto", "de": "@Normalmente", "ate": "@A#2", "y": 225, "esconde_legenda": true, "linhas": [
+      { "t": "Está ligado à", "f": "serifa", "tamanho": 104 }, { "t": "raiva", "f": "destaque", "tamanho": 160, "em": "@raiva" } ] },
+    { "tipo": "texto", "de": "@A#2", "ate": "@Pode#2", "y": 225, "linhas": [
+      { "t": "A raiva", "f": "serifa", "tamanho": 140 }, { "t": "que ficou calada", "f": "mao", "digita": true, "em": "@calada", "tamanho": 74 } ] }
+  ]
+}
+```
+
+O vídeo é o `base-topo.mp4` do [cortes-de-live.md](../referencias/cortes-de-live.md) (o vídeo desce 380 px e o topo é a parede desfocada).
+
 ## Como montar
 
 1. Corte normal (`tentativas` se houver repetições, `transcrever`, `cortar`). Não precisa de recorte.

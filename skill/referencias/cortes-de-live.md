@@ -59,6 +59,18 @@ Para cada trecho, um projeto em `.projetos/NOME-DO-TRECHO/`, seguindo "Cada víd
 
 5. Monte no estilo, olhe os quadros (a legenda abaixo do queixo), renderize e finalize.
 
+**Corte de live num estilo com título (Yap, Títulos Desenhados, Metade)** (Vitório, 2026-11-26): na live, a cabeça fica quase no topo e não sobra lugar para o título. Depois do `cortar`, abra espaço em cima:
+
+```
+python .ferramenta/extras/live.py abrir-topo .projetos/NOME-DO-TRECHO/corte/base.mp4 .projetos/NOME-DO-TRECHO/corte/base-topo.mp4
+```
+
+O vídeo dela desce 380 px na largura toda (sai um pouco do peito embaixo), e o espaço de cima é a própria imagem desfocada, com a emenda suave: parece a parede continuando. Monte com o `base-topo.mp4` no lugar do `base.mp4` (o `palavras.json` é o mesmo). Encolher o vídeo com faixas dos lados foi testado e ficou um quadro dentro do quadro: não use.
+
+- **O topo é a parede clara dela:** título e legenda escuros, nas cores da marca (`#1E293B` e o azul escurecido `#2F6478`), com um halo claro nas letras e um véu claro suave atrás do bloco (`.topo::before` com um degradê radial). Sem o véu, a letra que passa pela mancha escura do cabelo desfocado reprova no contraste do render.
+- **A legenda do Yap fica logo abaixo do título** (por volta de y 495), e não ao lado do rosto: o rosto ocupa a largura. Some na palavra gigante (`"esconde_legenda": true`).
+- **Efeitos baixos** (`"efeitos": {"ganho": -6}`): o tom dela é calmo. O roteiro completo do teste está no guia do [Yap](../estilos/yap.md).
+
 ## 4. Entregar para aprovar
 
 Mande todos de uma vez, do mais forte para o mais fraco, cada um com o nome em `versoes/`, uma linha do que ele fala e o tempo na live (com o link do YouTube no segundo, quando a live vem do YouTube). No fim, uma linha com o que ficou de fora e por quê (a venda, o chat, o trecho sobre medicação).
