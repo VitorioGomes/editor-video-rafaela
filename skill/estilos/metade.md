@@ -35,4 +35,14 @@ Clique nos cartões, teclado na digitação, notificação na mensagem, whoosh e
    - **Legenda abaixo do queixo**, por volta de y 1400: logo abaixo do painel está o rosto.
 4. `montar`, olhar os quadros, `renderizar`, `escutar`, `finalizar`.
 
+## Num corte de live
+
+Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aguardando a aprovação do Vitório:
+
+- **O vídeo-base é o `base-topo` de 400 px** (`live.py abrir-topo ... --px 400`), e não o zoom com `"y": 170`: a cabeça na live fica quase no topo. O recorte é feito desse mesmo vídeo (`recortar .../corte/base-topo400.mp4`).
+- **O recorte é o passo pesado:** 3,4 min para 16 s no PC do Vitório (com placa de vídeo, mas o recorte roda no processador no Windows). No notebook da Rafaela, sem placa, conte muito mais: **avise antes, e para corte longo pergunte se vale.** O Vitório avisou que este estilo tem grande chance de não rodar no computador dela.
+- **Cor do destaque:** o azul claro da marca (`:root { --c-metade: #9FD3E6; }` no `css`), no lugar do verde-limão.
+- **Cenas do assunto dela:** o cartão "Bruxismo" com duas etiquetas numeradas; "está ligado à **raiva**" e um balão de fala com três pontinhos que a fita vermelha "CALADA" cala em "não disse"; "Passado → Agora" e a etiqueta "✓ trabalha-se em consulta".
+- **Legenda** `leg-forte` em y 1680 (num corte perto da câmera, mais acima ela cai na boca); **efeitos** em `"ganho": -10` (o tom dela é calmo).
+
 **Anúncio:** animação nova a cada criativo. O Facebook trata criativo parecido como igual.
