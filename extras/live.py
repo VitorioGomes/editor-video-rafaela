@@ -263,13 +263,18 @@ def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float, seguir: bo
 def abrir_topo(entrada: Path, saida: Path, px: int, emenda: int = 200) -> None:
     """Abre espaço em cima para os estilos com título (Yap, Títulos Desenhados, Metade) num corte de live, em que a
     cabeça fica quase no topo: o vídeo desce px, na largura toda (sai um pouco do peito embaixo), e o espaço de cima
-    é a própria imagem desfocada, com uma emenda suave de `emenda` px, como se a parede continuasse.
+    é a faixa de parede do alto do quadro, esticada e desfocada, com uma emenda suave de `emenda` px, como se a
+    parede continuasse.
     Encolher o vídeo, com faixas dos lados, ficou um quadro dentro do quadro (teste de 2026-11-26).
     Mesma duração e mesmo som: o palavras.json do corte continua valendo."""
     mascara = saida.with_name("mascara-topo.png")
     rodar(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "color=black:s=1080x1920", "-vf",
            f"format=gray,geq=lum='if(lt(Y\\,{emenda})\\,255*Y/{emenda}\\,255)'", "-frames:v", "1", str(mascara)])
-    filtro = ("[0:v]split[a][b];[a]scale=1080:1920,boxblur=40:3,eq=brightness=-0.06:saturation=0.9[fundo];"
+    # O topo sai só da faixa de cima do quadro (a parede, onde ela não está), esticada e desfocada. Com o quadro
+    # inteiro ampliado, a cabeça dela aparecia no topo como uma mancha escura (Vitório, 2026-11-26).
+    faixa = 40
+    filtro = (f"[0:v]split[a][b];[a]crop=1080:{faixa}:0:0,gblur=sigma=45:steps=3,scale=1080:{px + emenda},gblur=sigma=12,"
+              f"pad=1080:1920:0:0[fundo];"
               "[b]format=yuva420p[frente0];[1:v]format=gray[m];[frente0][m]alphamerge[frente];"
               f"[fundo][frente]overlay=0:{px}:shortest=1,format=yuv420p,setsar=1[v]")
     rodar(["ffmpeg", "-v", "error", "-y", "-i", str(entrada), "-loop", "1", "-i", str(mascara), "-filter_complex", filtro,
@@ -277,7 +282,7 @@ def abrir_topo(entrada: Path, saida: Path, px: int, emenda: int = 200) -> None:
            "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-c:a", "copy", "-shortest",
            str(saida)])
     mascara.unlink(missing_ok=True)
-    print(f"{saida}: o vídeo dela desceu {px} px; o topo é a própria imagem desfocada.")
+    print(f"{saida}: o vídeo dela desceu {px} px; o topo é a parede do alto do quadro, desfocada.")
 
 
 def main() -> None:

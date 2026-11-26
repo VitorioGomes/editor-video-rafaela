@@ -53,7 +53,7 @@ Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aguar
 }
 ```
 
-O vídeo é o `base-topo.mp4` do [cortes-de-live.md](../referencias/cortes-de-live.md) (o vídeo desce 380 px e o topo é a parede desfocada).
+O vídeo é o `base-topo.mp4` do [cortes-de-live.md](../referencias/cortes-de-live.md) (o vídeo desce 380 px e o topo é a parede do alto do quadro, desfocada).
 
 ## Como montar
 

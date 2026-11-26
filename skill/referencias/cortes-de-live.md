@@ -65,9 +65,9 @@ Para cada trecho, um projeto em `.projetos/NOME-DO-TRECHO/`, seguindo "Cada víd
 python .ferramenta/extras/live.py abrir-topo .projetos/NOME-DO-TRECHO/corte/base.mp4 .projetos/NOME-DO-TRECHO/corte/base-topo.mp4
 ```
 
-O vídeo dela desce 380 px na largura toda (sai um pouco do peito embaixo), e o espaço de cima é a própria imagem desfocada, com a emenda suave: parece a parede continuando. Monte com o `base-topo.mp4` no lugar do `base.mp4` (o `palavras.json` é o mesmo). Encolher o vídeo com faixas dos lados foi testado e ficou um quadro dentro do quadro: não use.
+O vídeo dela desce 380 px na largura toda (sai um pouco do peito embaixo), e o espaço de cima é a faixa de parede do alto do quadro, esticada e desfocada, com a emenda suave: parece a parede continuando. Com o quadro inteiro desfocado no topo, a cabeça dela aparecia como uma mancha escura (Vitório, 2026-11-26): por isso só a faixa de cima. Monte com o `base-topo.mp4` no lugar do `base.mp4` (o `palavras.json` é o mesmo). Encolher o vídeo com faixas dos lados foi testado e ficou um quadro dentro do quadro: não use.
 
-- **O topo é a parede clara dela:** título e legenda escuros, nas cores da marca (`#1E293B` e o azul escurecido `#2F6478`), com um halo claro nas letras e um véu claro suave atrás do bloco (`.topo::before` com um degradê radial). Sem o véu, a letra que passa pela mancha escura do cabelo desfocado reprova no contraste do render.
+- **O topo é a parede clara dela:** título e legenda escuros, nas cores da marca (`#1E293B` e o azul escurecido `#2F6478`), com um halo claro nas letras e um véu claro suave atrás do bloco (`.topo::before` com um degradê radial). Sem o véu, a letra que passa por uma parte escura do fundo reprova no contraste do render.
 - **A legenda do Yap fica logo abaixo do título** (por volta de y 495), e não ao lado do rosto: o rosto ocupa a largura. Some na palavra gigante (`"esconde_legenda": true`).
 - **Efeitos baixos** (`"efeitos": {"ganho": -6}`): o tom dela é calmo. O roteiro completo do teste está no guia do [Yap](../estilos/yap.md).
 
