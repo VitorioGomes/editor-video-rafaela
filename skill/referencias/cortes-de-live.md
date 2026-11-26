@@ -59,7 +59,7 @@ Para cada trecho, um projeto em `.projetos/NOME-DO-TRECHO/`, seguindo "Cada víd
 
 5. Monte no estilo, olhe os quadros (a legenda abaixo do queixo), renderize e finalize.
 
-**Corte de live num estilo com título (Yap, Títulos Desenhados, Metade)** (Vitório, 2026-11-26): na live, a cabeça fica quase no topo e não sobra lugar para o título. Depois do `cortar`, abra espaço em cima:
+**Corte de live num estilo com título (Yap, Títulos Desenhados)** (Vitório, 2026-11-26): na live, a cabeça fica quase no topo e não sobra lugar para o título. Depois do `cortar`, abra espaço em cima. (O Metade não usa isso: o bruto sai com `trecho --metade`, ver [metade.md](../estilos/metade.md).)
 
 ```
 python .ferramenta/extras/live.py abrir-topo .projetos/NOME-DO-TRECHO/corte/base.mp4 .projetos/NOME-DO-TRECHO/corte/base-topo.mp4

@@ -3,7 +3,7 @@
   python .ferramenta/extras/live.py baixar LINK_OU_ARQUIVO --saida .projetos/lives/NOME
   python .ferramenta/extras/live.py quadros .projetos/lives/NOME 125 840 1310
   python .ferramenta/extras/live.py abrir-topo .projetos/TRECHO/corte/base.mp4 .projetos/TRECHO/corte/base-topo.mp4 [--px 380]
-  python .ferramenta/extras/live.py trecho .projetos/lives/NOME DE ATE --saida brutos/NOME-TRECHO.mp4 [--x 0.5] [--seguir]
+  python .ferramenta/extras/live.py trecho .projetos/lives/NOME DE ATE --saida brutos/NOME-TRECHO.mp4 [--x 0.5] [--seguir | --metade]
 
 baixar   baixa o vídeo e escreve a fala inteira com o tempo (fala.md, para ler, e fala.json). Usa a legenda automática
          do YouTube quando existe (segundos); sem ela, transcreve com o modelo rápido (no processador, uns 20 a 40 min
@@ -12,6 +12,8 @@ quadros  tira quadros em tamanho cheio nos instantes pedidos, com a janela em p�
 trecho   corta DE..ATE (segundos) da live e, se ela for deitada, recorta a janela em pé 9:16 parada no meio (--x muda
          a posição: 0 = borda esquerda, 0.5 = meio, 1 = borda direita). Com --seguir, a janela segue o rosto (OpenCV):
          o Vitório achou tremido no primeiro teste (2026-11-26), por isso não é o padrão. Sai 1080x1920, 30 quadros.
+         Com --metade (Estilo Metade), ela fica só na metade de baixo: uma janela quase quadrada da live, sem ampliar,
+         embaixo de 860 px de parede desfocada, que o painel cobre. Sem recorte de fundo (Vitório, 2026-11-26).
 
 Fica fora de sistema/ de propósito: o sistema/ vem da oficina do produto e é trocado inteiro a cada sincronização.
 """
@@ -232,12 +234,18 @@ def seguir_rosto(video: Path, de: float, dura: float, largura: int, altura: int)
     return list(np.interp(np.arange(round(dura * 30)) / 30, tempos, suave))
 
 
-def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float, seguir: bool = False) -> None:
+PAINEL = 860  # altura do painel do Estilo Metade no estado "meio" (mm-palco.html)
+
+
+def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float, seguir: bool = False, metade: bool = False) -> None:
     video, d = ler_live(pasta)
     if ate <= de:
         raise SystemExit("ATE tem de ser maior que DE.")
     saida = saida.resolve()
     saida.parent.mkdir(parents=True, exist_ok=True)
+    if metade:
+        trecho_metade(video, d, de, ate, saida, x)
+        return
     quadro, cmds = "", None
     if d["largura"] > d["altura"]:
         w, esq = janela(d["largura"], d["altura"], x)
@@ -258,6 +266,24 @@ def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float, seguir: bo
         raise SystemExit(f"O ffmpeg falhou ao cortar o trecho:\n{r.stderr[-1500:]}")
     print(f"{saida} ({ate - de:.1f} s, de {hms(de)} a {hms(ate)} da live"
           + (", seguindo o rosto)" if cmds else ")"))
+
+
+def trecho_metade(video: Path, d: dict, de: float, ate: float, saida: Path, x: float) -> None:
+    """Estilo Metade num corte de live: ela só na metade de baixo (1080 x 1060), numa janela da live com essa forma,
+    sem ampliar; em cima, a faixa de parede do alto da janela, esticada e desfocada, que o painel cobre.
+    O recorte de fundo vazou na live (cabelo claro em parede clara, imagem ampliada) e é pesado: não se usa
+    (Vitório, 2026-11-26). Mesma duração e som do trecho normal: escolhas.json e cortar funcionam igual."""
+    baixo = 1920 - PAINEL
+    h = d["altura"]
+    w = min(round(h * 1080 / baixo / 2) * 2, d["largura"])
+    esq = round(min(max(x * d["largura"] - w / 2, 0), d["largura"] - w) / 2) * 2
+    filtro = (f"[0:v]fps=30,crop={w}:{h}:{esq}:0,scale=1080:{baixo}:flags=lanczos,setsar=1,split[a][b];"
+              f"[a]crop=1080:40:0:0,gblur=sigma=45:steps=3,scale=1080:{PAINEL},gblur=sigma=12[topo];"
+              "[topo][b]vstack,format=yuv420p[v]")
+    rodar(["ffmpeg", "-v", "error", "-y", "-ss", f"{de}", "-i", str(video.resolve()), "-t", f"{ate - de:.3f}",
+           "-filter_complex", filtro, "-map", "[v]", "-map", "0:a", "-c:v", "libx264", "-crf", "16", "-preset", "medium",
+           "-c:a", "aac", "-b:a", "192k", "-ar", "48000", str(saida)])
+    print(f"{saida} ({ate - de:.1f} s, de {hms(de)} a {hms(ate)} da live, metade de baixo para o Estilo Metade)")
 
 
 def abrir_topo(entrada: Path, saida: Path, px: int, emenda: int = 200) -> None:
@@ -301,6 +327,7 @@ def main() -> None:
     t.add_argument("--saida", required=True)
     t.add_argument("--x", type=float, default=0.5, help="posição do recorte parado (0 a 1)")
     t.add_argument("--seguir", action="store_true", help="a janela segue o rosto (OpenCV)")
+    t.add_argument("--metade", action="store_true", help="ela só na metade de baixo, para o Estilo Metade")
     en = sub.add_parser("abrir-topo")
     en.add_argument("entrada")
     en.add_argument("saida")
@@ -313,7 +340,7 @@ def main() -> None:
     elif a.acao == "quadros":
         quadros(Path(a.pasta), a.tempos)
     else:
-        trecho(Path(a.pasta), a.de, a.ate, Path(a.saida), a.x, a.seguir)
+        trecho(Path(a.pasta), a.de, a.ate, Path(a.saida), a.x, a.seguir, a.metade)
 
 
 if __name__ == "__main__":

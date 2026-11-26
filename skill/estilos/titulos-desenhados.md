@@ -184,6 +184,7 @@ Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aguar
 - **Títulos do assunto dela:** BRUXISMO (azul claro da marca, `#9FD3E6`) com "maxilar tenso" à mão e um zigue-zague dos dentes a ranger; RAIVA (vermelho `#EF5A5F`) com "que ficou calada" e uma boca costurada que se desenha em "não disse"; PASSADO (cinza) → seta tracejada → AGORA (azul claro). Sem estrelas no assunto pesado.
 - **Legenda:** num corte em que ela fica muito perto da câmera, não há lugar que nunca toque no rosto. Em `"y": 1600` ela fica abaixo da boca na maior parte do tempo; mais baixo, o Vitório achou que ela quase não aparecia.
 - **Efeitos baixos** (`"ganho": -8`), um por título.
+- **Vídeo completo** (2026-11-26, aguardando a opinião do Vitório): "Se o sintoma falasse" (44 s), seis títulos e três respiros (o aviso "autoanálise, não consulta", o "é mais estranha" e a pergunta repetida). 3 PERGUNTAS com o 3 enorme; QUANDO? com um relógio que se desenha e gira; PRIMEIRA VEZ com a seta tracejada voltando para trás; FALASSE dentro de um balão de fala; "fechem os olhos" com o olho fechado, 3 SEGUNDOS e uma barra que enche; OUVIR com ondas de som dos dois lados. A linha à mão de cima fica em 180 px; o que fica embaixo do título, até uns 530 px (o cabelo chega a 540 quando ela se inclina). Efeito que cai numa pausa da fala (o whoosh do QUANDO?) sobressai: baixe mais 6.
 
 ## O que já foi corrigido neste estilo
 

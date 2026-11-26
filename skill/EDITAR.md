@@ -109,7 +109,7 @@ Se não disseram o estilo, **sugira um, pelo que o vídeo pede, e confirme numa 
 - **Cortes e Legenda** ([cortes-e-legenda.md](estilos/cortes-e-legenda.md)): **o padrão**, o jeito que ela já edita hoje. Só os cortes e a legenda, com um rótulo fixo no topo quando pedirem. É também o estilo dos cortes de live.
 - **Yap** ([yap.md](estilos/yap.md)): dica, lista, opinião, um sintoma explicado, convite para consulta ou formação. Precisa de espaço livre acima da cabeça.
 - **Títulos Desenhados** ([titulos-desenhados.md](estilos/titulos-desenhados.md)): quando o vídeo tem trechos bem marcados, cada um com uma ideia que vira um título com desenho ("não é ansiedade, é o corpo a pedir ajuda", "3 sinais de..."). Precisa de parede livre acima da cabeça.
-- **Metade** ([metade.md](estilos/metade.md)): quando ela explica um processo, um método ou as etapas de algo, e o painel em cima mostra isso. Precisa de espaço acima da cabeça, e o recorte demora.
+- **Metade** ([metade.md](estilos/metade.md)): quando ela explica um processo, um método ou as etapas de algo, e o painel em cima mostra isso. Ela fica na metade de baixo, sem recorte do fundo.
 - **Um estilo dela**, de `meu-estilo/estilos/`, quando o vídeo pede o que ele faz.
 
 Se a gravação não deixa espaço para o estilo pedido (a cabeça muito alta no quadro), diga antes de montar e sugira outro. O estilo não se molda a uma gravação errada. **A exceção é o corte de live**, que não dá para gravar de novo: nos estilos com título, o vídeo desce e o topo vira a parede desfocada (ver [cortes-de-live.md](referencias/cortes-de-live.md)).
@@ -120,7 +120,7 @@ Se a gravação não deixa espaço para o estilo pedido (a cabeça muito alta no
 
 - **Cortes e Legenda:** como ela já grava. Telemóvel em pé, rosto perto, olhando para a câmara.
 - **Yap e Títulos Desenhados:** telemóvel em pé e parado (apoiado, não na mão), **com espaço livre acima da cabeça**, uns dois palmos de parede: é ali que o título fica. Parede lisa ajuda.
-- **Metade:** igual ao Yap, com ainda mais espaço em cima (a cabeça a meio do ecrã), e a câmara parada do começo ao fim: o recorte dela do fundo precisa disso.
+- **Metade:** telemóvel em pé e parado, rosto perto: a metade de cima do ecrã fica com o painel, e ela aparece da cabeça aos ombros na metade de baixo.
 - **Em todos:** pode repetir a frase quando errar, a edição escolhe a melhor; luz de frente; sem música a tocar.
 
 ### 1. Do bruto ao corte
@@ -152,11 +152,7 @@ python .ferramenta/sistema/editar.py cortar .projetos/NOME/base_longa.mp4 .proje
 
 O vocabulário dela já está no `marca.json`. Às vezes o Whisper pula uma frase inteira: o `transcrever` procura trecho com voz e sem palavra e transcreve de novo sozinho ("Voz sem palavra em..."). Se ele avisar "confira", olhe a energia do áudio no trecho antes de seguir. Antes do `cortar`, **confira o texto da transcrição** e corrija as palavras erradas num `trocas.json` (`{"42": "somatoemocional"}`, o número é a posição no `palavras.json`), passado com `--trocas`. Texto vazio (`{"43": ""}`) apaga a palavra. **Erro que se repete** vai para `"transcricao": {"correcoes": {...}}` no `meu-estilo/marca.json`: daí em diante, toda transcrição já sai certa. Gesto antes da fala: `--manter-ate SEGUNDOS`.
 
-**Metade:** recorte a Rafaela do fundo. Demora uns 15 a 20 minutos para 80 s: avise, rode em segundo plano e vá criando as animações enquanto isso.
-
-```
-python .ferramenta/sistema/editar.py recortar .projetos/NOME/corte/base.mp4 --saida .projetos/NOME/recorte.webm
-```
+**Metade:** sem recorte do fundo (Vitório, 2026-11-26). Ela fica na metade de baixo e o painel em cima: ver [metade.md](estilos/metade.md).
 
 ### 2. Montar
 
