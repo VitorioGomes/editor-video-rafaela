@@ -2,15 +2,15 @@
 
   python .ferramenta/extras/live.py baixar LINK_OU_ARQUIVO --saida .projetos/lives/NOME
   python .ferramenta/extras/live.py quadros .projetos/lives/NOME 125 840 1310
-  python .ferramenta/extras/live.py trecho .projetos/lives/NOME DE ATE --saida brutos/NOME-TRECHO.mp4 [--x 0.5]
+  python .ferramenta/extras/live.py trecho .projetos/lives/NOME DE ATE --saida brutos/NOME-TRECHO.mp4 [--x 0.5] [--seguir]
 
 baixar   baixa o vídeo e escreve a fala inteira com o tempo (fala.md, para ler, e fala.json). Usa a legenda automática
          do YouTube quando existe (segundos); sem ela, transcreve com o modelo rápido (no processador, uns 20 a 40 min
          por hora de live). Também monta quadros.jpg, um quadro por minuto, para ver o enquadramento.
 quadros  tira quadros em tamanho cheio nos instantes pedidos, com a janela em pé desenhada (para escolher o --x).
-trecho   corta DE..ATE (segundos) da live e, se ela for deitada, recorta a janela em pé 9:16 que segue o rosto
-         (OpenCV, suavizado como uma câmera calma). Com --x, o recorte fica parado nessa posição (0 = borda esquerda,
-         0.5 = meio, 1 = borda direita). Sai 1080x1920, 30 quadros.
+trecho   corta DE..ATE (segundos) da live e, se ela for deitada, recorta a janela em pé 9:16 parada no meio (--x muda
+         a posição: 0 = borda esquerda, 0.5 = meio, 1 = borda direita). Com --seguir, a janela segue o rosto (OpenCV):
+         o Vitório achou tremido no primeiro teste (2026-11-26), por isso não é o padrão. Sai 1080x1920, 30 quadros.
 
 Fica fora de sistema/ de propósito: o sistema/ vem da oficina do produto e é trocado inteiro a cada sincronização.
 """
@@ -231,7 +231,7 @@ def seguir_rosto(video: Path, de: float, dura: float, largura: int, altura: int)
     return list(np.interp(np.arange(round(dura * 30)) / 30, tempos, suave))
 
 
-def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float | None) -> None:
+def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float, seguir: bool = False) -> None:
     video, d = ler_live(pasta)
     if ate <= de:
         raise SystemExit("ATE tem de ser maior que DE.")
@@ -239,9 +239,9 @@ def trecho(pasta: Path, de: float, ate: float, saida: Path, x: float | None) -> 
     saida.parent.mkdir(parents=True, exist_ok=True)
     quadro, cmds = "", None
     if d["largura"] > d["altura"]:
-        w, esq = janela(d["largura"], d["altura"], 0.5 if x is None else x)
+        w, esq = janela(d["largura"], d["altura"], x)
         quadro = f"crop={w}:{d['altura']}:{esq}:0,"
-        if x is None:
+        if seguir:
             # A janela em pé anda com ela: um comando de posição por quadro (o crop aceita x mudando no tempo).
             centros = seguir_rosto(video, de, ate - de, d["largura"], d["altura"])
             cmds = pasta / "seguir.cmd"
@@ -273,14 +273,15 @@ def main() -> None:
     t.add_argument("de", type=float)
     t.add_argument("ate", type=float)
     t.add_argument("--saida", required=True)
-    t.add_argument("--x", type=float, default=None, help="recorte parado nesta posição (0 a 1); sem ele, segue o rosto")
+    t.add_argument("--x", type=float, default=0.5, help="posição do recorte parado (0 a 1)")
+    t.add_argument("--seguir", action="store_true", help="a janela segue o rosto (OpenCV)")
     a = ap.parse_args()
     if a.acao == "baixar":
         baixar(a.fonte, Path(a.saida))
     elif a.acao == "quadros":
         quadros(Path(a.pasta), a.tempos)
     else:
-        trecho(Path(a.pasta), a.de, a.ate, Path(a.saida), a.x)
+        trecho(Path(a.pasta), a.de, a.ate, Path(a.saida), a.x, a.seguir)
 
 
 if __name__ == "__main__":

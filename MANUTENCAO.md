@@ -6,7 +6,7 @@ Versão do Editor IA feita só para a Rafaela (criada em 2026-11-25). Repositór
 
 - **Só edição de vídeo com rosto.** Sem roteiro, sem voz de IA, sem estilos sem rosto, sem 3D e sem Blender.
 - **Estilos:** Cortes e Legenda (o padrão, o jeito que ela já edita, 2026-11-26), Yap (o Estilo Título do produto, com o nome que o Vitório usa), Títulos Desenhados e Metade (Vitório, 2026-11-25). O Rótulo fixo da pesquisa do nicho entrou como opção do Cortes e Legenda.
-- **Cortes de live** (Vitório, 2026-11-26): `extras/live.py` (baixar, ler a fala pela legenda do YouTube, recortar em pé seguindo o rosto com o OpenCV) e o roteiro em `skill/referencias/cortes-de-live.md`. A IA propõe os trechos e só edita os aprovados.
+- **Cortes de live** (Vitório, 2026-11-26): `extras/live.py` (baixar, ler a fala pela legenda do YouTube, recortar em pé, parado no meio; seguir o rosto com o OpenCV ficou como opção, porque o Vitório achou tremido) e o roteiro em `skill/referencias/cortes-de-live.md`. A IA escolhe os trechos, edita todos e entrega para aprovar; aprovados e recusados ficam anotados no `trechos.md` de cada live, para a escolha melhorar.
 - **Estilos novos:** a engenharia reversa fica (`skill/referencias/estilo-novo.md`), limitada a estilos com a pessoa na tela. O Vitório quer acrescentar estilos à versão dela.
 - **Texto na tela em português de Portugal**, com os nomes da marca e o vocabulário da transcrição já no `EDITAR.md`.
 - **Cores e fontes:** as de cada estilo (decisão do Vitório, 2026-11-25). Ajustar com o uso.

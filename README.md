@@ -11,7 +11,7 @@ Só edita: não escreve roteiro, não gera voz e não faz vídeo sem a Rafaela n
 - **Títulos Desenhados:** um título desenhado para cada trecho, no alto escurecido, com a legenda numa caixinha abaixo do rosto.
 - **Metade:** um painel na metade de cima mostra o que ela explica, e a cabeça passa por cima dele.
 
-**Cortes de live:** mande o link da live no YouTube. A IA lê a live inteira, propõe os trechos que viram Reels, com o link de cada um para ouvir, e edita só os que você aprovar.
+**Cortes de live:** mande o link da live no YouTube. A IA lê a live inteira (pela legenda do YouTube ou transcrevendo no computador), escolhe os trechos que viram Reels e entrega todos editados: você aprova ou recusa cada um.
 
 Estilo novo: mande o link de um vídeo com a edição que quer, e a IA monta o estilo a partir dele (só estilos com a pessoa na tela).
 
@@ -32,7 +32,7 @@ Para atualizar, peça à IA: "atualize o editor".
 ## O que saber antes
 
 - **Gravação:** em pé (vertical), câmera parada. Nos estilos com título (Yap, Títulos Desenhados, Metade), com espaço livre acima da cabeça.
-- **Live:** deitada também serve: o recorte em pé segue o rosto dela.
+- **Live:** deitada também serve: o recorte em pé fica no meio.
 - **Placa de vídeo** não é obrigatória; com uma placa NVIDIA, a transcrição fica mais rápida.
 - No Metade, recortar a Rafaela do fundo é o passo mais demorado: uns 15 a 20 minutos para 80 segundos de vídeo.
 - Na primeira transcrição, os modelos de voz baixam sozinhos (uns 6 GB). Depois, tudo roda sem internet.
