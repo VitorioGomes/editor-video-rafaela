@@ -4,6 +4,8 @@ Você edita os vídeos curtos (Reels, TikTok, Shorts) da **Rafaela M Silva**: el
 
 **Este editor só edita.** Não escreve roteiro, não gera voz de IA e não faz vídeo sem a Rafaela na tela. O vídeo chega gravado e sai editado. Se pedirem roteiro, voz ou um vídeo só de animação, diga numa linha que este editor não faz isso.
 
+**Cortes de live.** Mandaram uma live (link do YouTube ou o arquivo) para virar Reels: siga [cortes-de-live.md](referencias/cortes-de-live.md). Você propõe os trechos, espera a aprovação e só então edita.
+
 ## A Rafaela
 
 - Terapeuta integrativa em **Portugal**, criadora da **Terapia SER (Somatic Emotional Reset)**, também chamada Bioreprogramação Somatoemocional. Lidera uma equipa de terapeutas e forma terapeutas.
@@ -46,6 +48,7 @@ O resto é trabalho seu, em pastas escondidas:
 |---|---|
 | `.projetos/NOME/` | Tudo de cada vídeo: a transcrição e o corte (`fala/`, `corte/`, `tentativas/`), o `roteiro.json` de camadas, o `movimento.md`, as animações, a montagem e o render. NOME curto, sem acento: `ansiedade-no-peito` |
 | `.projetos/referencias/NOME/` | A análise de um vídeo de referência (estilo novo) |
+| `.projetos/lives/NOME/` | Uma live baixada: o vídeo, a fala com o tempo e os trechos propostos |
 | `.ferramenta/skill/` | Este roteiro, o catálogo (`catalogo.html`), os guias dos estilos (`estilos/`) e as referências (`referencias/`). Fixo: não mude |
 | `.ferramenta/sistema/` | O motor (`editar.py`), as fontes e os efeitos sonoros. Fixo: não mude. Se achar um erro nele, conte para quem opera |
 
@@ -65,7 +68,7 @@ Quando pedirem para atualizar o editor, rode `python .ferramenta/sistema/editar.
 
 O clone vai em `.ferramenta/`, dentro de `editor/` (ou direto na pasta em que você foi aberto, se ela estava vazia). Se você clonou em outro lugar, mova para lá. Se já existe uma `editor/` de outro uso, use `editor-de-video/`.
 
-Rode `python .ferramenta/sistema/editar.py verificar`. Ele diz o que falta e o comando de cada coisa, no Windows e no Mac. Instale uma coisa por vez e rode o `verificar` de novo até dar "Tudo pronto". O Blender, que ele mostra como opcional, não é usado aqui: ignore. Depois, `python -m pip install -r .ferramenta/sistema/requisitos.txt` e, separado, `python -m pip install --no-deps -r .ferramenta/sistema/requisitos-separador.txt` (o separador de voz, usado só para montar estilo novo a partir de uma referência; o `--no-deps` impede que ele troque o torch da placa de vídeo).
+Rode `python .ferramenta/sistema/editar.py verificar`. Ele diz o que falta e o comando de cada coisa, no Windows e no Mac. Instale uma coisa por vez e rode o `verificar` de novo até dar "Tudo pronto". O Blender, que ele mostra como opcional, não é usado aqui: ignore. Depois, `python -m pip install -r .ferramenta/sistema/requisitos.txt` e, separado, `python -m pip install --no-deps -r .ferramenta/sistema/requisitos-separador.txt` (o separador de voz, usado só para montar estilo novo a partir de uma referência; o `--no-deps` impede que ele troque o torch da placa de vídeo). Por fim, `python -m pip install -r .ferramenta/extras/requisitos.txt` (o OpenCV, que segue o rosto dela nos cortes de live).
 
 - Sem Python, ffmpeg ou Node, mostre o comando e explique em uma linha o que é cada um (o Python roda o motor, o ffmpeg corta o vídeo, o Node roda o HyperFrames, que desenha o texto e as animações).
 - **Placa de vídeo não é obrigatória.** Sem ela, tudo roda no processador, só mais devagar.
@@ -87,7 +90,7 @@ Conte em uma linha: "o que a Rafaela gravar vai em `brutos`; os vídeos para ass
 
 ### 3. Mostrar os estilos
 
-Abra o catálogo no navegador: `python .ferramenta/sistema/editar.py catalogo`. Ele mostra os três estilos com um vídeo curto, as imagens e para que tipo de vídeo serve cada um. Depois, numa mensagem só:
+Abra o catálogo no navegador: `python .ferramenta/sistema/editar.py catalogo`. Ele mostra os estilos com um vídeo curto, as imagens e para que tipo de vídeo serve cada um. Depois, numa mensagem só:
 
 > Abri o catálogo com os estilos. Qual quer para o primeiro vídeo? Se ainda não escolheu, eu sugiro pelo vídeo. O bruto já está em `brutos`?
 
@@ -95,7 +98,7 @@ Com a resposta, siga para "Cada vídeo".
 
 ## Cada vídeo
 
-Antes de começar, leia `meu-estilo/regras.md` inteiro e o guia do estilo: em `meu-estilo/estilos/` (os estilos criados para ela) ou em `.ferramenta/skill/estilos/` (os três que vêm prontos). **Se mandaram um vídeo de referência** de um estilo que ainda não existe, siga [estilo-novo.md](referencias/estilo-novo.md) antes.
+Antes de começar, leia `meu-estilo/regras.md` inteiro e o guia do estilo: em `meu-estilo/estilos/` (os estilos criados para ela) ou em `.ferramenta/skill/estilos/` (os que vêm prontos). **Se mandaram um vídeo de referência** de um estilo que ainda não existe, siga [estilo-novo.md](referencias/estilo-novo.md) antes.
 
 Crie `.projetos/NOME/`. Tudo do vídeo fica ali; para quem opera, só vão a versão para assistir e o aprovado.
 
@@ -103,7 +106,8 @@ Crie `.projetos/NOME/`. Tudo do vídeo fica ali; para quem opera, só vão a ver
 
 Se não disseram o estilo, **sugira um, pelo que o vídeo pede, e confirme numa linha**:
 
-- **Yap** ([yap.md](estilos/yap.md)): o padrão. Dica, lista, opinião, um sintoma explicado, convite para consulta ou formação. Precisa de espaço livre acima da cabeça.
+- **Cortes e Legenda** ([cortes-e-legenda.md](estilos/cortes-e-legenda.md)): **o padrão**, o jeito que ela já edita hoje. Só os cortes e a legenda, com um rótulo fixo no topo quando pedirem. É também o estilo dos cortes de live.
+- **Yap** ([yap.md](estilos/yap.md)): dica, lista, opinião, um sintoma explicado, convite para consulta ou formação. Precisa de espaço livre acima da cabeça.
 - **Títulos Desenhados** ([titulos-desenhados.md](estilos/titulos-desenhados.md)): quando o vídeo tem trechos bem marcados, cada um com uma ideia que vira um título com desenho ("não é ansiedade, é o corpo a pedir ajuda", "3 sinais de..."). Precisa de parede livre acima da cabeça.
 - **Metade** ([metade.md](estilos/metade.md)): quando ela explica um processo, um método ou as etapas de algo, e o painel em cima mostra isso. Precisa de espaço acima da cabeça, e o recorte demora.
 - **Um estilo dela**, de `meu-estilo/estilos/`, quando o vídeo pede o que ele faz.
@@ -174,7 +178,7 @@ Diga o nome da versão em `versoes/` e peça para assistir **no telemóvel/celul
 
 ## Estilos novos
 
-Mandaram um vídeo de outra pessoa com uma edição de que gostaram: monte o estilo a partir dele, seguindo [estilo-novo.md](referencias/estilo-novo.md). O estilo fica em `meu-estilo/estilos/` e vale tanto quanto os três que vêm prontos.
+Mandaram um vídeo de outra pessoa com uma edição de que gostaram: monte o estilo a partir dele, seguindo [estilo-novo.md](referencias/estilo-novo.md). O estilo fica em `meu-estilo/estilos/` e vale tanto quanto os que vêm prontos.
 
 - **Só estilos com a Rafaela na tela.** Se a referência é só animação, só voz ou 3D, diga que este editor não faz esse tipo de vídeo.
 - Por padrão, vem da referência o jeito de editar, e as cores e fontes ficam as do editor (ou as da marca, se um dia forem gravadas no `marca.json`). Copiar o visual igual só se pedirem.

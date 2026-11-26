@@ -473,12 +473,19 @@ def montar(base: Path, arquivo: Path, roteiro: Path, projeto: Path, sem_efeitos:
         limite, atual, letras = leg.get("caracteres", 26), [], 0
         # "juntas": ["VS Code", "Claude Code"]: nomes de duas palavras que não se partem entre duas frases da legenda.
         juntas = {normal(j.split()[0]) + " " + normal(j.split()[-1]) for j in leg.get("juntas", []) if len(j.split()) == 2}
+        # "sem_ponta_curta": true: a frase da legenda não termina em palavra de ligação ("igual a", "perguntar mas");
+        # ela passa para a frase seguinte, junto com a palavra que ela liga. Desligado por padrão.
+        curtas = {"a", "o", "as", "os", "e", "de", "da", "do", "das", "dos", "em", "no", "na", "nos", "nas", "que", "um",
+                  "uma", "ao", "aos", "pelo", "pela", "pelos", "pelas", "num", "numa", "mas", "por", "para", "pra", "com", "se", "me", "te", "lhe", "nao", "the", "of", "to",
+                  "and"} if leg.get("sem_ponta_curta") else set()
         for n, p in enumerate(palavras):
             # Sem ponto na transcrição entre duas frases, a pausa da fala separa: duas frases nunca numa caixinha só.
             pausa = n and p["inicio"] - palavras[n - 1]["fim"] > leg.get("pausa", 0.3)
             if atual and (letras + len(p["texto"]) > limite or pausa):
                 par = normal(palavras[n - 1]["texto"]) + " " + normal(p["texto"])
-                leva = [atual.pop()] if par in juntas and len(atual) > 1 and not pausa else []
+                ponta = palavras[n - 1]["texto"]
+                curta = normal(ponta) in curtas and ponta[-1:] not in ".,;:!?"
+                leva = [atual.pop()] if (par in juntas or curta) and len(atual) > 1 and not pausa else []
                 for k in atual:
                     trecho_de[k] = atual
                 atual = leva

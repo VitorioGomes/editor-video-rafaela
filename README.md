@@ -1,14 +1,17 @@
 # Editor de vídeo da Rafaela
 
-Edita os vídeos curtos (Reels, TikTok, Shorts) que a Rafaela grava falando para a câmera: escolhe as melhores tentativas, tira as pausas e os erros, trata a cor e o som, põe título, legenda, animação e efeito sonoro e entrega o vídeo pronto para postar. A cada correção, aprende o gosto dela. Roda no computador, sem mandar o vídeo para fora.
+Edita os vídeos curtos (Reels, TikTok, Shorts) que a Rafaela grava falando para a câmera: escolhe as melhores tentativas, tira as pausas e os erros, trata a cor e o som, põe a legenda (e, nos estilos com mais edição, título, animação e efeito sonoro) e entrega o vídeo pronto para postar. A cada correção, aprende o gosto dela. Roda no computador, sem mandar o vídeo para fora.
 
 Só edita: não escreve roteiro, não gera voz e não faz vídeo sem a Rafaela na tela.
 
 ## Os estilos
 
-- **Yap:** um título no topo para cada ideia, frase de apoio manuscrita e a legenda pequena ao lado do rosto. O padrão.
+- **Cortes e Legenda:** o jeito que ela já edita, só os cortes e a legenda, com um rótulo no topo quando pedir. O padrão.
+- **Yap:** um título no topo para cada ideia, frase de apoio manuscrita e a legenda pequena ao lado do rosto.
 - **Títulos Desenhados:** um título desenhado para cada trecho, no alto escurecido, com a legenda numa caixinha abaixo do rosto.
 - **Metade:** um painel na metade de cima mostra o que ela explica, e a cabeça passa por cima dele.
+
+**Cortes de live:** mande o link da live no YouTube. A IA lê a live inteira, propõe os trechos que viram Reels, com o link de cada um para ouvir, e edita só os que você aprovar.
 
 Estilo novo: mande o link de um vídeo com a edição que quer, e a IA monta o estilo a partir dele (só estilos com a pessoa na tela).
 
@@ -28,7 +31,8 @@ Para atualizar, peça à IA: "atualize o editor".
 
 ## O que saber antes
 
-- **Gravação:** em pé (vertical), câmera parada, com espaço livre acima da cabeça. É ali que os títulos ficam.
+- **Gravação:** em pé (vertical), câmera parada. Nos estilos com título (Yap, Títulos Desenhados, Metade), com espaço livre acima da cabeça.
+- **Live:** deitada também serve: o recorte em pé segue o rosto dela.
 - **Placa de vídeo** não é obrigatória; com uma placa NVIDIA, a transcrição fica mais rápida.
 - No Metade, recortar a Rafaela do fundo é o passo mais demorado: uns 15 a 20 minutos para 80 segundos de vídeo.
 - Na primeira transcrição, os modelos de voz baixam sozinhos (uns 6 GB). Depois, tudo roda sem internet.
