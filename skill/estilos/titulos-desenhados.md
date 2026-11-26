@@ -180,9 +180,9 @@ Aviso desses num elemento que não é título nem legenda, ou um aviso que não 
 
 Teste de 2026-11-26, no corte "Bruxismo, a raiva que ficou calada" (16 s), aguardando a aprovação do Vitório:
 
-- **Abra mais espaço em cima que no Yap:** `live.py abrir-topo ... --px 460`. Com 380 px, ela levanta a cabeça em vários momentos e o `titulos` acusou os três títulos encostando no cabelo. O alto escurecido cobre a parede desfocada, e o título claro fica forte.
+- **O vídeo desce 400 px** (`live.py abrir-topo ... --px 400`) e **os títulos sobem uns 40 px**, começando por volta de 180 a 200 px do alto, um pouco acima da regra dos 220 (Vitório, 2026-11-26: "sobe tudo um pouco, para a cabeça dela aparecer mais"; mais que isso, o Instagram corta). O `titulos` avisa "fora da área" por isso: é esperado. O que não pode é "encosta na cabeça": ela levanta a cabeça em vários momentos, então confira e suba ou diminua a peça de baixo. O alto escurecido cobre a parede desfocada, e o título claro fica forte.
 - **Títulos do assunto dela:** BRUXISMO (azul claro da marca, `#9FD3E6`) com "maxilar tenso" à mão e um zigue-zague dos dentes a ranger; RAIVA (vermelho `#EF5A5F`) com "que ficou calada" e uma boca costurada que se desenha em "não disse"; PASSADO (cinza) → seta tracejada → AGORA (azul claro). Sem estrelas no assunto pesado.
-- **Legenda:** num corte em que ela fica muito perto da câmera, não há lugar que nunca toque no rosto. Em `"y": 1690` ela fica abaixo da boca na maior parte do tempo (o `titulos` avisa "legenda baixa": a base passa um pouco de 1.700).
+- **Legenda:** num corte em que ela fica muito perto da câmera, não há lugar que nunca toque no rosto. Em `"y": 1600` ela fica abaixo da boca na maior parte do tempo; mais baixo, o Vitório achou que ela quase não aparecia.
 - **Efeitos baixos** (`"ganho": -8`), um por título.
 
 ## O que já foi corrigido neste estilo
